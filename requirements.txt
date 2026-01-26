@@ -3,18 +3,21 @@ Django==5.0.1
 
 # Environnement
 python-decouple==3.8
+python-dotenv==1.0.0  # Ajout pour meilleure gestion .env
 
 # API
 requests==2.31.0
 
-# Images
-Pillow==10.2.0
+# Images - Version compatible
+Pillow==10.0.0  # Compatible avec Python 3.11
 
-# Production
+# Production - Render
 gunicorn==21.2.0
-psycopg2-binary==2.9.9
 whitenoise==6.6.0
+
+# Production - Neon.tech (PostgreSQL)
+psycopg2-binary==2.9.9
 dj-database-url==2.1.0
 
-# Développement (optionnel)
-python-dotenv==1.0.0
+# Utilitaires
+psutil==5.9.8  # Pour monitoring
