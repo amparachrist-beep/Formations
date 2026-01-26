@@ -1,0 +1,452 @@
+{% extends 'formation/base.html' %}
+
+{% block title %}Mon panier{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        padding: 2rem 0;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    .cart-layout {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    /* Liste des formations dans le panier */
+    .cart-items {
+        background: #fff;
+    }
+
+    .cart-count {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+    }
+
+    .cart-item {
+        display: flex;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        border: 1px solid var(--border-color);
+        margin-bottom: 1rem;
+        transition: box-shadow 0.2s;
+    }
+
+    .cart-item:hover {
+        box-shadow: 0 2px 4px rgba(0,0,0,.08);
+    }
+
+    .cart-item-image {
+        width: 120px;
+        height: 68px;
+        object-fit: cover;
+        flex-shrink: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .cart-item-details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .cart-item-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+    }
+
+    .cart-item-meta {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+
+    .cart-item-actions {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .cart-item-price {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        min-width: 120px;
+        text-align: right;
+    }
+
+    .btn-remove {
+        background: transparent;
+        border: none;
+        color: var(--primary-color);
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0;
+        transition: color 0.2s;
+    }
+
+    .btn-remove:hover {
+        color: var(--primary-hover);
+        text-decoration: underline;
+    }
+
+    /* Résumé de commande */
+    .order-summary {
+        background: #fff;
+        border: 1px solid var(--border-color);
+        padding: 1.5rem;
+        position: sticky;
+        top: 24px;
+        height: fit-content;
+    }
+
+    .order-summary h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+    }
+
+    .summary-line {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem 0;
+        color: var(--text-primary);
+    }
+
+    .summary-total {
+        display: flex;
+        justify-content: space-between;
+        padding: 1.5rem 0 1rem;
+        margin-top: 1rem;
+        border-top: 1px solid var(--border-color);
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    .btn-checkout {
+        background: var(--primary-color);
+        color: #fff;
+        width: 100%;
+        padding: 0.875rem;
+        font-weight: 700;
+        font-size: 1rem;
+        border: none;
+        margin-bottom: 1rem;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+    }
+
+    .btn-checkout:hover {
+        background: var(--primary-hover);
+        color: #fff;
+        transform: scale(1.02);
+    }
+
+    .btn-clear-cart {
+        background: transparent;
+        color: var(--text-primary);
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--text-primary);
+        font-weight: 600;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+    }
+
+    .btn-clear-cart:hover {
+        background: var(--text-primary);
+        color: #fff;
+    }
+
+    .promo-section {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .promo-section label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .promo-input-group {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .promo-input {
+        flex: 1;
+        padding: 0.625rem;
+        border: 1px solid var(--border-color);
+        font-size: 0.875rem;
+    }
+
+    .promo-input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+    }
+
+    .btn-apply-promo {
+        background: var(--text-primary);
+        color: #fff;
+        border: none;
+        padding: 0.625rem 1.25rem;
+        font-weight: 600;
+        font-size: 0.875rem;
+        white-space: nowrap;
+        transition: background 0.2s;
+    }
+
+    .btn-apply-promo:hover {
+        background: #000;
+    }
+
+    /* État vide */
+    .empty-cart {
+        text-align: center;
+        padding: 5rem 2rem;
+        background: #fff;
+        border: 1px solid var(--border-color);
+    }
+
+    .empty-cart i {
+        font-size: 5rem;
+        color: var(--border-color);
+        margin-bottom: 1.5rem;
+    }
+
+    .empty-cart h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+
+    .empty-cart p {
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+    }
+
+    .btn-browse {
+        background: var(--primary-color);
+        color: #fff;
+        padding: 0.875rem 2rem;
+        font-weight: 700;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.2s;
+    }
+
+    .btn-browse:hover {
+        background: var(--primary-hover);
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    /* Trust badges */
+    .trust-badges {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .trust-item-small {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+
+    .trust-item-small i {
+        color: var(--success-color);
+        font-size: 1.125rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+        .cart-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .order-summary {
+            position: static;
+            order: -1;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .cart-item {
+            flex-direction: column;
+        }
+
+        .cart-item-image {
+            width: 100%;
+            height: 180px;
+        }
+
+        .cart-item-actions {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .cart-item-price {
+            min-width: auto;
+            text-align: left;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-udemy">
+    <!-- Header de page -->
+    <div class="page-header">
+        <h1>Panier d'achat</h1>
+    </div>
+
+    {% if formations %}
+        <div class="cart-layout">
+            <!-- Liste des formations -->
+            <div class="cart-items">
+                <p class="cart-count">{{ formations|length }} formation{{ formations|length|pluralize }} dans le panier</p>
+
+                {% for formation in formations %}
+                    <div class="cart-item">
+                        <div>
+                            {% if formation.image %}
+                                <img src="{{ formation.image.url }}" alt="{{ formation.titre }}" class="cart-item-image">
+                            {% else %}
+                                <div class="cart-item-image"></div>
+                            {% endif %}
+                        </div>
+
+                        <div class="cart-item-details">
+                            <div>
+                                <h3 class="cart-item-title">{{ formation.titre }}</h3>
+                                <div class="cart-item-meta">
+                                    <span>Par l'instructeur</span>
+                                    <span class="mx-2">•</span>
+                                    <span>
+                                        <i class="bi bi-star-fill" style="color: #b4690e; font-size: 0.75rem;"></i>
+                                        4.5
+                                    </span>
+                                    <span class="mx-2">•</span>
+                                    <span>Vidéos + Documents</span>
+                                </div>
+                            </div>
+
+                            <div class="cart-item-actions">
+                                <form method="post" action="{% url 'retirer_panier' formation.id %}" style="margin: 0;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-remove">
+                                        <i class="bi bi-trash3"></i> Retirer
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="cart-item-price">
+                            {{ formation.prix }} FCFA
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Résumé de commande -->
+            <div class="order-summary">
+                <h3>Total</h3>
+
+                <div class="summary-line">
+                    <span>Prix original :</span>
+                    <span>{{ total }} FCFA</span>
+                </div>
+
+                <div class="summary-total">
+                    <span>Total :</span>
+                    <span>{{ total }} FCFA</span>
+                </div>
+
+                <a href="{% url 'checkout' %}" class="btn-checkout">
+                    Procéder au paiement
+                </a>
+
+                <a href="{% url 'vider_panier' %}" class="btn-clear-cart">
+                    Vider le panier
+                </a>
+
+                <!-- Code promo (optionnel) -->
+                <div class="promo-section">
+                    <label for="promo-code">Code promo</label>
+                    <div class="promo-input-group">
+                        <input type="text" id="promo-code" class="promo-input" placeholder="Entrez le code">
+                        <button type="button" class="btn-apply-promo">Appliquer</button>
+                    </div>
+                </div>
+
+                <!-- Trust badges -->
+                <div class="trust-badges">
+                    <div class="trust-item-small">
+                        <i class="bi bi-shield-check"></i>
+                        <span>Paiement sécurisé via Moneroo</span>
+                    </div>
+                    <div class="trust-item-small">
+                        <i class="bi bi-infinity"></i>
+                        <span>Accès à vie aux formations</span>
+                    </div>
+                    <div class="trust-item-small">
+                        <i class="bi bi-headset"></i>
+                        <span>Support client disponible</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- État vide -->
+        <div class="empty-cart">
+            <i class="bi bi-cart-x"></i>
+            <h2>Votre panier est vide</h2>
+            <p>Continuez vos achats pour trouver une formation qui vous correspond</p>
+            <a href="{% url 'catalogue' %}" class="btn-browse">
+                Parcourir les formations
+            </a>
+        </div>
+    {% endif %}
+
+    <!-- Continue shopping link -->
+    {% if formations %}
+        <div class="text-center mb-5">
+            <a href="{% url 'catalogue' %}" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">
+                <i class="bi bi-arrow-left me-2"></i>Continuer mes achats
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

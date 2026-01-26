@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Formations en ligne{% endblock %}</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #5624d0;
+            --primary-hover: #401b9c;
+            --secondary-color: #2d2f31;
+            --text-primary: #1c1d1f;
+            --text-secondary: #6a6f73;
+            --border-color: #d1d7dc;
+            --bg-light: #f7f9fa;
+            --success-color: #19a833;
+            --danger-color: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: #fff;
+        }
+
+        /* Navbar */
+        .navbar-custom {
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.08);
+            padding: 0.75rem 0;
+        }
+
+        .navbar-custom .container-fluid {
+            max-width: 1340px;
+            padding: 0 24px;
+        }
+
+        .navbar-custom .navbar-brand {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+
+        .navbar-custom .navbar-brand:hover {
+            color: var(--primary-hover);
+        }
+
+        /* Menu burger - FORCER à droite */
+        .navbar-toggler {
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 0.75rem;
+            margin-left: auto !important;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        /* Navigation links */
+        .navbar-custom .nav-link {
+            color: var(--text-primary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.2s;
+        }
+
+        .navbar-custom .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* Séparateur entre Catalogue et Panier (DESKTOP uniquement) */
+        .nav-separator {
+            width: 1px;
+            height: 24px;
+            background: var(--border-color);
+            margin: 0 0.5rem;
+        }
+
+        /* Cacher le séparateur sur mobile */
+        @media (max-width: 991px) {
+            .nav-separator {
+                display: none;
+            }
+        }
+
+        .cart-badge {
+            position: relative;
+        }
+
+        .cart-badge .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--danger-color);
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+        }
+
+        /* Messages flash */
+        .alert-custom {
+            border: none;
+            border-left: 4px solid;
+            border-radius: 0;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #ecfdf5;
+            color: #065f46;
+            border-color: var(--success-color);
+        }
+
+        .alert-error,
+        .alert-danger {
+            background: #fef2f2;
+            color: #991b1b;
+            border-color: var(--danger-color);
+        }
+
+        .alert-info {
+            background: #eff6ff;
+            color: #1e40af;
+            border-color: #3b82f6;
+        }
+
+        .alert-warning {
+            background: #fffbeb;
+            color: #92400e;
+            border-color: #f59e0b;
+        }
+
+        /* Container personnalisé */
+        .container-udemy {
+            max-width: 1340px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Footer */
+        .footer-udemy {
+            background: var(--secondary-color);
+            color: #fff;
+            padding: 3rem 0 1.5rem;
+            margin-top: 5rem;
+        }
+
+        .footer-udemy a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-udemy a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,.1);
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar-custom .navbar-brand {
+                font-size: 1.5rem;
+            }
+
+            .container-udemy {
+                padding: 0 16px;
+            }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navbar avec structure simplifiée -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <!-- Logo à gauche -->
+            <a class="navbar-brand" href="{% url 'catalogue' %}">
+                <i class="bi bi-mortarboard-fill"></i> MesFormations
+            </a>
+
+            <!-- Burger à droite sur mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Menu -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'catalogue' %}">
+                            <i class="bi bi-grid-3x3-gap"></i> Catalogue
+                        </a>
+                    </li>
+
+                    <!-- SÉPARATEUR vertical (desktop uniquement) -->
+                    <li class="nav-item d-none d-lg-block">
+                        <div class="nav-separator"></div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link cart-badge" href="{% url 'panier' %}">
+                            <i class="bi bi-cart3"></i> Panier
+                            {% if panier_count > 0 %}
+                                <span class="badge">{{ panier_count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages flash -->
+    <div class="container-udemy mt-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-custom alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- Contenu principal -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-udemy">
+        <div class="container-udemy">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="bi bi-mortarboard-fill"></i> MesFormations
+                    </h5>
+                    <p class="text-white-50">
+                        Plateforme de formations en ligne pour développer vos compétences professionnelles.
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="fw-bold mb-3">Liens rapides</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'catalogue' %}">Catalogue</a></li>
+                        <li class="mb-2"><a href="#">À propos</a></li>
+                        <li class="mb-2"><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="fw-bold mb-3">Nous contacter</h6>
+                    <p class="text-white-50">
+                        <i class="bi bi-whatsapp"></i> WhatsApp disponible 7j/7
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom text-center">
+                <p class="mb-0">&copy; 2026 MesFormations - Tous droits réservés</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

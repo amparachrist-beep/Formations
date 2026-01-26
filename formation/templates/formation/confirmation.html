@@ -1,0 +1,355 @@
+{% extends 'formation/base.html' %}
+
+{% block title %}Merci pour votre intérêt{% endblock %}
+
+{% block extra_css %}
+<style>
+    .confirmation-page {
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        padding: 3rem 0;
+    }
+
+    .confirmation-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .confirmation-card {
+        background: #fff;
+        border: 1px solid var(--border-color);
+        text-align: center;
+    }
+
+    .confirmation-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        padding: 3rem 2rem;
+    }
+
+    .confirmation-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(255,255,255,.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        animation: pulse 2s infinite;
+    }
+
+    .confirmation-icon i {
+        font-size: 3rem;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    .confirmation-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .confirmation-subtitle {
+        font-size: 1.125rem;
+        opacity: 0.95;
+    }
+
+    .confirmation-body {
+        padding: 2.5rem 2rem;
+    }
+
+    .info-message {
+        background: #eff6ff;
+        border-left: 4px solid #3b82f6;
+        padding: 1.5rem;
+        text-align: left;
+        margin: 2rem 0;
+    }
+
+    .info-message h3 {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #1e40af;
+        margin-bottom: 0.5rem;
+    }
+
+    .info-message p {
+        color: #1e40af;
+        margin: 0;
+        font-size: 0.9375rem;
+    }
+
+    .process-steps {
+        text-align: left;
+        margin: 2rem 0;
+    }
+
+    .process-steps h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+        text-align: center;
+    }
+
+    .process-step {
+        display: flex;
+        gap: 1rem;
+        padding: 1.25rem;
+        background: var(--bg-light);
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        transition: all 0.2s;
+    }
+
+    .process-step:hover {
+        background: #e2e8f0;
+    }
+
+    .process-step-number {
+        width: 40px;
+        height: 40px;
+        background: var(--primary-color);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.125rem;
+        flex-shrink: 0;
+    }
+
+    .process-step-content h4 {
+        font-size: 1.0625rem;
+        font-weight: 600;
+        margin-bottom: 0.375rem;
+        color: var(--text-primary);
+    }
+
+    .process-step-content p {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .guarantees-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        background: #f0fdf4;
+        padding: 1.5rem;
+        border-radius: 4px;
+        margin: 2rem 0;
+    }
+
+    .guarantee-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    .guarantee-item i {
+        color: var(--success-color);
+        font-size: 1.25rem;
+    }
+
+    .action-buttons-confirm {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .btn-primary-confirm {
+        background: var(--primary-color);
+        color: #fff;
+        padding: 1rem 2rem;
+        font-weight: 700;
+        border: none;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .btn-primary-confirm:hover {
+        background: var(--primary-hover);
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary-confirm {
+        background: transparent;
+        color: var(--text-primary);
+        padding: 1rem 2rem;
+        font-weight: 600;
+        border: 2px solid var(--text-primary);
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .btn-secondary-confirm:hover {
+        background: var(--text-primary);
+        color: #fff;
+    }
+
+    .contact-section {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .contact-section p {
+        color: var(--text-secondary);
+        font-size: 0.9375rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .contact-section .whatsapp-link {
+        color: #25D366;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .contact-section .whatsapp-link:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .confirmation-header {
+            padding: 2rem 1.5rem;
+        }
+
+        .confirmation-title {
+            font-size: 1.5rem;
+        }
+
+        .guarantees-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .action-buttons-confirm {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="confirmation-page">
+    <div class="container-udemy">
+        <div class="confirmation-wrapper">
+            <div class="confirmation-card">
+                <div class="confirmation-header">
+                    <div class="confirmation-icon">
+                        <i class="bi bi-envelope-check"></i>
+                    </div>
+                    <h1 class="confirmation-title">Merci pour votre intérêt !</h1>
+                    <p class="confirmation-subtitle">
+                        Votre demande a été bien enregistrée
+                    </p>
+                </div>
+
+                <div class="confirmation-body">
+                    <div class="info-message">
+                        <h3>📋 Comment ça marche ?</h3>
+                        <p>
+                            Pour accéder à nos formations, suivez simplement le processus d'achat ci-dessous.
+                            C'est simple, rapide et 100% sécurisé.
+                        </p>
+                    </div>
+
+                    <div class="process-steps">
+                        <h3>Les 4 étapes simples</h3>
+
+                        <div class="process-step">
+                            <div class="process-step-number">1</div>
+                            <div class="process-step-content">
+                                <h4>Parcourez le catalogue</h4>
+                                <p>Sélectionnez les formations qui vous intéressent et ajoutez-les à votre panier.</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="process-step-number">2</div>
+                            <div class="process-step-content">
+                                <h4>Renseignez vos informations</h4>
+                                <p>Indiquez votre nom, numéro WhatsApp et adresse email lors du paiement.</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="process-step-number">3</div>
+                            <div class="process-step-content">
+                                <h4>Effectuez le paiement</h4>
+                                <p>Payez en toute sécurité via Moneroo (Mobile Money ou carte bancaire).</p>
+                            </div>
+                        </div>
+
+                        <div class="process-step">
+                            <div class="process-step-number">4</div>
+                            <div class="process-step-content">
+                                <h4>Recevez vos accès instantanément</h4>
+                                <p>Vous recevrez par email les liens d'accès à vos formations (YouTube + Google Drive).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guarantees-grid">
+                        <div class="guarantee-item">
+                            <i class="bi bi-shield-check"></i>
+                            <span>Paiement 100% sécurisé</span>
+                        </div>
+                        <div class="guarantee-item">
+                            <i class="bi bi-lightning-charge"></i>
+                            <span>Accès immédiat</span>
+                        </div>
+                        <div class="guarantee-item">
+                            <i class="bi bi-headset"></i>
+                            <span>Support WhatsApp 7j/7</span>
+                        </div>
+                        <div class="guarantee-item">
+                            <i class="bi bi-infinity"></i>
+                            <span>Accès à vie garanti</span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons-confirm">
+                        <a href="{% url 'catalogue' %}" class="btn-primary-confirm">
+                            <i class="bi bi-grid-3x3-gap me-2"></i>
+                            Voir les formations
+                        </a>
+                        <a href="{% url 'panier' %}" class="btn-secondary-confirm">
+                            <i class="bi bi-cart3 me-2"></i>
+                            Mon panier
+                        </a>
+                    </div>
+
+                    <div class="contact-section">
+                        <p>Une question ? Besoin d'aide ?</p>
+                        <p>
+                            <a href="#" class="whatsapp-link">
+                                <i class="bi bi-whatsapp me-1"></i>
+                                Contactez-nous sur WhatsApp
+                            </a>
+                            <br>
+                            <small>Disponible 7 jours sur 7</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

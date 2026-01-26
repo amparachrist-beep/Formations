@@ -1,0 +1,279 @@
+<!-- ==================== paiement_reussi.html ==================== -->
+{% extends 'formation/base.html' %}
+
+{% block title %}Paiement réussi{% endblock %}
+
+{% block extra_css %}
+<style>
+    .success-page {
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 0;
+    }
+
+    .success-container {
+        max-width: 700px;
+        margin: 0 auto;
+        background: #fff;
+        border: 1px solid var(--border-color);
+        text-align: center;
+    }
+
+    .success-header {
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        color: #fff;
+        padding: 3rem 2rem;
+    }
+
+    .success-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(255,255,255,.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        animation: scaleIn 0.5s ease-out;
+    }
+
+    .success-icon i {
+        font-size: 3rem;
+    }
+
+    @keyframes scaleIn {
+        from {
+            transform: scale(0) rotate(-180deg);
+        }
+        to {
+            transform: scale(1) rotate(0);
+        }
+    }
+
+    .success-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .success-subtitle {
+        font-size: 1.125rem;
+        opacity: 0.95;
+    }
+
+    .success-body {
+        padding: 2.5rem 2rem;
+    }
+
+    .order-info-box {
+        background: var(--bg-light);
+        padding: 1.5rem;
+        border-radius: 4px;
+        margin-bottom: 2rem;
+    }
+
+    .order-number {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+    }
+
+    .order-number strong {
+        color: var(--primary-color);
+        font-weight: 700;
+        font-size: 1.125rem;
+    }
+
+    .order-amount {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-top: 0.5rem;
+    }
+
+    .next-steps {
+        text-align: left;
+        margin: 2rem 0;
+    }
+
+    .next-steps h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+    }
+
+    .step-card {
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+        background: var(--bg-light);
+        border-left: 3px solid var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .step-number {
+        width: 32px;
+        height: 32px;
+        background: var(--primary-color);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .step-content h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        color: var(--text-primary);
+    }
+
+    .step-content p {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .btn-whatsapp {
+        background: #25D366;
+        color: #fff;
+        padding: 1rem 2rem;
+        font-weight: 700;
+        border: none;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+    }
+
+    .btn-whatsapp:hover {
+        background: #128C7E;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btn-catalog {
+        background: transparent;
+        color: var(--text-primary);
+        padding: 1rem 2rem;
+        font-weight: 600;
+        border: 2px solid var(--text-primary);
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.2s;
+    }
+
+    .btn-catalog:hover {
+        background: var(--text-primary);
+        color: #fff;
+    }
+
+    .email-confirmation {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-color);
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+
+    @media (max-width: 768px) {
+        .success-header {
+            padding: 2rem 1.5rem;
+        }
+
+        .success-title {
+            font-size: 1.5rem;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-page">
+    <div class="container-udemy">
+        <div class="success-container">
+            <div class="success-header">
+                <div class="success-icon">
+                    <i class="bi bi-check-lg"></i>
+                </div>
+                <h1 class="success-title">Paiement réussi !</h1>
+                <p class="success-subtitle">Merci pour votre confiance</p>
+            </div>
+
+            <div class="success-body">
+                <div class="order-info-box">
+                    <p class="order-number">
+                        Commande <strong>#{{ commande.id }}</strong>
+                    </p>
+                    <div class="order-amount">{{ commande.montant_total }} FCFA</div>
+                </div>
+
+                <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                    Votre paiement a été confirmé avec succès. Vous allez recevoir vos accès aux formations très prochainement.
+                </p>
+
+                <div class="next-steps">
+                    <h3>Prochaines étapes</h3>
+
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Vérifiez votre email</h4>
+                            <p>Un email de confirmation a été envoyé à {{ commande.client.email }}</p>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Recevez vos accès</h4>
+                            <p>Vous recevrez les liens YouTube et Google Drive sous 24h maximum</p>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Commencez à apprendre</h4>
+                            <p>Accédez à vos formations à vie et progressez à votre rythme</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="{{ whatsapp_url }}" class="btn-whatsapp" target="_blank">
+                        <i class="bi bi-whatsapp"></i>
+                        Contactez-nous sur WhatsApp
+                    </a>
+                    <a href="{% url 'catalogue' %}" class="btn-catalog">
+                        Voir plus de formations
+                    </a>
+                </div>
+
+                <div class="email-confirmation">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Si vous ne recevez pas d'email dans les prochaines heures, vérifiez vos spams ou contactez-nous sur WhatsApp.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,531 @@
+{% extends 'formation/base.html' %}
+
+{% block title %}Finaliser votre commande{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Page header */
+    .checkout-header {
+        text-align: center;
+        padding: 2rem 0;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 3rem;
+    }
+
+    .checkout-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .checkout-header p {
+        color: var(--text-secondary);
+    }
+
+    /* Étapes de progression */
+    .progress-steps {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 3rem;
+        padding: 0 2rem;
+    }
+
+    .step {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        position: relative;
+    }
+
+    .step-number {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.125rem;
+        z-index: 1;
+    }
+
+    .step.inactive .step-number {
+        background: var(--border-color);
+        color: var(--text-secondary);
+    }
+
+    .step-label {
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .step.inactive .step-label {
+        color: var(--text-secondary);
+    }
+
+    .step-separator {
+        width: 80px;
+        height: 2px;
+        background: var(--border-color);
+        margin: 0 1rem;
+    }
+
+    /* Layout checkout */
+    .checkout-layout {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 3rem;
+        margin-bottom: 3rem;
+    }
+
+    /* Formulaire */
+    .checkout-form {
+        background: #fff;
+        border: 1px solid var(--border-color);
+        padding: 2rem;
+    }
+
+    .checkout-form h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+    }
+
+    .form-section h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+
+    .form-group-custom {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group-custom label {
+        display: block;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .form-group-custom label span {
+        color: var(--danger-color);
+    }
+
+    .form-control-custom {
+        width: 100%;
+        padding: 0.875rem;
+        border: 1px solid var(--border-color);
+        font-size: 1rem;
+        transition: border-color 0.2s;
+    }
+
+    .form-control-custom:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(86,36,208,.1);
+    }
+
+    .form-control-custom::placeholder {
+        color: #a1a7b3;
+    }
+
+    .form-helper {
+        font-size: 0.8125rem;
+        color: var(--text-secondary);
+        margin-top: 0.375rem;
+    }
+
+    .form-error {
+        color: var(--danger-color);
+        font-size: 0.8125rem;
+        margin-top: 0.375rem;
+        display: block;
+    }
+
+    .input-group-icon {
+        position: relative;
+    }
+
+    .input-group-icon i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+    }
+
+    .input-group-icon .form-control-custom {
+        padding-left: 3rem;
+    }
+
+    /* Résumé de commande */
+    .order-recap {
+        background: #fff;
+        border: 1px solid var(--border-color);
+        padding: 2rem;
+        position: sticky;
+        top: 24px;
+        height: fit-content;
+    }
+
+    .order-recap h2 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+    }
+
+    .recap-item {
+        display: flex;
+        gap: 1rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .recap-item:last-of-type {
+        border-bottom: none;
+    }
+
+    .recap-image {
+        width: 80px;
+        height: 45px;
+        object-fit: cover;
+        flex-shrink: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .recap-details {
+        flex: 1;
+    }
+
+    .recap-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+        line-height: 1.4;
+    }
+
+    .recap-price {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    .recap-total {
+        display: flex;
+        justify-content: space-between;
+        padding: 1.5rem 0 1rem;
+        margin-top: 1rem;
+        border-top: 2px solid var(--text-primary);
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    /* Bouton de paiement */
+    .btn-payment {
+        background: var(--primary-color);
+        color: #fff;
+        width: 100%;
+        padding: 1rem;
+        font-weight: 700;
+        font-size: 1.125rem;
+        border: none;
+        margin-top: 1.5rem;
+        transition: all 0.2s;
+    }
+
+    .btn-payment:hover {
+        background: var(--primary-hover);
+        transform: scale(1.02);
+    }
+
+    .btn-payment i {
+        margin-right: 0.5rem;
+    }
+
+    /* Garanties */
+    .guarantees {
+        background: var(--bg-light);
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        border-left: 4px solid var(--success-color);
+    }
+
+    .guarantees h4 {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+
+    .guarantee-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+
+    .guarantee-item i {
+        color: var(--success-color);
+        font-size: 1.125rem;
+    }
+
+    /* Secure payment badge */
+    .secure-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        margin-top: 1rem;
+        background: #f8f9fa;
+        border: 1px solid var(--border-color);
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+
+    .secure-badge i {
+        color: var(--success-color);
+        font-size: 1.25rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+        .checkout-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .order-recap {
+            position: static;
+            order: -1;
+        }
+
+        .progress-steps {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .step-separator {
+            width: 2px;
+            height: 40px;
+            margin: 0;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .checkout-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .checkout-form,
+        .order-recap {
+            padding: 1.5rem;
+        }
+
+        .progress-steps {
+            display: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-udemy">
+    <!-- Header -->
+    <div class="checkout-header">
+        <h1>Finaliser votre commande</h1>
+        <p>Plus qu'une étape avant d'accéder à vos formations</p>
+    </div>
+
+    <!-- Étapes de progression -->
+    <div class="progress-steps">
+        <div class="step">
+            <div class="step-number">1</div>
+            <span class="step-label">Panier</span>
+        </div>
+        <div class="step-separator"></div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <span class="step-label">Informations</span>
+        </div>
+        <div class="step-separator"></div>
+        <div class="step inactive">
+            <div class="step-number">3</div>
+            <span class="step-label">Paiement</span>
+        </div>
+    </div>
+
+    <div class="checkout-layout">
+        <!-- Formulaire -->
+        <div class="checkout-form">
+            <h2>Vos informations</h2>
+
+            <form method="post" id="checkout-form">
+                {% csrf_token %}
+
+                <div class="form-section">
+                    <h3>Coordonnées</h3>
+
+                    <div class="form-group-custom">
+                        <label for="id_nom_complet">
+                            Nom complet <span>*</span>
+                        </label>
+                        <div class="input-group-icon">
+                            <i class="bi bi-person"></i>
+                            {{ form.nom_complet }}
+                        </div>
+                        {% if form.nom_complet.errors %}
+                            <span class="form-error">{{ form.nom_complet.errors.0 }}</span>
+                        {% endif %}
+                        <small class="form-helper">Votre nom tel qu'il apparaîtra sur la facture</small>
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label for="id_email">
+                            Adresse email <span>*</span>
+                        </label>
+                        <div class="input-group-icon">
+                            <i class="bi bi-envelope"></i>
+                            {{ form.email }}
+                        </div>
+                        {% if form.email.errors %}
+                            <span class="form-error">{{ form.email.errors.0 }}</span>
+                        {% endif %}
+                        <small class="form-helper">Vous recevrez vos accès à cette adresse</small>
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label for="id_whatsapp">
+                            Numéro WhatsApp <span>*</span>
+                        </label>
+                        <div class="input-group-icon">
+                            <i class="bi bi-whatsapp"></i>
+                            {{ form.whatsapp }}
+                        </div>
+                        {% if form.whatsapp.errors %}
+                            <span class="form-error">{{ form.whatsapp.errors.0 }}</span>
+                        {% endif %}
+                        <small class="form-helper">Pour un support rapide et personnalisé</small>
+                    </div>
+                </div>
+
+                <div class="guarantees">
+                    <h4>Nos garanties</h4>
+                    <div class="guarantee-item">
+                        <i class="bi bi-shield-check"></i>
+                        <span>Paiement 100% sécurisé via Moneroo</span>
+                    </div>
+                    <div class="guarantee-item">
+                        <i class="bi bi-check-circle"></i>
+                        <span>Accès envoyé immédiatement après paiement</span>
+                    </div>
+                    <div class="guarantee-item">
+                        <i class="bi bi-headset"></i>
+                        <span>Support client disponible 7j/7</span>
+                    </div>
+                    <div class="guarantee-item">
+                        <i class="bi bi-infinity"></i>
+                        <span>Accès à vie aux formations</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-payment">
+                    <i class="bi bi-lock-fill"></i>
+                    Procéder au paiement sécurisé
+                </button>
+
+                <div class="secure-badge">
+                    <i class="bi bi-shield-fill-check"></i>
+                    <span>Vos données sont protégées et sécurisées</span>
+                </div>
+            </form>
+        </div>
+
+        <!-- Résumé -->
+        <div class="order-recap">
+            <h2>Récapitulatif</h2>
+
+            {% for formation in formations %}
+                <div class="recap-item">
+                    <div>
+                        {% if formation.image %}
+                            <img src="{{ formation.image.url }}" alt="{{ formation.titre }}" class="recap-image">
+                        {% else %}
+                            <div class="recap-image"></div>
+                        {% endif %}
+                    </div>
+                    <div class="recap-details">
+                        <div class="recap-title">{{ formation.titre }}</div>
+                        <div class="recap-price">{{ formation.prix }} FCFA</div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="recap-total">
+                <span>Total</span>
+                <span>{{ total }} FCFA</span>
+            </div>
+
+            <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+                <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    <strong>Méthodes de paiement acceptées :</strong>
+                </p>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <span style="padding: 0.5rem 0.75rem; background: var(--bg-light); font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border-color);">
+                        💳 Mobile Money
+                    </span>
+                    <span style="padding: 0.5rem 0.75rem; background: var(--bg-light); font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border-color);">
+                        💳 Carte bancaire
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lien retour -->
+    <div class="text-center mb-5">
+        <a href="{% url 'panier' %}" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">
+            <i class="bi bi-arrow-left me-2"></i>Retour au panier
+        </a>
+    </div>
+</div>
+
+<script>
+// Validation basique côté client
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    const nom = document.getElementById('id_nom_complet').value.trim();
+    const email = document.getElementById('id_email').value.trim();
+    const whatsapp = document.getElementById('id_whatsapp').value.trim();
+
+    if (!nom || !email || !whatsapp) {
+        e.preventDefault();
+        alert('Veuillez remplir tous les champs obligatoires');
+        return false;
+    }
+
+    // Validation email simple
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        e.preventDefault();
+        alert('Veuillez entrer une adresse email valide');
+        return false;
+    }
+});
+</script>
+{% endblock %}
