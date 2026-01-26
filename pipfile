@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==5.0.1"
+python-decouple = "==3.8"
+requests = "==2.31.0"
+pillow = "==9.5.0"
+gunicorn = "==20.1.0"
+whitenoise = "==6.4.0"
+psycopg2-binary = "==2.9.9"
+dj-database-url = "==1.2.0"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
