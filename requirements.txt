@@ -18,3 +18,6 @@ whitenoise==6.4.0
 # Production - Neon.tech (PostgreSQL)
 psycopg2-binary==2.9.9
 dj-database-url==1.2.0
+
+cloudinary==1.41.0
+django-cloudinary-storage==0.3.0
