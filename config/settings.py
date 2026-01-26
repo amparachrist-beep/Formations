@@ -32,15 +32,15 @@ INSTALLED_APPS = [
     # Apps personnalisées
     'formation',
 
-    # Apps tierces (optionnel)
-    'whitenoise.runserver_nostatic',  # Pour mieux gérer les static files en dev
+    # Apps tierces pour développement
+    'whitenoise.runserver_nostatic',
 ]
 
 # ==================== MIDDLEWARE ====================
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # IMPORTANT: doit être après SecurityMiddleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Doit être après SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -52,7 +52,6 @@ MIDDLEWARE = [
 # ==================== URLS ET WSGI ====================
 
 ROOT_URLCONF = 'config.urls'
-
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # ==================== TEMPLATES ====================
@@ -60,7 +59,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Si vous avez un dossier templates global
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,21 +73,33 @@ TEMPLATES = [
     },
 ]
 
-# ==================== BASE DE DONNÉES ====================
+# ==================== BASE DE DONNÉES NEON.TECH ====================
 
-# Configuration de la base de données pour Render (PostgreSQL)
-if 'DATABASE_URL' in os.environ:
-    # PostgreSQL sur Render
+DATABASE_URL = config('DATABASE_URL', default='')
+
+if DATABASE_URL:
+    # Production avec Neon.tech
     DATABASES = {
         'default': dj_database_url.config(
-            default=config('DATABASE_URL'),
+            default=DATABASE_URL,
             conn_max_age=600,
             conn_health_checks=True,
-            ssl_require=True,  # Render nécessite SSL
+            ssl_require=True,  # IMPORTANT pour Neon
         )
     }
+
+    # Optimisations spécifiques pour Neon.tech
+    DATABASES['default']['OPTIONS'] = {
+        'connect_timeout': 10,
+        'keepalives': 1,
+        'keepalives_idle': 30,
+        'keepalives_interval': 10,
+        'keepalives_count': 5,
+        'sslmode': 'require',
+        'client_encoding': 'UTF8',
+    }
 elif not DEBUG:
-    # En production sans DATABASE_URL explicite
+    # Fallback PostgreSQL si DATABASE_URL manque en production
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -100,7 +111,7 @@ elif not DEBUG:
         }
     }
 else:
-    # SQLite en développement local
+    # Développement local avec SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -142,7 +153,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Dossiers supplémentaires pour les fichiers statiques
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # Si vous avez un dossier static global
+    BASE_DIR / 'static',
 ]
 
 # Configuration de WhiteNoise pour les fichiers statiques
@@ -239,6 +250,11 @@ LOGGING = {
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
             'propagate': False,
         },
+        'formation': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
     },
 }
 
@@ -247,16 +263,24 @@ LOGGING = {
 # Configuration pour la limitation de mémoire sur Render (plan gratuit)
 if 'RENDER' in os.environ:
     # Optimisation pour le plan gratuit
-    import sys
-
-    # Optimisation de la mémoire
     DATABASES['default']['CONN_MAX_AGE'] = 300  # 5 minutes
 
     # Configuration Gunicorn optimisée pour Render
     os.environ.setdefault('WEB_CONCURRENCY', '2')
     os.environ.setdefault('PYTHONWARNINGS', 'ignore')
 
-# ==================== TESTS CONFIGURATION ====================
+    # Optimisation pour faible mémoire
+    import warnings
 
-# Configuration pour les tests
-TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+    warnings.filterwarnings('ignore', category=RuntimeWarning)
+
+# ==================== CONFIGURATIONS SPÉCIFIQUES NEON.TECH ====================
+
+# Optimisations pour Neon.tech (PostgreSQL serverless)
+if 'neon.tech' in os.environ.get('DATABASE_URL', ''):
+    # Optimisations supplémentaires pour Neon
+    DATABASES['default']['CONN_MAX_AGE'] = 180  # 3 minutes pour Neon free tier
+
+    # Pool de connexions plus conservateur pour Neon (20 connexions max en free)
+    DATABASES['default']['OPTIONS']['keepalives_idle'] = 60
+    DATABASES['default']['OPTIONS']['keepalives_interval'] = 15
