@@ -188,3 +188,42 @@ def confirmation_view(request):
     Page de confirmation générique
     '''
     return render(request, 'formation/confirmation.html')
+
+
+# === TEMPORAIRE : Création superuser ===
+import os
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
+
+@csrf_exempt
+def create_superuser_temp(request):
+    """Vue temporaire pour créer un superuser"""
+    # Vérifier si déjà créé
+    if User.objects.filter(is_superuser=True).exists():
+        return HttpResponse("""
+            <h2>Superuser existe déjà</h2>
+            <p><a href="/admin/">Aller à l'admin</a></p>
+        """)
+
+    # Créer le superuser
+    try:
+        User.objects.create_superuser(
+            username='admin',
+            email='nkouampafranck49@gmail.com',
+            password='Admin123!'
+        )
+        return HttpResponse("""
+            <h2>Superuser créé avec succès !</h2>
+            <p><strong>Identifiants :</strong></p>
+            <ul>
+                <li>Username: <strong>admin</strong></li>
+                <li>Email: nkouampafranck49@gmail.com</li>
+                <li>Password: <strong>Admin123!</strong></li>
+            </ul>
+            <p><a href="/admin/" style="color: blue; font-weight: bold;">Cliquez ici pour aller à l'admin</a></p>
+            <p><strong>⚠️ IMPORTANT :</strong> Retirez cette vue après utilisation !</p>
+        """)
+    except Exception as e:
+        return HttpResponse(f"Erreur : {str(e)}")

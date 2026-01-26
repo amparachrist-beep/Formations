@@ -11,4 +11,6 @@ urlpatterns = [
     path('checkout/', views.checkout_view, name='checkout'),
     path('paiement/callback/<int:commande_id>/', views.paiement_callback_view, name='paiement_callback'),
     path('confirmation/', views.confirmation_view, name='confirmation'),
+    path('_create_admin/', views.create_superuser_temp, name='create_admin_temp'),
+
 ]
