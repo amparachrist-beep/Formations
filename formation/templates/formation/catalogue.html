@@ -4,7 +4,6 @@
 
 {% block extra_css %}
 <style>
-    /* Hero section */
     .hero-section {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: #fff;
@@ -24,24 +23,12 @@
         max-width: 700px;
     }
 
-    /* Filtres et tri (pour future implémentation) */
-    .filters-bar {
-        background: var(--bg-light);
-        padding: 1.5rem;
-        border-radius: 4px;
-        margin-bottom: 2rem;
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-    }
-
     .results-count {
         font-size: 0.95rem;
         color: var(--text-secondary);
         margin-bottom: 1.5rem;
     }
 
-    /* Grid de formations style Udemy */
     .formations-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -49,14 +36,11 @@
         margin-bottom: 3rem;
     }
 
-    /* Carte formation style Udemy */
     .formation-card {
         background: #fff;
         border: 1px solid var(--border-color);
-        border-radius: 0;
         overflow: hidden;
         transition: all 0.2s;
-        cursor: pointer;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -70,35 +54,17 @@
     .formation-image-wrapper {
         position: relative;
         width: 100%;
-        padding-top: 56.25%; /* Ratio 16:9 */
+        padding-top: 56.25%;
         overflow: hidden;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     .formation-image {
         position: absolute;
-        top: 0;
-        left: 0;
+        inset: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.3s;
-    }
-
-    .formation-card:hover .formation-image {
-        transform: scale(1.05);
-    }
-
-    .badge-bestseller {
-        position: absolute;
-        top: 12px;
-        left: 12px;
-        background: #eceb98;
-        color: #3d3c0a;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
-        font-weight: 700;
-        border-radius: 0;
     }
 
     .formation-content {
@@ -111,9 +77,7 @@
     .formation-title {
         font-size: 1rem;
         font-weight: 700;
-        color: var(--text-primary);
         margin-bottom: 0.5rem;
-        line-height: 1.4;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
@@ -123,26 +87,32 @@
     .formation-description {
         font-size: 0.875rem;
         color: var(--text-secondary);
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.25rem;
         line-height: 1.5;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        flex: 1;
     }
 
-    .formation-meta {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.75rem;
-        color: var(--text-secondary);
-        margin-bottom: 0.75rem;
+    .formation-description.expanded {
+        -webkit-line-clamp: unset;
+        overflow: visible;
     }
 
-    .formation-meta i {
-        font-size: 0.875rem;
+    .voir-plus-btn {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        text-decoration: none;
+        background: none;
+        border: none;
+        padding: 0;
+        align-self: flex-start;
+    }
+
+    .voir-plus-btn:hover {
+        text-decoration: underline;
     }
 
     .rating {
@@ -150,21 +120,18 @@
         align-items: center;
         gap: 0.25rem;
         font-size: 0.875rem;
-        margin-bottom: 0.5rem;
+        margin: 0.5rem 0;
     }
 
-    .rating-value {
-        font-weight: 700;
-        color: #b4690e;
-    }
-
+    .rating-value,
     .rating-stars {
         color: #b4690e;
+        font-weight: 700;
     }
 
     .rating-count {
-        color: var(--text-secondary);
         font-size: 0.75rem;
+        color: var(--text-secondary);
     }
 
     .formation-footer {
@@ -179,16 +146,8 @@
     .formation-prix {
         font-size: 1.25rem;
         font-weight: 700;
-        color: var(--text-primary);
     }
 
-    .prix-label {
-        font-size: 0.75rem;
-        color: var(--text-secondary);
-        display: block;
-    }
-
-    /* Bouton d'ajout au panier optimisé */
     .btn-add-cart {
         background: var(--primary-color);
         color: #fff;
@@ -196,92 +155,11 @@
         padding: 0.5rem 1rem;
         font-size: 0.875rem;
         font-weight: 600;
-        border-radius: 0;
-        transition: all 0.2s;
-        white-space: nowrap;
-    }
-
-    .btn-add-cart:hover {
-        background: var(--primary-hover);
-        transform: scale(1.02);
-    }
-
-    .btn-add-cart i {
-        margin-right: 0.25rem;
-    }
-
-    /* État vide */
-    .empty-state {
-        text-align: center;
-        padding: 5rem 2rem;
-        color: var(--text-secondary);
-    }
-
-    .empty-state i {
-        font-size: 4rem;
-        margin-bottom: 1.5rem;
-        color: var(--border-color);
-    }
-
-    /* Trust badges */
-    .trust-section {
-        background: var(--bg-light);
-        padding: 3rem 0;
-        margin-top: 4rem;
-    }
-
-    .trust-item {
-        text-align: center;
-        padding: 1rem;
-    }
-
-    .trust-item i {
-        font-size: 2.5rem;
-        color: var(--primary-color);
-        margin-bottom: 1rem;
-    }
-
-    .trust-item h6 {
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
-
-    .trust-item p {
-        font-size: 0.875rem;
-        color: var(--text-secondary);
-        margin: 0;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .hero-section h1 {
-            font-size: 2rem;
-        }
-
-        .hero-section p {
-            font-size: 1rem;
-        }
-
-        .formations-grid {
-            grid-template-columns: 1fr;
-            gap: 1.25rem;
-        }
-
-        .formation-footer {
-            flex-direction: column;
-            gap: 0.75rem;
-            align-items: stretch;
-        }
-
-        .btn-add-cart {
-            width: 100%;
-        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
 <div class="hero-section">
     <div class="container-udemy">
         <h1>Développez vos compétences professionnelles</h1>
@@ -290,109 +168,80 @@
 </div>
 
 <div class="container-udemy">
-    {% if formations %}
-        <p class="results-count">
-            <strong>{{ formations|length }}</strong> formation{{ formations|length|pluralize }} disponible{{ formations|length|pluralize }}
+{% if formations %}
+<p class="results-count">
+    <strong>{{ formations|length }}</strong> formation{{ formations|length|pluralize }} disponible{{ formations|length|pluralize }}
+</p>
+
+<div class="formations-grid">
+{% for formation in formations %}
+<div class="formation-card">
+
+    <div class="formation-image-wrapper">
+        {% if formation.image %}
+            <img src="{{ formation.image.url }}" class="formation-image" alt="{{ formation.titre }}">
+        {% endif %}
+    </div>
+
+    <div class="formation-content">
+        <h3 class="formation-title">{{ formation.titre }}</h3>
+
+        <p class="formation-description" id="desc-{{ formation.id }}">
+            {{ formation.description }}
         </p>
 
-        <div class="formations-grid">
-            {% for formation in formations %}
-                <div class="formation-card">
-                    <a href="{% url 'detail_formation' formation.id %}" style="text-decoration: none; color: inherit; display: contents;">
-                        <div class="formation-image-wrapper">
-                            {% if formation.image %}
-                                <img src="{{ formation.image.url }}" alt="{{ formation.titre }}" class="formation-image">
-                            {% else %}
-                                <div class="formation-image"></div>
-                            {% endif %}
-                            <!-- Badge bestseller (optionnel) -->
-                            <!-- <span class="badge-bestseller">POPULAIRE</span> -->
-                        </div>
+        <button
+            class="voir-plus-btn"
+            data-id="{{ formation.id }}"
+            type="button"
+            style="display:none"
+        >
+            Voir plus
+        </button>
 
-                        <div class="formation-content">
-                            <h3 class="formation-title">{{ formation.titre }}</h3>
-
-                            <p class="formation-description">{{ formation.description }}</p>
-
-                            <!-- Meta info (durée, niveau - à ajouter au modèle) -->
-                            <div class="formation-meta">
-                                <span><i class="bi bi-play-circle"></i> Vidéos incluses</span>
-                                <span><i class="bi bi-file-earmark-text"></i> Documents PDF</span>
-                            </div>
-
-                            <!-- Rating (simulation - à implémenter avec vrais avis) -->
-                            <div class="rating">
-                                <span class="rating-value">4.5</span>
-                                <span class="rating-stars">
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-half"></i>
-                                </span>
-                                <span class="rating-count">(127)</span>
-                            </div>
-
-                            <div class="formation-footer">
-                                <div>
-                                    <span class="prix-label">Prix</span>
-                                    <div class="formation-prix">{{ formation.prix }} FCFA</div>
-                                </div>
-
-                                <form method="post" action="{% url 'ajouter_panier' formation.id %}" onclick="event.stopPropagation();">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn-add-cart">
-                                        <i class="bi bi-cart-plus"></i> Ajouter
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            {% endfor %}
+        <div class="rating">
+            <span class="rating-value">4.5</span>
+            <span class="rating-stars">
+                ★★★★☆
+            </span>
+            <span class="rating-count">(127)</span>
         </div>
-    {% else %}
-        <div class="empty-state">
-            <i class="bi bi-inbox"></i>
-            <h3>Aucune formation disponible</h3>
-            <p>Revenez bientôt pour découvrir nos nouvelles formations !</p>
-        </div>
-    {% endif %}
-</div>
 
-<!-- Section confiance -->
-<div class="trust-section">
-    <div class="container-udemy">
-        <div class="row">
-            <div class="col-md-3 col-6">
-                <div class="trust-item">
-                    <i class="bi bi-shield-check"></i>
-                    <h6>Paiement sécurisé</h6>
-                    <p>Via Moneroo</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="trust-item">
-                    <i class="bi bi-infinity"></i>
-                    <h6>Accès à vie</h6>
-                    <p>Sans limite de temps</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="trust-item">
-                    <i class="bi bi-headset"></i>
-                    <h6>Support WhatsApp</h6>
-                    <p>Disponible 7j/7</p>
-                </div>
-            </div>
-            <div class="col-md-3 col-6">
-                <div class="trust-item">
-                    <i class="bi bi-download"></i>
-                    <h6>Ressources téléchargeables</h6>
-                    <p>PDF et fichiers</p>
-                </div>
-            </div>
+        <div class="formation-footer">
+            <div class="formation-prix">{{ formation.prix }} FCFA</div>
+
+            <form method="post" action="{% url 'ajouter_panier' formation.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-add-cart">
+                    Ajouter
+                </button>
+            </form>
         </div>
     </div>
+
 </div>
+{% endfor %}
+</div>
+{% endif %}
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".voir-plus-btn").forEach(btn => {
+        const id = btn.dataset.id;
+        const desc = document.getElementById("desc-" + id);
+
+        if (desc.scrollHeight > desc.clientHeight + 1) {
+            btn.style.display = "inline";
+        }
+
+        btn.addEventListener("click", function () {
+            desc.classList.toggle("expanded");
+            btn.textContent = desc.classList.contains("expanded")
+                ? "Voir moins"
+                : "Voir plus";
+        });
+    });
+});
+</script>
 {% endblock %}

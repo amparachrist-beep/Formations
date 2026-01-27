@@ -23,15 +23,6 @@ def catalogue_view(request):
     })
 
 
-def detail_formation_view(request, formation_id):
-    '''
-    Affiche le détail d'une formation
-    '''
-    formation = get_object_or_404(Formation, id=formation_id, active=True)
-    return render(request, 'formation/detail_formation.html', {
-        'formation': formation
-    })
-
 
 @require_http_methods(["POST"])
 def ajouter_panier_view(request, formation_id):
