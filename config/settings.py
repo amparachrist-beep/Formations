@@ -17,9 +17,9 @@ if 'RENDER_EXTERNAL_HOSTNAME' in os.environ:
 
 # ==================== CLOUDINARY CONFIGURATION ====================
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': config('CLOUDINARY_API_KEY'),
-    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME', default='djudlfwcr'),
+    'API_KEY': config('CLOUDINARY_API_KEY', default='695364454293442'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET', default=''),
 }
 
 # Utiliser l'URL Cloudinary complète si disponible
