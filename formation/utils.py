@@ -6,27 +6,44 @@ import json
 import urllib.parse
 
 
+import json
+import requests
+from django.conf import settings
+
+
 def creer_paiement_moneroo(commande):
     """
     Initialise un paiement avec Moneroo et retourne l'URL de paiement
     VERSION FINALE - Conforme à la documentation officielle Moneroo
+    + CORRECTION ERREUR 422 (customer.phone must be a number)
     """
+
     print("=== INITIALISATION PAIEMENT MONEROO ===")
     print(f"Commande #{commande.id}")
     print(f"Montant : {commande.montant_total} XAF")
     print(f"Client : {commande.client.email}")
     print("=" * 50)
 
-    # ENDPOINT OFFICIEL selon la documentation
+    # ENDPOINT OFFICIEL MONEROO
     payment_url = "https://api.moneroo.io/v1/payments/initialize"
 
-    # Séparer le nom complet en prénom et nom
-    # Si pas de nom de famille, utiliser le prénom comme fallback
+    # --- Séparer le nom complet ---
     nom_parts = commande.client.nom_complet.strip().split(' ', 1)
     first_name = nom_parts[0] if len(nom_parts) > 0 else "Client"
-    last_name = nom_parts[1] if len(nom_parts) > 1 else nom_parts[0]  # Utilise le prénom si pas de nom
+    last_name = nom_parts[1] if len(nom_parts) > 1 else first_name
 
-    # PAYLOAD conforme à la documentation Moneroo
+    # --- NORMALISATION DU NUMÉRO (CRITIQUE) ---
+    phone_raw = commande.client.whatsapp or ""
+    phone_digits = ''.join(filter(str.isdigit, phone_raw))
+
+    phone_number = None
+    if phone_digits.isdigit() and len(phone_digits) >= 8:
+        try:
+            phone_number = int(phone_digits)
+        except ValueError:
+            phone_number = None  # champ optionnel → ignoré
+
+    # --- PAYLOAD CONFORME MONEROO ---
     payload = {
         "amount": int(commande.montant_total),
         "currency": "XAF",
@@ -35,19 +52,17 @@ def creer_paiement_moneroo(commande):
             "email": commande.client.email,
             "first_name": first_name,
             "last_name": last_name,
-            "phone": commande.client.whatsapp,  # Optionnel selon la doc
+            **({"phone": phone_number} if phone_number else {})
         },
         "return_url": f"{settings.SITE_URL}/paiement/callback/{commande.id}/",
         "metadata": {
             "commande_id": str(commande.id),
             "client_id": str(commande.client.id),
             "client_email": commande.client.email,
-        },
-        # Optionnel: spécifier les méthodes de paiement disponibles
-        # "methods": ["mtn_cm", "om_cm"]  # Mobile Money Cameroun (XAF)
+        }
     }
 
-    # HEADERS selon la documentation
+    # --- HEADERS ---
     headers = {
         "Authorization": f"Bearer {settings.MONEROO_API_KEY}",
         "Content-Type": "application/json",
@@ -56,9 +71,8 @@ def creer_paiement_moneroo(commande):
 
     try:
         print(f"[REQUEST] POST {payment_url}")
-        print(f"[PAYLOAD] {json.dumps(payload, indent=2)}")
+        print(f"[PAYLOAD]\n{json.dumps(payload, indent=2)}")
 
-        # REQUÊTE POST
         response = requests.post(
             payment_url,
             json=payload,
@@ -69,75 +83,58 @@ def creer_paiement_moneroo(commande):
         print(f"[RESPONSE] HTTP {response.status_code}")
         print(f"[RESPONSE] {response.text}")
 
-        # SUCCÈS - Codes 200 ou 201
-        if response.status_code in [200, 201]:
+        # --- SUCCÈS ---
+        if response.status_code in (200, 201):
             data = response.json()
-
-            # Structure de réponse selon la doc:
-            # {
-            #   "message": "Transaction initialized successfully",
-            #   "data": {
-            #     "id": "5f7b1b2c",
-            #     "checkout_url": "https://checkout.moneroo.io/5f7b1b2c"
-            #   }
-            # }
-
             transaction_data = data.get("data", {})
             checkout_url = transaction_data.get("checkout_url")
             transaction_id = transaction_data.get("id")
 
             if checkout_url and transaction_id:
-                # Sauvegarder les infos de paiement
                 commande.moneroo_transaction_id = transaction_id
                 commande.moneroo_payment_url = checkout_url
                 commande.save()
 
-                print(f"✅ SUCCÈS !")
+                print("✅ SUCCÈS MONEROO")
                 print(f"   Transaction ID : {transaction_id}")
-                print(f"   URL de paiement : {checkout_url}")
+                print(f"   URL Paiement   : {checkout_url}")
 
                 return checkout_url
-            else:
-                print(f"⚠️  Réponse OK mais données incomplètes")
-                print(f"   Structure reçue : {json.dumps(data, indent=2)}")
-                return None
 
-        # ERREUR 400 - Données invalides
-        elif response.status_code == 400:
-            error_data = response.json()
+            print("⚠️ Réponse valide mais données incomplètes")
+            print(json.dumps(data, indent=2))
+            return None
+
+        # --- ERREURS CONNUES ---
+        if response.status_code == 400:
             print("🔴 ERREUR 400 : Requête invalide")
-            print(f"   Message : {error_data.get('message', 'N/A')}")
-            print(f"   Erreurs : {error_data.get('errors', {})}")
+            print(response.json())
             return None
 
-        # ERREUR 401 - Authentification échouée
-        elif response.status_code == 401:
+        if response.status_code == 401:
             print("🔴 ERREUR 401 : Clé API invalide")
-            print("   Vérifiez votre MONEROO_API_KEY dans le fichier .env")
             return None
 
-        # ERREUR 422 - Validation échouée
-        elif response.status_code == 422:
-            error_data = response.json()
-            print("🔴 ERREUR 422 : Validation des données échouée")
-            print(f"   Erreurs : {json.dumps(error_data.get('errors', {}), indent=2)}")
+        if response.status_code == 422:
+            print("🔴 ERREUR 422 : Validation échouée")
+            print(json.dumps(response.json(), indent=2))
             return None
 
-        # AUTRES ERREURS
-        else:
-            print(f"🔴 ERREUR HTTP {response.status_code}")
-            print(f"   Réponse : {response.text}")
-            return None
+        # --- AUTRES ERREURS ---
+        print(f"🔴 ERREUR HTTP {response.status_code}")
+        print(response.text)
+        return None
 
     except requests.exceptions.Timeout:
-        print("❌ TIMEOUT : L'API Moneroo ne répond pas")
+        print("❌ TIMEOUT : Moneroo ne répond pas")
         return None
+
     except requests.exceptions.RequestException as e:
         print(f"❌ ERREUR RÉSEAU : {e}")
         return None
-    except json.JSONDecodeError as e:
-        print(f"❌ ERREUR JSON : {e}")
-        print(f"   Réponse brute : {response.text if 'response' in locals() else 'N/A'}")
+
+    except json.JSONDecodeError:
+        print("❌ ERREUR JSON : Réponse invalide")
         return None
 
 
