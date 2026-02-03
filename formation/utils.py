@@ -2,55 +2,142 @@ import requests
 from django.conf import settings
 from django.core.mail import send_mail
 from decimal import Decimal
+import json
+import urllib.parse
 
 
 def creer_paiement_moneroo(commande):
-    '''
+    """
     Initialise un paiement avec Moneroo et retourne l'URL de paiement
-    '''
-    headers = {
-        'Authorization': f'Bearer {settings.MONEROO_API_KEY}',
-        'Content-Type': 'application/json',
+    VERSION FINALE - Conforme à la documentation officielle Moneroo
+    """
+    print("=== INITIALISATION PAIEMENT MONEROO ===")
+    print(f"Commande #{commande.id}")
+    print(f"Montant : {commande.montant_total} XAF")
+    print(f"Client : {commande.client.email}")
+    print("=" * 50)
+
+    # ENDPOINT OFFICIEL selon la documentation
+    payment_url = "https://api.moneroo.io/v1/payments/initialize"
+
+    # Séparer le nom complet en prénom et nom
+    # Si pas de nom de famille, utiliser le prénom comme fallback
+    nom_parts = commande.client.nom_complet.strip().split(' ', 1)
+    first_name = nom_parts[0] if len(nom_parts) > 0 else "Client"
+    last_name = nom_parts[1] if len(nom_parts) > 1 else nom_parts[0]  # Utilise le prénom si pas de nom
+
+    # PAYLOAD conforme à la documentation Moneroo
+    payload = {
+        "amount": int(commande.montant_total),
+        "currency": "XAF",
+        "description": f"Achat de formation(s) - Commande #{commande.id}",
+        "customer": {
+            "email": commande.client.email,
+            "first_name": first_name,
+            "last_name": last_name,
+            "phone": commande.client.whatsapp,  # Optionnel selon la doc
+        },
+        "return_url": f"{settings.SITE_URL}/paiement/callback/{commande.id}/",
+        "metadata": {
+            "commande_id": str(commande.id),
+            "client_id": str(commande.client.id),
+            "client_email": commande.client.email,
+        },
+        # Optionnel: spécifier les méthodes de paiement disponibles
+        # "methods": ["mtn_cm", "om_cm"]  # Mobile Money Cameroun (XAF)
     }
 
-    # Préparer les données de paiement
-    payload = {
-        'amount': float(commande.montant_total),
-        'currency': 'XAF',  # FCFA
-        'description': f'Achat de formation(s) - Commande #{commande.id}',
-        'customer': {
-            'email': commande.client.email,
-            'phone': commande.client.whatsapp,
-            'name': commande.client.nom_complet,
-        },
-        'return_url': f'{settings.SITE_URL}/paiement/callback/{commande.id}/',
-        'metadata': {
-            'commande_id': commande.id,
-            'client_id': commande.client.id,
-        }
+    # HEADERS selon la documentation
+    headers = {
+        "Authorization": f"Bearer {settings.MONEROO_API_KEY}",
+        "Content-Type": "application/json",
+        "Accept": "application/json"
     }
 
     try:
+        print(f"[REQUEST] POST {payment_url}")
+        print(f"[PAYLOAD] {json.dumps(payload, indent=2)}")
+
+        # REQUÊTE POST
         response = requests.post(
-            settings.MONEROO_API_URL,
+            payment_url,
             json=payload,
             headers=headers,
-            timeout=10
+            timeout=15
         )
-        response.raise_for_status()
 
-        data = response.json()
+        print(f"[RESPONSE] HTTP {response.status_code}")
+        print(f"[RESPONSE] {response.text}")
 
-        # Sauvegarder les informations de la transaction
-        commande.moneroo_transaction_id = data.get('transaction_id')
-        commande.moneroo_payment_url = data.get('checkout_url')
-        commande.save()
+        # SUCCÈS - Codes 200 ou 201
+        if response.status_code in [200, 201]:
+            data = response.json()
 
-        return data.get('checkout_url')
+            # Structure de réponse selon la doc:
+            # {
+            #   "message": "Transaction initialized successfully",
+            #   "data": {
+            #     "id": "5f7b1b2c",
+            #     "checkout_url": "https://checkout.moneroo.io/5f7b1b2c"
+            #   }
+            # }
 
+            transaction_data = data.get("data", {})
+            checkout_url = transaction_data.get("checkout_url")
+            transaction_id = transaction_data.get("id")
+
+            if checkout_url and transaction_id:
+                # Sauvegarder les infos de paiement
+                commande.moneroo_transaction_id = transaction_id
+                commande.moneroo_payment_url = checkout_url
+                commande.save()
+
+                print(f"✅ SUCCÈS !")
+                print(f"   Transaction ID : {transaction_id}")
+                print(f"   URL de paiement : {checkout_url}")
+
+                return checkout_url
+            else:
+                print(f"⚠️  Réponse OK mais données incomplètes")
+                print(f"   Structure reçue : {json.dumps(data, indent=2)}")
+                return None
+
+        # ERREUR 400 - Données invalides
+        elif response.status_code == 400:
+            error_data = response.json()
+            print("🔴 ERREUR 400 : Requête invalide")
+            print(f"   Message : {error_data.get('message', 'N/A')}")
+            print(f"   Erreurs : {error_data.get('errors', {})}")
+            return None
+
+        # ERREUR 401 - Authentification échouée
+        elif response.status_code == 401:
+            print("🔴 ERREUR 401 : Clé API invalide")
+            print("   Vérifiez votre MONEROO_API_KEY dans le fichier .env")
+            return None
+
+        # ERREUR 422 - Validation échouée
+        elif response.status_code == 422:
+            error_data = response.json()
+            print("🔴 ERREUR 422 : Validation des données échouée")
+            print(f"   Erreurs : {json.dumps(error_data.get('errors', {}), indent=2)}")
+            return None
+
+        # AUTRES ERREURS
+        else:
+            print(f"🔴 ERREUR HTTP {response.status_code}")
+            print(f"   Réponse : {response.text}")
+            return None
+
+    except requests.exceptions.Timeout:
+        print("❌ TIMEOUT : L'API Moneroo ne répond pas")
+        return None
     except requests.exceptions.RequestException as e:
-        # Logger l'erreur en production
-        print(f"Erreur Moneroo: {e}")
+        print(f"❌ ERREUR RÉSEAU : {e}")
+        return None
+    except json.JSONDecodeError as e:
+        print(f"❌ ERREUR JSON : {e}")
+        print(f"   Réponse brute : {response.text if 'response' in locals() else 'N/A'}")
         return None
 
 
@@ -61,18 +148,31 @@ def verifier_paiement_moneroo(transaction_id):
     '''
     headers = {
         'Authorization': f'Bearer {settings.MONEROO_API_KEY}',
+        'Accept': 'application/json'
     }
 
+    # Endpoint de vérification (à confirmer dans la doc)
     url = f'https://api.moneroo.io/v1/payments/{transaction_id}'
 
     try:
         response = requests.get(url, headers=headers, timeout=10)
-        response.raise_for_status()
 
-        data = response.json()
+        if response.status_code == 200:
+            data = response.json()
 
-        # Vérifier si le paiement est réussi
-        return data.get('status') == 'success'
+            # Extraire le statut (peut être dans data.status ou data.data.status)
+            payment_data = data.get('data', {})
+            status = payment_data.get('status', '').lower()
+
+            # Statuts possibles selon les standards :
+            # 'success', 'successful', 'paid', 'completed'
+            is_paid = status in ['success', 'successful', 'paid', 'completed']
+
+            print(f"[VERIFICATION] Paiement {transaction_id} : {status}")
+            return is_paid
+        else:
+            print(f"[VERIFICATION] Erreur HTTP {response.status_code}")
+            return False
 
     except requests.exceptions.RequestException as e:
         print(f"Erreur vérification Moneroo: {e}")
@@ -93,7 +193,6 @@ def generer_message_whatsapp(commande):
     )
 
     # Encoder le message pour l'URL
-    import urllib.parse
     message_encode = urllib.parse.quote(message)
 
     whatsapp_url = f"https://wa.me/{settings.ADMIN_WHATSAPP.replace('+', '')}?text={message_encode}"

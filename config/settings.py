@@ -6,19 +6,20 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ==================== CONFIGURATION DE BASE ====================
-SECRET_KEY = config('SECRET_KEY', default='dev-key-change-in-production')
+SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
+# Hosts autorisés
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+
 if 'RENDER_EXTERNAL_HOSTNAME' in os.environ:
     ALLOWED_HOSTS.append(os.environ['RENDER_EXTERNAL_HOSTNAME'])
 
 # ==================== CLOUDINARY CONFIGURATION ====================
-# Configuration Cloudinary avec vos credentials
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME', default='djudlfwcr'),
-    'API_KEY': config('CLOUDINARY_API_KEY', default='695364454293442'),
-    'API_SECRET': config('CLOUDINARY_API_SECRET', default=''),
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET'),
 }
 
 # Utiliser l'URL Cloudinary complète si disponible
@@ -28,8 +29,8 @@ if CLOUDINARY_URL:
 
 # ==================== BASE DE DONNÉES ====================
 DATABASE_URL = os.environ.get('DATABASE_URL')
-
 if DATABASE_URL and DATABASE_URL.strip():
+    # Render PostgreSQL en production
     DATABASES = {
         'default': dj_database_url.parse(
             DATABASE_URL,
@@ -38,6 +39,7 @@ if DATABASE_URL and DATABASE_URL.strip():
         )
     }
 else:
+    # SQLite en développement local
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -54,8 +56,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Cloudinary Apps - IMPORTANT: l'ordre compte!
-    'cloudinary_storage',  # Doit être AVANT 'django.contrib.staticfiles'
+    # Cloudinary Apps
+    'cloudinary_storage',
     'cloudinary',
 
     # Votre app
@@ -72,7 +74,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = []
 
-# Configuration media (utilisée localement, Cloudinary en production)
+# Configuration media
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -105,15 +107,16 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'formation.context_processors.panier_count',
                 'django.template.context_processors.media',
+                'formation.context_processors.moneroo_mode'
             ],
         },
     },
 ]
 
-# ==================== CONFIGURATIONS PERSONNALISÉES ====================
-MONEROO_API_KEY = config('MONEROO_API_KEY', default='')
-MONEROO_MERCHANT_ID = config('MONEROO_MERCHANT_ID', default='')
-ADMIN_WHATSAPP = config('ADMIN_WHATSAPP', default='+242061814279')
+# ==================== MONEROO ====================
+MONEROO_API_KEY = config('MONEROO_API_KEY')
+MONEROO_MERCHANT_ID = config('MONEROO_MERCHANT_ID')
+MONEROO_WEBHOOK_SECRET = config('MONEROO_WEBHOOK_SECRET', default='')
 SITE_URL = config('SITE_URL', default='http://localhost:8000')
 
 # ==================== EMAIL ====================
@@ -121,8 +124,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
+
+# ==================== WHATSAPP ====================
+ADMIN_WHATSAPP = config('ADMIN_WHATSAPP', default='+242061814279')
 
 # ==================== SÉCURITÉ PRODUCTION ====================
 if not DEBUG:
@@ -132,6 +139,9 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
 # ==================== INTERNATIONALISATION ====================
 LANGUAGE_CODE = 'fr-fr'
@@ -145,13 +155,31 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
         },
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'INFO',
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO' if not DEBUG else 'DEBUG',
+            'propagate': True,
+        },
+        'formation': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
     },
 }
+
+# ==================== ADMINS (pour notifications d'erreur) ====================
+ADMINS = [('Franck NKOU AMPA', 'nkouampafranck49@gmail.com')]
