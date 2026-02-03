@@ -12,4 +12,12 @@ urlpatterns = [
     path('confirmation/', views.confirmation_view, name='confirmation'),
     path('_create_admin/', views.create_superuser_temp, name='create_admin_temp'),
 
+    # --- NOUVELLES ROUTES POUR LES WEBHOOKS PAWAPAY ---
+    # Ces chemins doivent CORRESPONDRE exactement aux URLs configurées dans le tableau de bord PawaPay
+    path('api/pawapay/webhook/deposit', views.pawapay_deposit_webhook, name='pawapay_deposit'),
+    path('api/pawapay/webhook/payout', views.pawapay_payout_webhook, name='pawapay_payout'),
+    path('api/pawapay/webhook/refund', views.pawapay_refund_webhook, name='pawapay_refund'),
+    path('webhooks/moneroo/', views.moneroo_webhook_handler, name='moneroo_webhook'),
+    path("webhooks/moneroo/", views.moneroo_webhook, name="moneroo_webhook")
+
 ]

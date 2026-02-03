@@ -1,0 +1,332 @@
+INFO 2026-02-01 16:07:02,784 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 16:08:04,545 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 16:41:43,624 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\views.py changed, reloading.
+INFO 2026-02-01 16:41:46,660 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 16:41:50,547 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\urls.py changed, reloading.
+INFO 2026-02-01 16:41:52,835 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 16:42:04,177 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\urls.py changed, reloading.
+INFO 2026-02-01 16:42:06,230 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 16:57:26,970 basehttp "GET / HTTP/1.1" 200 14077
+INFO 2026-02-01 16:57:30,057 basehttp "GET /media/formation/Lastreet.png HTTP/1.1" 200 2970441
+WARNING 2026-02-01 16:57:31,538 log Not Found: /favicon.ico
+WARNING 2026-02-01 16:57:31,539 basehttp "GET /favicon.ico HTTP/1.1" 404 5964
+INFO 2026-02-01 16:57:35,059 basehttp "POST /panier/ajouter/1/ HTTP/1.1" 302 0
+INFO 2026-02-01 16:57:35,133 basehttp "GET /panier/ HTTP/1.1" 200 22954
+INFO 2026-02-01 16:57:38,571 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+ERROR 2026-02-01 17:01:30,959 log Internal Server Error: /checkout/
+Traceback (most recent call last):
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\PycharmProjects\Formations\Formations\formation\views.py", line 118, in checkout_view
+    payment_url = creer_paiement_moneroo(commande)
+  File "C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py", line 35, in creer_paiement_moneroo
+    settings.MONEROO_API_URL,
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\conf\__init__.py", line 83, in __getattr__
+    val = getattr(_wrapped, name)
+AttributeError: 'Settings' object has no attribute 'MONEROO_API_URL'
+ERROR 2026-02-01 17:01:30,963 basehttp "POST /checkout/ HTTP/1.1" 500 85229
+INFO 2026-02-01 17:07:22,970 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\config\settings.py changed, reloading.
+INFO 2026-02-01 17:07:24,961 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 17:14:12,372 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 17:14:14,505 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 17:14:21,203 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 17:14:27,853 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+WARNING 2026-02-01 17:14:49,744 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-02-01 17:14:49,746 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6075
+INFO 2026-02-01 17:14:58,732 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+WARNING 2026-02-01 17:14:58,864 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-02-01 17:14:58,866 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6075
+INFO 2026-02-01 17:14:59,474 basehttp "GET /media/formation/Lastreet.png HTTP/1.1" 200 2970441
+INFO 2026-02-01 17:17:21,460 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 17:17:23,154 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 17:19:34,718 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+WARNING 2026-02-01 17:19:40,806 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-02-01 17:19:40,808 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6075
+INFO 2026-02-01 17:20:03,044 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+WARNING 2026-02-01 17:20:03,152 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-02-01 17:20:03,153 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6075
+INFO 2026-02-01 17:20:17,082 basehttp "GET /panier/ HTTP/1.1" 200 22565
+INFO 2026-02-01 17:20:19,411 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 17:20:27,781 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 17:21:10,799 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+WARNING 2026-02-01 17:21:34,276 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-02-01 17:21:34,277 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6075
+INFO 2026-02-01 17:23:13,659 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+WARNING 2026-02-01 17:23:17,763 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-02-01 17:23:17,765 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6075
+WARNING 2026-02-01 17:23:40,754 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-02-01 17:23:40,757 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6075
+WARNING 2026-02-01 17:26:54,954 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-02-01 17:26:54,955 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6075
+INFO 2026-02-01 17:27:50,241 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+WARNING 2026-02-01 17:27:50,406 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-02-01 17:27:50,412 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6075
+INFO 2026-02-01 17:29:53,990 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 17:29:55,702 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 17:30:44,296 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+WARNING 2026-02-01 17:30:49,273 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-02-01 17:30:49,274 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6075
+INFO 2026-02-01 17:30:53,935 basehttp "GET /panier/ HTTP/1.1" 200 22565
+INFO 2026-02-01 17:30:56,002 basehttp "GET /panier/vider/ HTTP/1.1" 302 0
+INFO 2026-02-01 17:30:56,015 basehttp "GET /panier/ HTTP/1.1" 200 18898
+INFO 2026-02-01 17:30:59,209 basehttp "GET / HTTP/1.1" 200 14077
+INFO 2026-02-01 17:33:49,281 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 17:33:50,874 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 17:33:55,795 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 17:34:13,101 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 17:34:19,172 basehttp "GET / HTTP/1.1" 200 14077
+INFO 2026-02-01 17:34:22,279 basehttp "POST /panier/ajouter/1/ HTTP/1.1" 302 0
+INFO 2026-02-01 17:34:22,295 basehttp "GET /panier/ HTTP/1.1" 200 22954
+INFO 2026-02-01 17:34:26,524 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 17:34:44,074 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+WARNING 2026-02-01 17:34:49,126 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-02-01 17:34:49,127 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6075
+INFO 2026-02-01 17:45:48,069 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\views.py changed, reloading.
+INFO 2026-02-01 17:45:49,895 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 17:46:00,601 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\views.py changed, reloading.
+INFO 2026-02-01 17:46:02,792 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 17:46:29,676 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\views.py changed, reloading.
+INFO 2026-02-01 17:46:31,384 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 18:42:13,762 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+WARNING 2026-02-01 18:42:22,727 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-02-01 18:42:22,730 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6075
+INFO 2026-02-01 18:42:29,553 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 18:42:32,764 basehttp "GET /panier/ HTTP/1.1" 200 22565
+INFO 2026-02-01 18:42:35,164 basehttp "GET /panier/vider/ HTTP/1.1" 302 0
+INFO 2026-02-01 18:42:35,199 basehttp "GET /panier/ HTTP/1.1" 200 18898
+INFO 2026-02-01 18:42:39,844 basehttp "GET / HTTP/1.1" 200 14077
+INFO 2026-02-01 18:43:30,266 basehttp "GET / HTTP/1.1" 200 14077
+INFO 2026-02-01 18:47:00,738 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 18:47:10,362 basehttp "GET / HTTP/1.1" 200 14077
+INFO 2026-02-01 18:47:14,428 basehttp "POST /panier/ajouter/1/ HTTP/1.1" 302 0
+INFO 2026-02-01 18:47:14,485 basehttp "GET /panier/ HTTP/1.1" 200 22954
+INFO 2026-02-01 18:47:18,172 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 18:47:33,127 basehttp "POST /checkout/ HTTP/1.1" 200 23275
+WARNING 2026-02-01 18:47:39,276 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-02-01 18:47:39,278 basehttp "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 6075
+INFO 2026-02-01 19:26:19,815 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 19:27:03,058 basehttp "GET / HTTP/1.1" 200 14167
+WARNING 2026-02-01 19:27:03,902 log Not Found: /favicon.ico
+WARNING 2026-02-01 19:27:03,907 basehttp "GET /favicon.ico HTTP/1.1" 404 5964
+INFO 2026-02-01 19:27:06,878 basehttp "POST /panier/ajouter/1/ HTTP/1.1" 302 0
+INFO 2026-02-01 19:27:06,946 basehttp "GET /panier/ HTTP/1.1" 200 22954
+INFO 2026-02-01 19:27:09,728 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 19:27:20,957 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 19:52:15,112 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 19:53:19,025 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 20:02:13,623 basehttp "GET /checkout/ HTTP/1.1" 302 0
+WARNING 2026-02-01 20:02:14,090 log Not Found: /manifest.json
+WARNING 2026-02-01 20:02:14,095 basehttp "GET /manifest.json HTTP/1.1" 404 5970
+WARNING 2026-02-01 20:02:17,350 log Not Found: /serviceworker.js
+WARNING 2026-02-01 20:02:17,365 basehttp "GET /serviceworker.js HTTP/1.1" 404 5979
+INFO 2026-02-01 20:09:03,616 basehttp "GET / HTTP/1.1" 200 14077
+INFO 2026-02-01 20:09:03,974 basehttp "GET /media/formation/Lastreet.png HTTP/1.1" 200 2970441
+WARNING 2026-02-01 20:09:05,829 log Not Found: /favicon.ico
+WARNING 2026-02-01 20:09:05,830 basehttp "GET /favicon.ico HTTP/1.1" 404 5964
+INFO 2026-02-01 20:09:08,497 basehttp "POST /panier/ajouter/1/ HTTP/1.1" 302 0
+INFO 2026-02-01 20:09:08,558 basehttp "GET /panier/ HTTP/1.1" 200 22954
+INFO 2026-02-01 20:09:12,634 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 20:09:23,968 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 20:46:09,304 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 20:46:52,534 basehttp "GET / HTTP/1.1" 200 14077
+INFO 2026-02-01 20:46:54,180 basehttp "GET /media/formation/Lastreet.png HTTP/1.1" 200 2970441
+WARNING 2026-02-01 20:46:57,702 log Not Found: /favicon.ico
+WARNING 2026-02-01 20:46:57,703 basehttp "GET /favicon.ico HTTP/1.1" 404 5964
+INFO 2026-02-01 20:46:57,810 basehttp "POST /panier/ajouter/1/ HTTP/1.1" 302 0
+INFO 2026-02-01 20:46:57,844 basehttp "GET /panier/ HTTP/1.1" 200 22954
+INFO 2026-02-01 20:47:20,263 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 20:47:32,381 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 20:55:44,426 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 20:55:46,458 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 20:55:59,511 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 20:56:01,494 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 20:56:31,205 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 20:56:33,372 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 20:56:53,135 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 20:58:04,525 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 20:58:20,816 basehttp "GET / HTTP/1.1" 200 14167
+INFO 2026-02-01 20:58:24,486 basehttp "POST /panier/ajouter/1/ HTTP/1.1" 302 0
+INFO 2026-02-01 20:58:24,546 basehttp "GET /panier/ HTTP/1.1" 200 22954
+INFO 2026-02-01 20:58:26,938 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 20:58:41,072 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 21:04:16,252 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 21:04:17,868 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 21:04:47,608 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 21:08:10,878 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 21:08:12,685 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 21:08:23,389 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 21:09:44,762 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 21:09:46,632 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 21:09:58,689 basehttp "GET /panier/ HTTP/1.1" 200 22565
+INFO 2026-02-01 21:10:00,275 basehttp "GET /panier/vider/ HTTP/1.1" 302 0
+INFO 2026-02-01 21:10:00,292 basehttp "GET /panier/ HTTP/1.1" 200 18898
+INFO 2026-02-01 21:10:03,652 basehttp "GET / HTTP/1.1" 200 14077
+INFO 2026-02-01 21:10:06,035 basehttp "POST /panier/ajouter/1/ HTTP/1.1" 302 0
+INFO 2026-02-01 21:10:06,100 basehttp "GET /panier/ HTTP/1.1" 200 22954
+INFO 2026-02-01 21:10:08,865 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 21:10:20,027 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 21:16:54,911 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\views.py changed, reloading.
+INFO 2026-02-01 21:16:58,162 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 21:17:02,232 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\urls.py changed, reloading.
+INFO 2026-02-01 21:17:04,127 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 21:17:15,707 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\urls.py changed, reloading.
+INFO 2026-02-01 21:17:18,019 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 21:19:57,980 autoreload Watching for file changes with StatReloader
+ERROR 2026-02-01 21:20:39,744 log Invalid HTTP_HOST header: 'incapacious-noncomprehensively-lory.ngrok-free.dev'. You may need to add 'incapacious-noncomprehensively-lory.ngrok-free.dev' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\http\request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'incapacious-noncomprehensively-lory.ngrok-free.dev'. You may need to add 'incapacious-noncomprehensively-lory.ngrok-free.dev' to ALLOWED_HOSTS.
+WARNING 2026-02-01 21:20:39,750 basehttp "POST /webhooks/moneroo/ HTTP/1.1" 400 77196
+INFO 2026-02-01 21:22:33,934 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\views.py changed, reloading.
+INFO 2026-02-01 21:22:35,834 autoreload Watching for file changes with StatReloader
+ERROR 2026-02-01 21:22:57,565 log Invalid HTTP_HOST header: 'incapacious-noncomprehensively-lory.ngrok-free.dev'. You may need to add 'incapacious-noncomprehensively-lory.ngrok-free.dev' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\http\request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'incapacious-noncomprehensively-lory.ngrok-free.dev'. You may need to add 'incapacious-noncomprehensively-lory.ngrok-free.dev' to ALLOWED_HOSTS.
+WARNING 2026-02-01 21:22:57,976 basehttp "POST /webhooks/moneroo/ HTTP/1.1" 400 77195
+INFO 2026-02-01 21:24:39,895 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\views.py changed, reloading.
+INFO 2026-02-01 21:24:42,693 autoreload Watching for file changes with StatReloader
+ERROR 2026-02-01 21:24:57,988 log Invalid HTTP_HOST header: 'incapacious-noncomprehensively-lory.ngrok-free.dev'. You may need to add 'incapacious-noncomprehensively-lory.ngrok-free.dev' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\http\request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'incapacious-noncomprehensively-lory.ngrok-free.dev'. You may need to add 'incapacious-noncomprehensively-lory.ngrok-free.dev' to ALLOWED_HOSTS.
+WARNING 2026-02-01 21:24:58,394 basehttp "POST /webhooks/moneroo/ HTTP/1.1" 400 77195
+INFO 2026-02-01 21:26:02,640 autoreload Watching for file changes with StatReloader
+ERROR 2026-02-01 21:26:18,378 log Invalid HTTP_HOST header: 'incapacious-noncomprehensively-lory.ngrok-free.dev'. You may need to add 'incapacious-noncomprehensively-lory.ngrok-free.dev' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\http\request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'incapacious-noncomprehensively-lory.ngrok-free.dev'. You may need to add 'incapacious-noncomprehensively-lory.ngrok-free.dev' to ALLOWED_HOSTS.
+WARNING 2026-02-01 21:26:18,507 basehttp "POST /webhooks/moneroo/ HTTP/1.1" 400 77195
+INFO 2026-02-01 21:28:11,603 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\config\settings.py changed, reloading.
+INFO 2026-02-01 21:28:13,219 autoreload Watching for file changes with StatReloader
+ERROR 2026-02-01 21:28:35,698 log Invalid HTTP_HOST header: 'incapacious-noncomprehensively-lory.ngrok-free.dev'. You may need to add 'incapacious-noncomprehensively-lory.ngrok-free.dev' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\utils\deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\http\request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'incapacious-noncomprehensively-lory.ngrok-free.dev'. You may need to add 'incapacious-noncomprehensively-lory.ngrok-free.dev' to ALLOWED_HOSTS.
+WARNING 2026-02-01 21:28:35,857 basehttp "POST /webhooks/moneroo/ HTTP/1.1" 400 77195
+INFO 2026-02-01 21:30:04,465 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\config\settings.py changed, reloading.
+INFO 2026-02-01 21:30:06,752 autoreload Watching for file changes with StatReloader
+ERROR 2026-02-01 21:30:31,202 log Internal Server Error: /webhooks/moneroo/
+Traceback (most recent call last):
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\HP\PycharmProjects\Formations\Formations\formation\views.py", line 412, in moneroo_webhook_handler
+    webhook_secret = settings.MONEROO_WEBHOOK_SECRET.encode('utf-8')
+  File "C:\Users\HP\PycharmProjects\Formations\.venv\lib\site-packages\django\conf\__init__.py", line 83, in __getattr__
+    val = getattr(_wrapped, name)
+AttributeError: 'Settings' object has no attribute 'MONEROO_WEBHOOK_SECRET'
+ERROR 2026-02-01 21:30:31,216 basehttp "POST /webhooks/moneroo/ HTTP/1.1" 500 80961
+INFO 2026-02-01 21:31:55,474 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\config\settings.py changed, reloading.
+INFO 2026-02-01 21:31:58,108 autoreload Watching for file changes with StatReloader
+WARNING 2026-02-01 21:34:14,332 log Forbidden: /webhooks/moneroo/
+WARNING 2026-02-01 21:34:14,337 basehttp "POST /webhooks/moneroo/ HTTP/1.1" 403 30
+INFO 2026-02-01 21:43:51,769 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\views.py changed, reloading.
+INFO 2026-02-01 21:43:53,988 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 21:44:06,557 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\views.py changed, reloading.
+INFO 2026-02-01 21:44:08,904 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 21:47:46,163 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 21:51:56,946 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 21:51:58,646 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 21:52:09,014 basehttp "GET /panier/ HTTP/1.1" 200 22565
+INFO 2026-02-01 21:52:10,811 basehttp "GET /panier/vider/ HTTP/1.1" 302 0
+INFO 2026-02-01 21:52:10,838 basehttp "GET /panier/ HTTP/1.1" 200 18898
+INFO 2026-02-01 21:52:13,699 basehttp "GET / HTTP/1.1" 200 14077
+INFO 2026-02-01 21:52:16,044 basehttp "POST /panier/ajouter/1/ HTTP/1.1" 302 0
+INFO 2026-02-01 21:52:16,089 basehttp "GET /panier/ HTTP/1.1" 200 22954
+INFO 2026-02-01 21:52:18,252 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 21:52:30,738 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 21:54:15,277 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 21:54:17,154 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 21:54:21,735 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 21:54:25,120 basehttp "GET /panier/vider/ HTTP/1.1" 302 0
+INFO 2026-02-01 21:54:25,148 basehttp "GET /panier/ HTTP/1.1" 200 18898
+INFO 2026-02-01 21:54:27,986 basehttp "GET / HTTP/1.1" 200 14077
+INFO 2026-02-01 21:54:30,456 basehttp "POST /panier/ajouter/1/ HTTP/1.1" 302 0
+INFO 2026-02-01 21:54:30,496 basehttp "GET /panier/ HTTP/1.1" 200 22954
+INFO 2026-02-01 21:54:32,601 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 21:54:44,072 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 22:03:37,122 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 22:03:39,282 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 22:03:44,583 basehttp "POST /checkout/ HTTP/1.1" 200 23296
+INFO 2026-02-01 22:04:49,972 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 22:04:52,043 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 22:05:10,714 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 22:05:13,086 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 22:05:18,648 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 22:05:50,129 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 22:05:51,962 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 22:06:40,478 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-01 22:06:42,342 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 22:06:48,664 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+INFO 2026-02-01 22:36:46,938 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 22:37:19,381 basehttp "GET / HTTP/1.1" 200 14167
+WARNING 2026-02-01 22:37:19,998 log Not Found: /favicon.ico
+WARNING 2026-02-01 22:37:19,999 basehttp "GET /favicon.ico HTTP/1.1" 404 6238
+INFO 2026-02-01 22:37:23,761 basehttp "POST /panier/ajouter/1/ HTTP/1.1" 302 0
+INFO 2026-02-01 22:37:23,811 basehttp "GET /panier/ HTTP/1.1" 200 22954
+INFO 2026-02-01 22:37:26,527 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 22:37:34,849 basehttp "POST /checkout/ HTTP/1.1" 200 23276
+WARNING 2026-02-01 22:38:27,368 log Not Found: /serviceworker.js
+WARNING 2026-02-01 22:38:27,369 basehttp "GET /serviceworker.js HTTP/1.1" 404 6253
+INFO 2026-02-01 22:57:26,830 autoreload Watching for file changes with StatReloader
+INFO 2026-02-01 22:57:32,628 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 22:57:33,233 basehttp "GET /panier/ HTTP/1.1" 200 22565
+INFO 2026-02-01 22:57:37,644 basehttp "GET / HTTP/1.1" 200 14167
+INFO 2026-02-01 22:57:39,408 basehttp "POST /panier/ajouter/1/ HTTP/1.1" 302 0
+INFO 2026-02-01 22:57:39,441 basehttp "GET /panier/ HTTP/1.1" 200 22954
+INFO 2026-02-01 22:57:41,380 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 22:57:52,242 basehttp "POST /checkout/ HTTP/1.1" 302 0
+INFO 2026-02-01 22:58:38,788 basehttp "GET /paiement/callback/30/?paymentId=py_jxodqa4lcryg&paymentStatus=success HTTP/1.1" 200 16095
+WARNING 2026-02-01 22:58:40,595 log Not Found: /favicon.ico
+WARNING 2026-02-01 22:58:40,595 basehttp "GET /favicon.ico HTTP/1.1" 404 6238
+INFO 2026-02-01 23:10:49,698 basehttp "GET / HTTP/1.1" 200 14077
+INFO 2026-02-01 23:10:50,057 basehttp "GET /media/formation/Lastreet.png HTTP/1.1" 200 2970441
+INFO 2026-02-01 23:10:51,981 basehttp "POST /panier/ajouter/1/ HTTP/1.1" 302 0
+INFO 2026-02-01 23:10:52,008 basehttp "GET /panier/ HTTP/1.1" 200 22954
+INFO 2026-02-01 23:10:54,410 basehttp "GET /checkout/ HTTP/1.1" 200 22813
+INFO 2026-02-01 23:11:09,993 basehttp "POST /checkout/ HTTP/1.1" 200 23266
+INFO 2026-02-02 00:00:31,073 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\formation\utils.py changed, reloading.
+INFO 2026-02-02 00:00:39,306 autoreload Watching for file changes with StatReloader
+INFO 2026-02-02 00:01:03,371 basehttp "POST /checkout/ HTTP/1.1" 302 0
+INFO 2026-02-02 00:07:10,322 autoreload C:\Users\HP\PycharmProjects\Formations\Formations\config\settings.py changed, reloading.
