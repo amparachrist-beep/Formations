@@ -79,10 +79,6 @@
         font-weight: 700;
         margin-bottom: 0.75rem;
         line-height: 1.4;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
         color: var(--text-primary);
     }
 
@@ -95,18 +91,14 @@
         font-size: 0.875rem;
         color: var(--text-secondary);
         line-height: 1.6;
-        margin: 0;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
+        margin: 0 0 0.5rem 0;
+        max-height: calc(1.6em * 3);
         overflow: hidden;
-        transition: all 0.3s ease;
+        transition: max-height 0.3s ease;
     }
 
     .formation-description.expanded {
-        display: block;
-        -webkit-line-clamp: unset;
-        overflow: visible;
+        max-height: none;
     }
 
     .voir-plus-btn {
@@ -116,12 +108,10 @@
         text-decoration: none;
         background: none;
         border: none;
-        padding: 0.5rem 0 0 0;
-        margin-top: 0.5rem;
+        padding: 0;
         cursor: pointer;
         display: inline-block;
-        width: auto;
-        transition: color 0.2s;
+        margin-top: 0.25rem;
     }
 
     .voir-plus-btn:hover {
@@ -190,7 +180,6 @@
         transform: translateY(-1px);
     }
 
-    /* Responsive */
     @media (max-width: 768px) {
         .formations-grid {
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -207,15 +196,6 @@
 
         .formation-description {
             font-size: 0.8125rem;
-        }
-
-        .formation-prix {
-            font-size: 1.125rem;
-        }
-
-        .btn-add-cart {
-            padding: 0.5rem 1rem;
-            min-width: 90px;
         }
     }
 
@@ -274,7 +254,7 @@
                     <p class="formation-description" id="desc-{{ formation.id }}">
                         {{ formation.description }}
                     </p>
-                    <button class="voir-plus-btn" data-id="{{ formation.id }}" type="button" style="display: none;">
+                    <button class="voir-plus-btn" data-id="{{ formation.id }}" type="button">
                         Voir plus
                     </button>
                 </div>
@@ -303,86 +283,38 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // Fonction pour vérifier si le texte dépasse
-    function checkDescriptionOverflow(descriptionElement, buttonElement) {
-        // Créer un élément temporaire pour mesurer la hauteur réelle du texte
-        const clone = descriptionElement.cloneNode(true);
-        clone.style.position = 'absolute';
-        clone.style.visibility = 'hidden';
-        clone.style.height = 'auto';
-        clone.style.maxHeight = 'none';
-        clone.style.display = 'block';
-        clone.style.webkitLineClamp = 'unset';
-        document.body.appendChild(clone);
+    // Pour chaque formation
+    document.querySelectorAll('.formation-description').forEach(function(desc) {
+        var id = desc.id.replace('desc-', '');
+        var btn = document.querySelector('.voir-plus-btn[data-id="' + id + '"]');
 
-        const fullHeight = clone.scrollHeight;
-        document.body.removeChild(clone);
-
-        // Rétablir l'affichage normal pour la mesure de la hauteur limitée
-        descriptionElement.style.webkitLineClamp = '3';
-        const limitedHeight = descriptionElement.scrollHeight;
-
-        // Si la hauteur réelle est plus grande que la hauteur limitée, afficher le bouton
-        if (fullHeight > limitedHeight + 5) { // +5 pour la marge d'erreur
-            buttonElement.style.display = 'inline-block';
-        } else {
-            buttonElement.style.display = 'none';
+        // Vérifier si le texte dépasse la hauteur max
+        function checkOverflow() {
+            if (desc.scrollHeight > parseInt(window.getComputedStyle(desc).maxHeight)) {
+                btn.style.display = 'inline-block';
+            } else {
+                btn.style.display = 'none';
+            }
         }
-    }
 
-    // Appliquer pour chaque formation
-    document.querySelectorAll('.formation-description').forEach(desc => {
-        const id = desc.id.replace('desc-', '');
-        const button = document.querySelector(`.voir-plus-btn[data-id="${id}"]`);
+        // Vérifier au chargement
+        checkOverflow();
 
-        if (button) {
-            // Attendre que le DOM soit complètement chargé
-            setTimeout(() => {
-                checkDescriptionOverflow(desc, button);
-            }, 100);
+        // Gérer le clic
+        btn.onclick = function() {
+            if (desc.classList.contains('expanded')) {
+                desc.classList.remove('expanded');
+                btn.textContent = 'Voir plus';
+            } else {
+                desc.classList.add('expanded');
+                btn.textContent = 'Voir moins';
+            }
+        };
 
-            // Gérer le clic sur le bouton
-            button.addEventListener("click", function(e) {
-                e.preventDefault();
-                const isExpanded = desc.classList.contains("expanded");
-
-                if (isExpanded) {
-                    desc.classList.remove("expanded");
-                    desc.style.webkitLineClamp = '3';
-                    button.textContent = "Voir plus";
-                } else {
-                    desc.classList.add("expanded");
-                    desc.style.webkitLineClamp = 'unset';
-                    button.textContent = "Voir moins";
-                }
-            });
-        }
-    });
-
-    // Re-vérifier lors du redimensionnement de la fenêtre
-    let resizeTimer;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
-            document.querySelectorAll('.formation-description').forEach(desc => {
-                const id = desc.id.replace('desc-', '');
-                const button = document.querySelector(`.voir-plus-btn[data-id="${id}"]`);
-                if (button) {
-                    // Réinitialiser l'état avant de vérifier
-                    const wasExpanded = desc.classList.contains("expanded");
-                    if (wasExpanded) {
-                        desc.classList.remove("expanded");
-                        desc.style.webkitLineClamp = '3';
-                    }
-                    checkDescriptionOverflow(desc, button);
-                    if (wasExpanded) {
-                        desc.classList.add("expanded");
-                        desc.style.webkitLineClamp = 'unset';
-                        button.textContent = "Voir moins";
-                    }
-                }
-            });
-        }, 250);
+        // Re-vérifier lors du redimensionnement
+        window.addEventListener('resize', function() {
+            checkOverflow();
+        });
     });
 });
 </script>
