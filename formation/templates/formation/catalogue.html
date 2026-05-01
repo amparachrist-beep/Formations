@@ -31,7 +31,7 @@
 
     .formations-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
         gap: 1.5rem;
         margin-bottom: 3rem;
     }
@@ -68,34 +68,43 @@
     }
 
     .formation-content {
-        padding: 1rem;
+        padding: 1.25rem;
         flex: 1;
         display: flex;
         flex-direction: column;
     }
 
     .formation-title {
-        font-size: 1rem;
+        font-size: 1.125rem;
         font-weight: 700;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
+        line-height: 1.4;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        color: var(--text-primary);
+    }
+
+    .description-wrapper {
+        margin-bottom: 0.75rem;
+        flex: 1;
     }
 
     .formation-description {
         font-size: 0.875rem;
         color: var(--text-secondary);
-        margin-bottom: 0.25rem;
-        line-height: 1.5;
+        line-height: 1.6;
+        margin: 0;
         display: -webkit-box;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        transition: all 0.3s ease;
     }
 
     .formation-description.expanded {
+        display: block;
         -webkit-line-clamp: unset;
         overflow: visible;
     }
@@ -107,26 +116,40 @@
         text-decoration: none;
         background: none;
         border: none;
-        padding: 0;
-        align-self: flex-start;
+        padding: 0.5rem 0 0 0;
+        margin-top: 0.5rem;
+        cursor: pointer;
+        display: inline-block;
+        width: auto;
+        transition: color 0.2s;
     }
 
     .voir-plus-btn:hover {
+        color: var(--primary-hover);
         text-decoration: underline;
     }
 
     .rating {
         display: flex;
         align-items: center;
-        gap: 0.25rem;
-        font-size: 0.875rem;
-        margin: 0.5rem 0;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin: 0.75rem 0;
+        padding: 0.5rem 0;
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
     }
 
-    .rating-value,
-    .rating-stars {
+    .rating-value {
         color: #b4690e;
         font-weight: 700;
+        font-size: 0.875rem;
+    }
+
+    .rating-stars {
+        color: #b4690e;
+        font-size: 0.875rem;
+        letter-spacing: 1px;
     }
 
     .rating-count {
@@ -139,22 +162,84 @@
         justify-content: space-between;
         align-items: center;
         padding-top: 0.75rem;
-        border-top: 1px solid var(--border-color);
-        margin-top: auto;
+        gap: 0.75rem;
+        flex-wrap: wrap;
     }
 
     .formation-prix {
         font-size: 1.25rem;
         font-weight: 700;
+        color: var(--primary-color);
     }
 
     .btn-add-cart {
         background: var(--primary-color);
         color: #fff;
         border: none;
-        padding: 0.5rem 1rem;
+        padding: 0.625rem 1.25rem;
         font-size: 0.875rem;
         font-weight: 600;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.2s;
+        min-width: 100px;
+    }
+
+    .btn-add-cart:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .formations-grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .formation-content {
+            padding: 1rem;
+        }
+
+        .formation-title {
+            font-size: 1rem;
+        }
+
+        .formation-description {
+            font-size: 0.8125rem;
+        }
+
+        .formation-prix {
+            font-size: 1.125rem;
+        }
+
+        .btn-add-cart {
+            padding: 0.5rem 1rem;
+            min-width: 90px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-section {
+            padding: 2rem 0;
+        }
+
+        .hero-section h1 {
+            font-size: 1.5rem;
+        }
+
+        .hero-section p {
+            font-size: 1rem;
+        }
+
+        .formation-footer {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn-add-cart {
+            width: 100%;
+        }
     }
 </style>
 {% endblock %}
@@ -168,79 +253,136 @@
 </div>
 
 <div class="container-udemy">
-{% if formations %}
-<p class="results-count">
-    <strong>{{ formations|length }}</strong> formation{{ formations|length|pluralize }} disponible{{ formations|length|pluralize }}
-</p>
+    {% if formations %}
+    <p class="results-count">
+        <strong>{{ formations|length }}</strong> formation{{ formations|length|pluralize }} disponible{{ formations|length|pluralize }}
+    </p>
 
-<div class="formations-grid">
-{% for formation in formations %}
-<div class="formation-card">
+    <div class="formations-grid">
+        {% for formation in formations %}
+        <div class="formation-card">
+            <div class="formation-image-wrapper">
+                {% if formation.image %}
+                    <img src="{{ formation.image.url }}" class="formation-image" alt="{{ formation.titre }}">
+                {% endif %}
+            </div>
 
-    <div class="formation-image-wrapper">
-        {% if formation.image %}
-            <img src="{{ formation.image.url }}" class="formation-image" alt="{{ formation.titre }}">
-        {% endif %}
-    </div>
+            <div class="formation-content">
+                <h3 class="formation-title">{{ formation.titre }}</h3>
 
-    <div class="formation-content">
-        <h3 class="formation-title">{{ formation.titre }}</h3>
+                <div class="description-wrapper">
+                    <p class="formation-description" id="desc-{{ formation.id }}">
+                        {{ formation.description }}
+                    </p>
+                    <button class="voir-plus-btn" data-id="{{ formation.id }}" type="button" style="display: none;">
+                        Voir plus
+                    </button>
+                </div>
 
-        <p class="formation-description" id="desc-{{ formation.id }}">
-            {{ formation.description }}
-        </p>
+                <div class="rating">
+                    <span class="rating-value">4.5</span>
+                    <span class="rating-stars">★★★★☆</span>
+                    <span class="rating-count">(127 avis)</span>
+                </div>
 
-        <button
-            class="voir-plus-btn"
-            data-id="{{ formation.id }}"
-            type="button"
-            style="display:none"
-        >
-            Voir plus
-        </button>
-
-        <div class="rating">
-            <span class="rating-value">4.5</span>
-            <span class="rating-stars">
-                ★★★★☆
-            </span>
-            <span class="rating-count">(127)</span>
+                <div class="formation-footer">
+                    <div class="formation-prix">{{ formation.prix }} FCFA</div>
+                    <form method="post" action="{% url 'ajouter_panier' formation.id %}" style="margin: 0;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-add-cart">
+                            <i class="bi bi-cart-plus"></i> Ajouter
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <div class="formation-footer">
-            <div class="formation-prix">{{ formation.prix }} FCFA</div>
-
-            <form method="post" action="{% url 'ajouter_panier' formation.id %}">
-                {% csrf_token %}
-                <button type="submit" class="btn-add-cart">
-                    Ajouter
-                </button>
-            </form>
-        </div>
+        {% endfor %}
     </div>
-
-</div>
-{% endfor %}
-</div>
-{% endif %}
+    {% endif %}
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".voir-plus-btn").forEach(btn => {
-        const id = btn.dataset.id;
-        const desc = document.getElementById("desc-" + id);
+document.addEventListener("DOMContentLoaded", function() {
+    // Fonction pour vérifier si le texte dépasse
+    function checkDescriptionOverflow(descriptionElement, buttonElement) {
+        // Créer un élément temporaire pour mesurer la hauteur réelle du texte
+        const clone = descriptionElement.cloneNode(true);
+        clone.style.position = 'absolute';
+        clone.style.visibility = 'hidden';
+        clone.style.height = 'auto';
+        clone.style.maxHeight = 'none';
+        clone.style.display = 'block';
+        clone.style.webkitLineClamp = 'unset';
+        document.body.appendChild(clone);
 
-        if (desc.scrollHeight > desc.clientHeight + 1) {
-            btn.style.display = "inline";
+        const fullHeight = clone.scrollHeight;
+        document.body.removeChild(clone);
+
+        // Rétablir l'affichage normal pour la mesure de la hauteur limitée
+        descriptionElement.style.webkitLineClamp = '3';
+        const limitedHeight = descriptionElement.scrollHeight;
+
+        // Si la hauteur réelle est plus grande que la hauteur limitée, afficher le bouton
+        if (fullHeight > limitedHeight + 5) { // +5 pour la marge d'erreur
+            buttonElement.style.display = 'inline-block';
+        } else {
+            buttonElement.style.display = 'none';
         }
+    }
 
-        btn.addEventListener("click", function () {
-            desc.classList.toggle("expanded");
-            btn.textContent = desc.classList.contains("expanded")
-                ? "Voir moins"
-                : "Voir plus";
-        });
+    // Appliquer pour chaque formation
+    document.querySelectorAll('.formation-description').forEach(desc => {
+        const id = desc.id.replace('desc-', '');
+        const button = document.querySelector(`.voir-plus-btn[data-id="${id}"]`);
+
+        if (button) {
+            // Attendre que le DOM soit complètement chargé
+            setTimeout(() => {
+                checkDescriptionOverflow(desc, button);
+            }, 100);
+
+            // Gérer le clic sur le bouton
+            button.addEventListener("click", function(e) {
+                e.preventDefault();
+                const isExpanded = desc.classList.contains("expanded");
+
+                if (isExpanded) {
+                    desc.classList.remove("expanded");
+                    desc.style.webkitLineClamp = '3';
+                    button.textContent = "Voir plus";
+                } else {
+                    desc.classList.add("expanded");
+                    desc.style.webkitLineClamp = 'unset';
+                    button.textContent = "Voir moins";
+                }
+            });
+        }
+    });
+
+    // Re-vérifier lors du redimensionnement de la fenêtre
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            document.querySelectorAll('.formation-description').forEach(desc => {
+                const id = desc.id.replace('desc-', '');
+                const button = document.querySelector(`.voir-plus-btn[data-id="${id}"]`);
+                if (button) {
+                    // Réinitialiser l'état avant de vérifier
+                    const wasExpanded = desc.classList.contains("expanded");
+                    if (wasExpanded) {
+                        desc.classList.remove("expanded");
+                        desc.style.webkitLineClamp = '3';
+                    }
+                    checkDescriptionOverflow(desc, button);
+                    if (wasExpanded) {
+                        desc.classList.add("expanded");
+                        desc.style.webkitLineClamp = 'unset';
+                        button.textContent = "Voir moins";
+                    }
+                }
+            });
+        }, 250);
     });
 });
 </script>
