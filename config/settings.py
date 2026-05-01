@@ -107,7 +107,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'formation.context_processors.panier_count',
                 'django.template.context_processors.media',
-                'formation.context_processors.moneroo_mode'
             ],
         },
     },
