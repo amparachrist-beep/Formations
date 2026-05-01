@@ -1,6 +1,8 @@
 from django import forms
 from .models import Client
 import re
+import phonenumbers
+from django.core.exceptions import ValidationError
 
 
 class ClientForm(forms.ModelForm):
@@ -35,27 +37,25 @@ class ClientForm(forms.ModelForm):
 
     # ==================== VALIDATIONS ====================
 
+
+
     def clean_whatsapp(self):
         whatsapp = self.cleaned_data.get('whatsapp')
 
-        # Supprimer espaces
-        whatsapp = whatsapp.replace(" ", "")
+        try:
+            number = phonenumbers.parse(whatsapp, None)
 
-        # Regex simple pour Congo (+242 ou 06/05)
-        pattern = r'^(\+242)?0?[56]\d{7}$'
+            if not phonenumbers.is_valid_number(number):
+                raise ValidationError("Numéro invalide.")
 
-        if not re.match(pattern, whatsapp):
-            raise forms.ValidationError(
-                "Numéro invalide. Exemple : 06 123 45 67 ou +242061234567"
+            # format international propre
+            return phonenumbers.format_number(
+                number,
+                phonenumbers.PhoneNumberFormat.E164
             )
 
-        # Normaliser au format international (important pour WhatsApp)
-        if whatsapp.startswith("0"):
-            whatsapp = "242" + whatsapp[1:]
-        elif whatsapp.startswith("+242"):
-            whatsapp = whatsapp[1:]
-
-        return whatsapp
+        except Exception:
+            raise ValidationError("Numéro de téléphone invalide.")
 
     def clean_email(self):
         email = self.cleaned_data.get('email').lower()
