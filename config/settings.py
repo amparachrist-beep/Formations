@@ -113,11 +113,33 @@ TEMPLATES = [
     },
 ]
 
-# ==================== MONEROO ====================
-MONEROO_API_KEY = config('MONEROO_API_KEY')
-MONEROO_MERCHANT_ID = config('MONEROO_MERCHANT_ID')
-MONEROO_WEBHOOK_SECRET = config('MONEROO_WEBHOOK_SECRET', default='')
+# ==================== PAIEMENT MOBILE MONEY ====================
 SITE_URL = config('SITE_URL', default='http://localhost:8000')
+
+# Numéros WhatsApp par opérateur
+PAIEMENT_OPERATEURS = {
+    'airtel': {
+        'nom': 'Airtel Money',
+        'numero_display': '05 334 40 85',
+        'numero_whatsapp': '242053344085',
+        'couleur': '#E8192C',
+        'emoji': '🔴',
+    },
+    'mtn': {
+        'nom': 'Mobile Money (MTN)',
+        'numero_display': '06 181 42 79',
+        'numero_whatsapp': '242061814279',
+        'couleur': '#FFCC00',
+        'emoji': '🟡',
+    },
+    'orange': {
+        'nom': 'Orange Money',
+        'numero_display': '+221 78 178 33 02',
+        'numero_whatsapp': '221781783302',
+        'couleur': '#FF6600',
+        'emoji': '🟠',
+    },
+}
 
 # ==================== EMAIL ====================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
