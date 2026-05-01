@@ -74,15 +74,23 @@ class Commande(models.Model):
     )
 
     # Informations Moneroo
-    moneroo_transaction_id = models.CharField(
+    # Dans Commande, remplacez les deux champs Moneroo par :
+    operateur_paiement = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        verbose_name="Opérateur de paiement",
+        choices=[
+            ('airtel', 'Airtel Money'),
+            ('mtn', 'Mobile Money (MTN)'),
+            ('orange', 'Orange Money'),
+        ]
+    )
+    reference_paiement = models.CharField(
         max_length=200,
         blank=True,
-        null=True
-    )
-    moneroo_payment_url = models.URLField(
-        max_length=500,
-        blank=True,
-        null=True
+        null=True,
+        verbose_name="Référence / Preuve paiement"
     )
 
     date_commande = models.DateTimeField(auto_now_add=True)
