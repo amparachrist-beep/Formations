@@ -87,17 +87,20 @@
     .formation-description {
     font-size: 0.875rem;
     color: var(--text-secondary);
-    line-height: 1.6;
+    line-height: 1.7;
     margin-bottom: 0.5rem;
-
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+    max-height: 4.9em;   /* ~3 lignes visibles */
     overflow: hidden;
 }
+
     .formation-description.expanded {
-        -webkit-line-clamp: unset;
+        max-height: none;     /* au lieu de unset */
         overflow: visible;
+    }
+
+    /* Cibler les <p> générés par linebreaks */
+    .formation-description p {
+        margin: 0 0 0.4rem;
     }
 
     .voir-plus-btn {
@@ -186,9 +189,9 @@
     <div class="formation-content">
         <h3 class="formation-title">{{ formation.titre }}</h3>
 
-        <p class="formation-description" id="desc-{{ formation.id }}">
-            {{ formation.description }}
-        </p>
+        <div class="formation-description" id="desc-{{ formation.id }}">
+            {{ formation.description|linebreaks }}
+        </div>
 
         <button
             class="voir-plus-btn"
