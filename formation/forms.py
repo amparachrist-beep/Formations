@@ -19,7 +19,7 @@ class ClientForm(forms.ModelForm):
             }),
             'whatsapp': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Ex: 06 123 45 67 ou +242061234567',
+                'placeholder': 'Ex:+242061234567',
                 'required': True
             }),
             'email': forms.EmailInput(attrs={
@@ -42,20 +42,33 @@ class ClientForm(forms.ModelForm):
     def clean_whatsapp(self):
         whatsapp = self.cleaned_data.get('whatsapp')
 
+        # nettoyage basique
+        whatsapp = whatsapp.replace(" ", "").replace("-", "")
+
+        # ❌ obligatoire : doit commencer par +
+        if not whatsapp.startswith("+"):
+            raise ValidationError(
+                "Veuillez entrer votre numéro avec l'indicatif international. "
+                "Exemples : +242061234567, +33 612345678"
+            )
+
         try:
             number = phonenumbers.parse(whatsapp, None)
 
             if not phonenumbers.is_valid_number(number):
-                raise ValidationError("Numéro invalide.")
+                raise ValidationError(
+                    "Numéro invalide. Vérifiez l'indicatif et le format."
+                )
 
-            # format international propre
             return phonenumbers.format_number(
                 number,
                 phonenumbers.PhoneNumberFormat.E164
             )
 
-        except Exception:
-            raise ValidationError("Numéro de téléphone invalide.")
+        except phonenumbers.NumberParseException:
+            raise ValidationError(
+                "Format invalide. Exemple attendu : +242061234567"
+            )
 
     def clean_email(self):
         email = self.cleaned_data.get('email').lower()
