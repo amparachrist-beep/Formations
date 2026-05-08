@@ -276,7 +276,7 @@
                 </div>
 
                 <div class="hero-buttons">
-                    <a href="{% url 'checkout_formation' formation.id %}" class="btn-buy">
+                    <a href="{% url 'ajouter_panier' formation.id %}" class="btn-buy">
                         <i class="bi bi-cart-check"></i> Acheter maintenant
                     </a>
                     <a href="https://wa.me/22500000000?text=Bonjour%2C%20je%20souhaite%20avoir%20plus%20d%27informations%20sur%20la%20formation%20{{ formation.titre|urlencode }}"
@@ -409,7 +409,7 @@
                     <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem;">
                         {{ formation.prix }} FCFA
                     </div>
-                    <a href="{% url 'checkout_formation' formation.id %}" class="btn-buy" style="display: block; text-align: center; margin-bottom: 1rem;">
+                    <a href="{% url 'ajouter_panier' formation.id %}" class="btn-buy" style="display: block; text-align: center; margin-bottom: 1rem;">
                         <i class="bi bi-cart-check"></i> Acheter maintenant
                     </a>
                     <a href="https://wa.me/22500000000" class="btn-whatsapp" style="display: flex; justify-content: center;">
