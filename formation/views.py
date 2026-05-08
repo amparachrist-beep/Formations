@@ -213,6 +213,6 @@ def detail_formation(request, id):
 
     return render(
         request,
-        'formations/detail_formation.html',
+        'formation/detail_formation.html',
         context
     )
