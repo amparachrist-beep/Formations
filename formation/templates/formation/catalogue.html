@@ -1,3 +1,5 @@
+<!-- templates/formations/catalogue.html -->
+
 {% extends 'formation/base.html' %}
 
 {% block title %}Catalogue des formations{% endblock %}
@@ -85,25 +87,24 @@
     }
 
     .formation-description {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    line-height: 1.7;
-    margin-bottom: 0.5rem;
-    max-height: 4.9em;   /* ~3 lignes visibles */
-    overflow: hidden;
-}
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin-bottom: 0.5rem;
+        max-height: 4.9em;
+        overflow: hidden;
+    }
 
     .formation-description.expanded {
-        max-height: none;     /* au lieu de unset */
+        max-height: none;
         overflow: visible;
     }
 
-    /* Cibler les <p> générés par linebreaks */
     .formation-description p {
         margin: 0 0 0.4rem;
     }
 
-    .voir-plus-btn {
+    .voir-plus-link {
         font-size: 0.85rem;
         font-weight: 600;
         color: var(--primary-color);
@@ -112,9 +113,11 @@
         border: none;
         padding: 0;
         align-self: flex-start;
+        cursor: pointer;
+        display: inline-block;
     }
 
-    .voir-plus-btn:hover {
+    .voir-plus-link:hover {
         text-decoration: underline;
     }
 
@@ -144,6 +147,7 @@
         padding-top: 0.75rem;
         border-top: 1px solid var(--border-color);
         margin-top: auto;
+        gap: 1rem;
     }
 
     .formation-prix {
@@ -151,13 +155,60 @@
         font-weight: 700;
     }
 
-    .btn-add-cart {
+    .btn-detail {
         background: var(--primary-color);
         color: #fff;
         border: none;
         padding: 0.5rem 1rem;
         font-size: 0.875rem;
         font-weight: 600;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-detail:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+    }
+
+    .btn-add-cart {
+        background: #28a745;
+        color: #fff;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-add-cart:hover {
+        background: #218838;
+        transform: translateY(-1px);
+    }
+
+    .footer-buttons {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .formation-footer {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .footer-buttons {
+            flex-direction: column;
+        }
+
+        .btn-detail, .btn-add-cart {
+            text-align: center;
+        }
     }
 </style>
 {% endblock %}
@@ -193,14 +244,10 @@
             {{ formation.description|linebreaks }}
         </div>
 
-        <button
-            class="voir-plus-btn"
-            data-id="{{ formation.id }}"
-            type="button"
-            style="display:none"
-        >
-            Voir plus
-        </button>
+        <!-- Lien "Voir plus" qui redirige vers la page détail -->
+        <a href="{% url 'detail_formation' formation.id %}" class="voir-plus-link">
+            Voir plus &rarr;
+        </a>
 
         <div class="rating">
             <span class="rating-value">4.5</span>
@@ -213,38 +260,27 @@
         <div class="formation-footer">
             <div class="formation-prix">{{ formation.prix }} FCFA</div>
 
-            <form method="post" action="{% url 'ajouter_panier' formation.id %}">
-                {% csrf_token %}
-                <button type="submit" class="btn-add-cart">
-                    Ajouter
-                </button>
-            </form>
+            <div class="footer-buttons">
+                <a href="{% url 'detail_formation' formation.id %}" class="btn-detail">
+                    Détails
+                </a>
+                <form method="post" action="{% url 'ajouter_panier' formation.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-add-cart">
+                        Ajouter
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
 </div>
 {% endfor %}
 </div>
+{% else %}
+<div style="text-align: center; padding: 3rem;">
+    <p>Aucune formation disponible pour le moment.</p>
+</div>
 {% endif %}
 </div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".voir-plus-btn").forEach(btn => {
-        const id = btn.dataset.id;
-        const desc = document.getElementById("desc-" + id);
-
-        if (desc.scrollHeight > desc.clientHeight + 1) {
-            btn.style.display = "inline";
-        }
-
-        btn.addEventListener("click", function () {
-            desc.classList.toggle("expanded");
-            btn.textContent = desc.classList.contains("expanded")
-                ? "Voir moins"
-                : "Voir plus";
-        });
-    });
-});
-</script>
 {% endblock %}
