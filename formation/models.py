@@ -60,6 +60,7 @@ class FormationDetail(models.Model):
         blank=True,
         verbose_name="Ce que vous apprendrez"
     )
+    competences_a_developper = models.TextField(blank=True, verbose_name="Compétences à développer")
 
     public_cible = models.TextField(
         blank=True,
