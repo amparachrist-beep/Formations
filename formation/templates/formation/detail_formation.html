@@ -243,6 +243,22 @@
         transform: translateY(0);
     }
 
+        /* Style pour la description avec linebreaks */
+    .description-content {
+        line-height: 1.7;
+        font-size: 1rem;
+        color: var(--text-secondary);
+    }
+
+    .description-content p {
+        margin-bottom: 1rem;
+    }
+
+    .description-content br {
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
         .formation-hero h1 {
@@ -276,10 +292,13 @@
                 </div>
 
                 <div class="hero-buttons">
-                    <a href="{% url 'ajouter_panier' formation.id %}" class="btn-buy">
-                        <i class="bi bi-cart-check"></i> Acheter maintenant
-                    </a>
-                    <a href="https://wa.me/22500000000?text=Bonjour%2C%20je%20souhaite%20avoir%20plus%20d%27informations%20sur%20la%20formation%20{{ formation.titre|urlencode }}"
+                    <form method="post" action="{% url 'ajouter_panier' formation.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-buy" style="border: none; cursor: pointer;">
+                            <i class="bi bi-cart-check"></i> Acheter maintenant
+                        </button>
+                    </form>
+                    <a href="https://wa.me/242061814279?text=Bonjour%2C%20je%20souhaite%20avoir%20plus%20d%27informations%20sur%20la%20formation%20{{ formation.titre|urlencode }}"
                        class="btn-whatsapp" target="_blank">
                         <i class="bi bi-whatsapp"></i> Poser une question sur WhatsApp
                     </a>
@@ -295,7 +314,9 @@
             <!-- Description complète -->
             <div class="formation-section">
                 <h2>Description complète</h2>
-                <p>{{ formation.detail.description_complete|default:formation.description }}</p>
+                <div class="description-content">
+                    {{ formation.detail.description_complete|default:formation.description|linebreaks }}
+                </div>
             </div>
 
             <!-- Ce que vous apprendrez (depuis FormationDetail) -->
@@ -432,10 +453,13 @@
                     <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem;">
                         {{ formation.prix }} FCFA
                     </div>
-                    <a href="{% url 'ajouter_panier' formation.id %}" class="btn-buy" style="display: block; text-align: center; margin-bottom: 1rem;">
-                        <i class="bi bi-cart-check"></i> Acheter maintenant
-                    </a>
-                    <a href="https://wa.me/22500000000" class="btn-whatsapp" style="display: flex; justify-content: center;">
+                    <form method="post" action="{% url 'ajouter_panier' formation.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-buy" style="border: none; cursor: pointer;">
+                            <i class="bi bi-cart-check"></i> Acheter maintenant
+                        </button>
+                    </form>
+                    <a href="https://wa.me/242061814279" class="btn-whatsapp" style="display: flex; justify-content: center;">
                         <i class="bi bi-whatsapp"></i> Question ?
                     </a>
                     <hr>
