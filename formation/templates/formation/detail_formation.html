@@ -294,13 +294,23 @@
         <div class="col-lg-8">
             <!-- Description complète -->
             <div class="formation-section">
-                <h2>📚 Description complète</h2>
+                <h2>Description complète</h2>
                 <p>{{ formation.detail.description_complete|default:formation.description }}</p>
             </div>
 
-            <!-- Compétences développées -->
+            <!-- Ce que vous apprendrez (depuis FormationDetail) -->
+            {% if formation.detail.ce_que_vous_apprenez %}
             <div class="formation-section">
-                <h2>🎯 Les compétences que vous allez développer</h2>
+                <h2>Ce que vous allez apprendre</h2>
+                <div class="skills-grid">
+                    {{ formation.detail.ce_que_vous_apprenez|linebreaks }}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Compétences développées (depuis Formation.competences) -->
+            <div class="formation-section">
+                <h2>Les compétences que vous allez développer</h2>
                 <div class="skills-grid">
                     {% for competence in formation.competences.all %}
                         <div class="skill-item">
@@ -324,9 +334,18 @@
                 </div>
             </div>
 
-            <!-- Accompagnement PREMIUM -->
+            <!-- Accompagnement (depuis FormationDetail) -->
+            {% if formation.detail.accompagnement %}
             <div class="formation-section">
-                <h2>🤝 Votre accompagnement premium</h2>
+                <h2>Accompagnement inclus</h2>
+                <div class="accompagnement-box">
+                    {{ formation.detail.accompagnement|linebreaks }}
+                </div>
+            </div>
+            {% else %}
+            <!-- Fallback si aucun accompagnement dans la BD -->
+            <div class="formation-section">
+                <h2>Votre accompagnement premium</h2>
                 <div class="accompagnement-box">
                     <ul>
                         <li><i class="bi bi-whatsapp"></i> Support WhatsApp dédié 7j/7</li>
@@ -337,6 +356,7 @@
                     </ul>
                 </div>
             </div>
+            {% endif %}
 
             <!-- À qui s'adresse cette formation -->
             <div class="formation-section">
@@ -356,34 +376,37 @@
 
             <!-- Bonus exclusifs -->
             <div class="formation-section">
-                <h2>🎁 Bonus exclusifs</h2>
-                <div class="bonus-item">
-                    <i class="bi bi-file-earmark-pdf"></i>
-                    <div>
-                        <strong>Kit de ressources téléchargeables</strong>
-                        <p style="margin: 0; font-size: 0.875rem;">Templates, checklists et guides pratiques</p>
+                <h2>Bonus exclusifs</h2>
+                {% if formation.detail.bonus %}
+                    {{ formation.detail.bonus|linebreaks }}
+                {% else %}
+                    <div class="bonus-item">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                        <div>
+                            <strong>Kit de ressources téléchargeables</strong>
+                            <p style="margin: 0; font-size: 0.875rem;">Templates, checklists et guides pratiques</p>
+                        </div>
                     </div>
-                </div>
-                <div class="bonus-item">
-                    <i class="bi bi-people"></i>
-                    <div>
-                        <strong>Communauté privée d'élite</strong>
-                        <p style="margin: 0; font-size: 0.875rem;">Échanges avec d'autres apprenants et experts</p>
+                    <div class="bonus-item">
+                        <i class="bi bi-people"></i>
+                        <div>
+                            <strong>Communauté privée d'élite</strong>
+                            <p style="margin: 0; font-size: 0.875rem;">Échanges avec d'autres apprenants et experts</p>
+                        </div>
                     </div>
-                </div>
-                <div class="bonus-item">
-                    <i class="bi bi-diagram-3"></i>
-                    <div>
-                        <strong>Mises à jour à vie</strong>
-                        <p style="margin: 0; font-size: 0.875rem;">Accès aux nouvelles versions sans frais</p>
+                    <div class="bonus-item">
+                        <i class="bi bi-diagram-3"></i>
+                        <div>
+                            <strong>Mises à jour à vie</strong>
+                            <p style="margin: 0; font-size: 0.875rem;">Accès aux nouvelles versions sans frais</p>
+                        </div>
                     </div>
-                </div>
-                <p style="margin-top: 1rem;">{{ formation.detail.bonus|default:"" }}</p>
+                {% endif %}
             </div>
 
             <!-- Témoignages -->
             <div class="formation-section">
-                <h2>💬 Ce que nos apprenants disent</h2>
+                <h2>Ce que nos apprenants disent</h2>
                 <div class="testimonials">
                     <div class="testimonial-card">
                         <p>"Une formation exceptionnelle ! L'accompagnement WhatsApp m'a sauvé plusieurs fois."</p>
@@ -443,7 +466,6 @@
         </div>
     {% endif %}
 </div>
-
 <!-- Lightbox simple -->
 <script>
 document.querySelectorAll('.gallery-item').forEach(item => {
