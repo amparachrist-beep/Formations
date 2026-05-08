@@ -40,7 +40,60 @@ class Formation(models.Model):
     def __str__(self):
         return self.titre
 
+class FormationDetail(models.Model):
+    formation = models.OneToOneField(
+        Formation,
+        on_delete=models.CASCADE,
+        related_name='detail'
+    )
 
+    description_complete = models.TextField(
+        verbose_name="Description complète"
+    )
+
+    accompagnement = models.TextField(
+        blank=True,
+        verbose_name="Accompagnement"
+    )
+
+    ce_que_vous_apprenez = models.TextField(
+        blank=True,
+        verbose_name="Ce que vous apprendrez"
+    )
+
+    public_cible = models.TextField(
+        blank=True,
+        verbose_name="Public cible"
+    )
+
+    bonus = models.TextField(
+        blank=True,
+        verbose_name="Bonus"
+    )
+
+    def __str__(self):
+        return f"Détail - {self.formation.titre}"
+
+
+
+class FormationImage(models.Model):
+    formation = models.ForeignKey(
+        Formation,
+        on_delete=models.CASCADE,
+        related_name='images'
+    )
+
+    image = models.ImageField(
+        upload_to='formation/details/'
+    )
+
+    titre = models.CharField(
+        max_length=200,
+        blank=True
+    )
+
+    def __str__(self):
+        return self.formation.titre
 class Client(models.Model):
     nom_complet = models.CharField(max_length=200, verbose_name="Nom complet")
     whatsapp = models.CharField(max_length=20, verbose_name="Numéro WhatsApp")

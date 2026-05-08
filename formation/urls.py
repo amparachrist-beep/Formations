@@ -11,4 +11,9 @@ urlpatterns = [
     path('paiement/choix/<int:commande_id>/', views.choix_paiement_view, name='choix_paiement'),
     path('confirmation/', views.confirmation_view, name='confirmation'),
     path('_create_admin/', views.create_superuser_temp, name='create_admin_temp'),
+    path(
+        'formation/<int:id>/',
+        views.detail_formation,
+        name='detail_formation'
+    ),
 ]

@@ -196,3 +196,23 @@ def create_superuser_temp(request):
         """)
     except Exception as e:
         return HttpResponse(f"Erreur : {e}")
+
+
+# views.py
+
+from django.shortcuts import render, get_object_or_404
+from .models import Formation
+
+
+def detail_formation(request, id):
+    formation = get_object_or_404(Formation, id=id)
+
+    context = {
+        'formation': formation,
+    }
+
+    return render(
+        request,
+        'formations/detail_formation.html',
+        context
+    )

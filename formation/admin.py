@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from .models import Formation, Client, Commande
 from .utils import envoyer_acces_formation_email
-
+from .models import FormationDetail, FormationImage
 
 # ==================== FORMATION ====================
 
@@ -151,3 +151,43 @@ class CommandeAdmin(admin.ModelAdmin):
         )
 
     marquer_acces_envoye.short_description = "📧 Marquer les accès comme envoyés (sans email)"
+
+
+
+
+@admin.register(FormationDetail)
+class FormationDetailAdmin(admin.ModelAdmin):
+    list_display = (
+        'formation',
+    )
+
+    search_fields = (
+        'formation__titre',
+        'description_complete',
+    )
+
+    list_select_related = (
+        'formation',
+    )
+
+
+@admin.register(FormationImage)
+class FormationImageAdmin(admin.ModelAdmin):
+    list_display = (
+        'formation',
+        'titre',
+        'image',
+    )
+
+    search_fields = (
+        'formation__titre',
+        'titre',
+    )
+
+    list_filter = (
+        'formation',
+    )
+
+    list_select_related = (
+        'formation',
+    )

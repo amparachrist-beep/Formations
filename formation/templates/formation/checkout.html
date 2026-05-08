@@ -1,3 +1,5 @@
+<!-- templates/formations/checkout.html -->
+
 {% extends 'formation/base.html' %}
 
 {% block title %}Finaliser votre commande{% endblock %}
@@ -87,6 +89,7 @@
         background: #fff;
         border: 1px solid var(--border-color);
         padding: 2rem;
+        border-radius: 8px;
     }
 
     .checkout-form h2 {
@@ -127,6 +130,7 @@
         width: 100%;
         padding: 0.875rem;
         border: 1px solid var(--border-color);
+        border-radius: 4px;
         font-size: 1rem;
         transition: border-color 0.2s;
     }
@@ -154,20 +158,128 @@
         display: block;
     }
 
-    .input-group-icon {
-        position: relative;
+    /* Garanties améliorées */
+    .guarantees {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-left: 4px solid var(--success-color);
+        border-radius: 8px;
     }
 
-    .input-group-icon i {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
+    .guarantees h4 {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+
+    .guarantee-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+        font-size: 0.875rem;
+        color: var(--text-primary);
+    }
+
+    .guarantee-item i {
+        color: var(--success-color);
+        font-size: 1.125rem;
+    }
+
+    /* Moyens de paiement */
+    .payment-methods-section {
+        margin: 1.5rem 0;
+    }
+
+    .payment-methods-section h4 {
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
         color: var(--text-secondary);
     }
 
-    .input-group-icon .form-control-custom {
-        padding-left: 3rem;
+    .payment-methods-list {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .payment-badge {
+        padding: 0.5rem 1rem;
+        background: #f8f9fa;
+        border: 1px solid var(--border-color);
+        border-radius: 50px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Bouton de paiement amélioré */
+    .btn-payment {
+        background: var(--primary-color);
+        color: #fff;
+        width: 100%;
+        padding: 1.25rem;
+        font-weight: 700;
+        font-size: 1.125rem;
+        border: none;
+        border-radius: 8px;
+        margin-top: 1.5rem;
+        transition: all 0.2s;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+
+    .btn-payment:hover {
+        background: var(--primary-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(86,36,208,.2);
+    }
+
+    .btn-payment i {
+        font-size: 1.25rem;
+    }
+
+    /* Phrase d'urgence */
+    .urgency-text {
+        text-align: center;
+        margin: 1rem 0;
+        padding: 0.75rem;
+        background: #fff8e1;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        color: var(--text-primary);
+    }
+
+    .urgency-text i {
+        color: #ff9800;
+    }
+
+    /* Secure payment badge */
+    .secure-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        margin-top: 1rem;
+        background: #f8f9fa;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+
+    .secure-badge i {
+        color: var(--success-color);
+        font-size: 1.25rem;
     }
 
     /* Résumé de commande */
@@ -175,6 +287,7 @@
         background: #fff;
         border: 1px solid var(--border-color);
         padding: 2rem;
+        border-radius: 8px;
         position: sticky;
         top: 24px;
         height: fit-content;
@@ -204,6 +317,7 @@
         object-fit: cover;
         flex-shrink: 0;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 4px;
     }
 
     .recap-details {
@@ -233,76 +347,6 @@
         font-size: 1.25rem;
         font-weight: 700;
         color: var(--text-primary);
-    }
-
-    /* Bouton de paiement */
-    .btn-payment {
-        background: var(--primary-color);
-        color: #fff;
-        width: 100%;
-        padding: 1rem;
-        font-weight: 700;
-        font-size: 1.125rem;
-        border: none;
-        margin-top: 1.5rem;
-        transition: all 0.2s;
-    }
-
-    .btn-payment:hover {
-        background: var(--primary-hover);
-        transform: scale(1.02);
-    }
-
-    .btn-payment i {
-        margin-right: 0.5rem;
-    }
-
-    /* Garanties */
-    .guarantees {
-        background: var(--bg-light);
-        padding: 1.5rem;
-        margin-top: 1.5rem;
-        border-left: 4px solid var(--success-color);
-    }
-
-    .guarantees h4 {
-        font-size: 1rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        color: var(--text-primary);
-    }
-
-    .guarantee-item {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 0.5rem 0;
-        font-size: 0.875rem;
-        color: var(--text-secondary);
-    }
-
-    .guarantee-item i {
-        color: var(--success-color);
-        font-size: 1.125rem;
-    }
-
-    /* Secure payment badge */
-    .secure-badge {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        padding: 1rem;
-        margin-top: 1rem;
-        background: #f8f9fa;
-        border: 1px solid var(--border-color);
-        font-size: 0.875rem;
-        color: var(--text-secondary);
-    }
-
-    .secure-badge i {
-        color: var(--success-color);
-        font-size: 1.25rem;
     }
 
     /* Responsive */
@@ -386,9 +430,7 @@
                         <label for="id_nom_complet">
                             Nom complet <span>*</span>
                         </label>
-                        <div class="input-group-icon">
-                            {{ form.nom_complet }}
-                        </div>
+                        <input type="text" name="nom_complet" id="id_nom_complet" class="form-control-custom" placeholder="Jean Dupont" required>
                         {% if form.nom_complet.errors %}
                             <span class="form-error">{{ form.nom_complet.errors.0 }}</span>
                         {% endif %}
@@ -399,9 +441,7 @@
                         <label for="id_email">
                             Adresse email <span>*</span>
                         </label>
-                        <div class="input-group-icon">
-                            {{ form.email }}
-                        </div>
+                        <input type="email" name="email" id="id_email" class="form-control-custom" placeholder="jean@exemple.com" required>
                         {% if form.email.errors %}
                             <span class="form-error">{{ form.email.errors.0 }}</span>
                         {% endif %}
@@ -412,9 +452,7 @@
                         <label for="id_whatsapp">
                             Numéro WhatsApp <span>*</span>
                         </label>
-                        <div class="input-group-icon">
-                            {{ form.whatsapp }}
-                        </div>
+                        <input type="tel" name="whatsapp" id="id_whatsapp" class="form-control-custom" placeholder="+225 07 XX XX XX XX" required>
                         {% if form.whatsapp.errors %}
                             <span class="form-error">{{ form.whatsapp.errors.0 }}</span>
                         {% endif %}
@@ -422,41 +460,65 @@
                     </div>
                 </div>
 
+                <!-- Moyens de paiement (AJOUTÉ) -->
+                <div class="payment-methods-section">
+                    <h4>💳 Moyens de paiement acceptés :</h4>
+                    <div class="payment-methods-list">
+                        <span class="payment-badge">📱 Airtel Money</span>
+                        <span class="payment-badge">📱 MTN Mobile Money</span>
+                        <span class="payment-badge">💳 Carte bancaire (Visa/Mastercard)</span>
+                        <span class="payment-badge">🏦 Wave</span>
+                    </div>
+                </div>
+
+                <!-- Garanties (AMÉLIORÉES) -->
                 <div class="guarantees">
-                    <h4>Nos garanties</h4>
+                    <h4>✅ Nos garanties</h4>
                     <div class="guarantee-item">
                         <i class="bi bi-shield-check"></i>
                         <span>Paiement 100% sécurisé via Moneroo</span>
                     </div>
                     <div class="guarantee-item">
-                        <i class="bi bi-check-circle"></i>
+                        <i class="bi bi-clock-history"></i>
                         <span>Accès envoyé immédiatement après paiement</span>
                     </div>
                     <div class="guarantee-item">
                         <i class="bi bi-headset"></i>
-                        <span>Support client disponible 7j/7</span>
+                        <span>Support WhatsApp disponible 7j/7</span>
                     </div>
                     <div class="guarantee-item">
                         <i class="bi bi-infinity"></i>
-                        <span>Accès à vie aux formations</span>
+                        <span>Accès à vie aux formations + mises à jour</span>
+                    </div>
+                    <div class="guarantee-item">
+                        <i class="bi bi-arrow-repeat"></i>
+                        <span>Garantie satisfait ou remboursé 7 jours</span>
                     </div>
                 </div>
 
+                <!-- Bouton émotionnel (AMÉLIORÉ) -->
                 <button type="submit" class="btn-payment">
-                    <i class="bi bi-lock-fill"></i>
-                    Procéder au paiement sécurisé
+                    <i class="bi bi-unlock-fill"></i>
+                    Débloquer mon accès — {{ total }} FCFA
                 </button>
 
+                <!-- Phrase d'urgence (AJOUTÉE) -->
+                <div class="urgency-text">
+                    <i class="bi bi-fire"></i>
+                    Rejoignez les <strong>{{ nb_apprenants }}+ apprenants</strong> qui développent déjà leurs compétences
+                </div>
+
+                <!-- Badge sécurité -->
                 <div class="secure-badge">
-                    <i class="bi bi-shield-fill-check"></i>
-                    <span>Vos données sont protégées et sécurisées</span>
+                    <i class="bi bi-shield-lock-fill"></i>
+                    <span>Paiement 100% sécurisé - Vos données sont protégées</span>
                 </div>
             </form>
         </div>
 
         <!-- Résumé -->
         <div class="order-recap">
-            <h2>Récapitulatif</h2>
+            <h2>🛒 Récapitulatif</h2>
 
             {% for formation in formations %}
                 <div class="recap-item">
@@ -475,21 +537,15 @@
             {% endfor %}
 
             <div class="recap-total">
-                <span>Total</span>
+                <span>Total à payer</span>
                 <span>{{ total }} FCFA</span>
             </div>
 
-            <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
-                <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
-                    <strong>Méthodes de paiement acceptées :</strong>
-                </p>
-                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                    <span style="padding: 0.5rem 0.75rem; background: var(--bg-light); font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border-color);">
-                        💳 Mobile Money
-                    </span>
-                    <span style="padding: 0.5rem 0.75rem; background: var(--bg-light); font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border-color);">
-                        💳 Carte bancaire
-                    </span>
+            <!-- Livraison -->
+            <div style="margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem;">
+                    <i class="bi bi-envelope-paper"></i>
+                    <span>Livraison : Accès immédiat par email + WhatsApp</span>
                 </div>
             </div>
         </div>
@@ -521,6 +577,13 @@ document.getElementById('checkout-form').addEventListener('submit', function(e) 
     if (!emailRegex.test(email)) {
         e.preventDefault();
         alert('Veuillez entrer une adresse email valide');
+        return false;
+    }
+
+    // Validation whatsapp (optionnel mais utile)
+    if (whatsapp.length < 8) {
+        e.preventDefault();
+        alert('Veuillez entrer un numéro WhatsApp valide');
         return false;
     }
 });

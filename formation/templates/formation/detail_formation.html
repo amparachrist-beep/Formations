@@ -1,0 +1,478 @@
+<!-- templates/formations/detail_formation.html -->
+
+{% extends 'formation/base.html' %}
+
+{% block title %}{{ formation.titre }} - Formation professionnelle{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Header de la formation */
+    .formation-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+    }
+
+    .formation-hero h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+    }
+
+    .formation-hero .price {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 1.5rem 0;
+    }
+
+    .price-tag {
+        background: rgba(255,255,255,0.2);
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        border-radius: 50px;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+    }
+
+    .btn-buy {
+        background: #fff;
+        color: #667eea;
+        padding: 1rem 2rem;
+        font-weight: 700;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: transform 0.2s;
+    }
+
+    .btn-buy:hover {
+        transform: translateY(-2px);
+        color: #667eea;
+    }
+
+    .btn-whatsapp {
+        background: #25D366;
+        color: #fff;
+        padding: 1rem 2rem;
+        font-weight: 700;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-whatsapp:hover {
+        background: #128C7E;
+        color: #fff;
+    }
+
+    /* Sections de la formation */
+    .formation-section {
+        background: #fff;
+        border: 1px solid var(--border-color);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border-radius: 8px;
+    }
+
+    .formation-section h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+    }
+
+    .formation-section h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 1.5rem 0 1rem;
+        color: var(--text-primary);
+    }
+
+    /* Accompagnement box */
+    .accompagnement-box {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        padding: 2rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+    }
+
+    .accompagnement-box ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .accompagnement-box li {
+        padding: 0.75rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1rem;
+    }
+
+    .accompagnement-box li i {
+        color: #25D366;
+        font-size: 1.25rem;
+    }
+
+    /* Témoignages */
+    .testimonials {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .testimonial-card {
+        background: #f8f9fa;
+        border-left: 4px solid #25D366;
+        padding: 1.5rem;
+        border-radius: 8px;
+    }
+
+    .testimonial-card p {
+        font-style: italic;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+    }
+
+    .testimonial-card .author {
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    /* Grille des compétences */
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }
+
+    .skill-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .skill-item i {
+        color: var(--success-color);
+        font-size: 1.25rem;
+    }
+
+    /* Public cible */
+    .target-audience {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }
+
+    .audience-tag {
+        background: var(--primary-color);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.875rem;
+    }
+
+    /* Bonus */
+    .bonus-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: #fff8e1;
+        border-left: 4px solid #ffc107;
+        margin-bottom: 1rem;
+    }
+
+    .bonus-item i {
+        color: #ffc107;
+        font-size: 1.5rem;
+    }
+
+    /* Galerie améliorée */
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+
+    .gallery-item:hover img {
+        transform: scale(1.1);
+    }
+
+    .gallery-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.7);
+        color: #fff;
+        padding: 0.5rem;
+        text-align: center;
+        transform: translateY(100%);
+        transition: transform 0.3s;
+    }
+
+    .gallery-item:hover .gallery-overlay {
+        transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .formation-hero h1 {
+            font-size: 1.75rem;
+        }
+
+        .hero-buttons {
+            flex-direction: column;
+        }
+
+        .btn-buy, .btn-whatsapp {
+            text-align: center;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero section -->
+<div class="formation-hero">
+    <div class="container-udemy">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1>{{ formation.titre }}</h1>
+                <p style="font-size: 1.25rem; opacity: 0.95;">{{ formation.description|truncatewords:20 }}</p>
+
+                <div class="price">
+                    <span class="price-tag">{{ formation.prix }} FCFA</span>
+                    <span style="font-size: 1rem; opacity: 0.9;"> - Accès à vie</span>
+                </div>
+
+                <div class="hero-buttons">
+                    <a href="{% url 'checkout_formation' formation.id %}" class="btn-buy">
+                        <i class="bi bi-cart-check"></i> Acheter maintenant
+                    </a>
+                    <a href="https://wa.me/22500000000?text=Bonjour%2C%20je%20souhaite%20avoir%20plus%20d%27informations%20sur%20la%20formation%20{{ formation.titre|urlencode }}"
+                       class="btn-whatsapp" target="_blank">
+                        <i class="bi bi-whatsapp"></i> Poser une question sur WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-udemy">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Description complète -->
+            <div class="formation-section">
+                <h2>📚 Description complète</h2>
+                <p>{{ formation.detail.description_complete|default:formation.description }}</p>
+            </div>
+
+            <!-- Compétences développées -->
+            <div class="formation-section">
+                <h2>🎯 Les compétences que vous allez développer</h2>
+                <div class="skills-grid">
+                    {% for competence in formation.competences.all %}
+                        <div class="skill-item">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>{{ competence.nom }}</span>
+                        </div>
+                    {% empty %}
+                        <div class="skill-item">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>Maîtrise pratique des concepts clés</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>Application concrète des techniques</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span>Autonomie sur les projets réels</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Accompagnement PREMIUM -->
+            <div class="formation-section">
+                <h2>🤝 Votre accompagnement premium</h2>
+                <div class="accompagnement-box">
+                    <ul>
+                        <li><i class="bi bi-whatsapp"></i> Support WhatsApp dédié 7j/7</li>
+                        <li><i class="bi bi-person-check"></i> Suivi personnalisé par un expert</li>
+                        <li><i class="bi bi-question-circle"></i> Aide en cas de blocage - Réponse sous 24h</li>
+                        <li><i class="bi bi-trophy"></i> Conseils pratiques et retours d'expérience</li>
+                        <li><i class="bi bi-calendar-check"></i> Sessions de coaching mensuelles incluses</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- À qui s'adresse cette formation -->
+            <div class="formation-section">
+                <h2>👥 À qui s'adresse cette formation ?</h2>
+                <div class="target-audience">
+                    {% for cible in formation.public_cible_list %}
+                        <span class="audience-tag">{{ cible }}</span>
+                    {% empty %}
+                        <span class="audience-tag">Débutants motivés</span>
+                        <span class="audience-tag">Professionnels en reconversion</span>
+                        <span class="audience-tag">Entrepreneurs</span>
+                        <span class="audience-tag">Étudiants</span>
+                    {% endfor %}
+                </div>
+                <p style="margin-top: 1rem;">{{ formation.detail.public_cible|default:"Cette formation est conçue pour tous ceux qui souhaitent acquérir des compétences pratiques et immédiatement utilisables." }}</p>
+            </div>
+
+            <!-- Bonus exclusifs -->
+            <div class="formation-section">
+                <h2>🎁 Bonus exclusifs</h2>
+                <div class="bonus-item">
+                    <i class="bi bi-file-earmark-pdf"></i>
+                    <div>
+                        <strong>Kit de ressources téléchargeables</strong>
+                        <p style="margin: 0; font-size: 0.875rem;">Templates, checklists et guides pratiques</p>
+                    </div>
+                </div>
+                <div class="bonus-item">
+                    <i class="bi bi-people"></i>
+                    <div>
+                        <strong>Communauté privée d'élite</strong>
+                        <p style="margin: 0; font-size: 0.875rem;">Échanges avec d'autres apprenants et experts</p>
+                    </div>
+                </div>
+                <div class="bonus-item">
+                    <i class="bi bi-diagram-3"></i>
+                    <div>
+                        <strong>Mises à jour à vie</strong>
+                        <p style="margin: 0; font-size: 0.875rem;">Accès aux nouvelles versions sans frais</p>
+                    </div>
+                </div>
+                <p style="margin-top: 1rem;">{{ formation.detail.bonus|default:"" }}</p>
+            </div>
+
+            <!-- Témoignages -->
+            <div class="formation-section">
+                <h2>💬 Ce que nos apprenants disent</h2>
+                <div class="testimonials">
+                    <div class="testimonial-card">
+                        <p>"Une formation exceptionnelle ! L'accompagnement WhatsApp m'a sauvé plusieurs fois."</p>
+                        <div class="author">- Jean K., Abidjan</div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p>"Je recommande à 100%. J'ai doublé mon chiffre d'affaires grâce à cette formation."</p>
+                        <div class="author">- Marie L., Douala</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar sticky -->
+        <div class="col-lg-4">
+            <div style="position: sticky; top: 24px;">
+                {% if formation.image %}
+                    <img src="{{ formation.image.url }}" alt="{{ formation.titre }}" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
+                {% endif %}
+
+                <!-- CTA rapide -->
+                <div class="formation-section" style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem;">
+                        {{ formation.prix }} FCFA
+                    </div>
+                    <a href="{% url 'checkout_formation' formation.id %}" class="btn-buy" style="display: block; text-align: center; margin-bottom: 1rem;">
+                        <i class="bi bi-cart-check"></i> Acheter maintenant
+                    </a>
+                    <a href="https://wa.me/22500000000" class="btn-whatsapp" style="display: flex; justify-content: center;">
+                        <i class="bi bi-whatsapp"></i> Question ?
+                    </a>
+                    <hr>
+                    <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                        <i class="bi bi-shield-check"></i> Paiement sécurisé<br>
+                        <i class="bi bi-clock-history"></i> Accès immédiat<br>
+                        <i class="bi bi-arrow-repeat"></i> Garantie 7 jours
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Galerie -->
+    {% if formation.images.all %}
+        <div class="formation-section">
+            <h2>📸 Aperçu de la formation</h2>
+            <div class="gallery">
+                {% for image in formation.images.all %}
+                    <div class="gallery-item">
+                        <img src="{{ image.image.url }}" alt="{{ image.titre }}">
+                        <div class="gallery-overlay">
+                            {{ image.titre }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Lightbox simple -->
+<script>
+document.querySelectorAll('.gallery-item').forEach(item => {
+    item.addEventListener('click', function() {
+        const imgSrc = this.querySelector('img').src;
+        const modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = 0;
+        modal.style.left = 0;
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0,0,0,0.9)';
+        modal.style.zIndex = 9999;
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+        modal.style.cursor = 'pointer';
+
+        const img = document.createElement('img');
+        img.src = imgSrc;
+        img.style.maxWidth = '90%';
+        img.style.maxHeight = '90%';
+        img.style.borderRadius = '8px';
+
+        modal.appendChild(img);
+        document.body.appendChild(modal);
+
+        modal.addEventListener('click', () => modal.remove());
+    });
+});
+</script>
+{% endblock %}
