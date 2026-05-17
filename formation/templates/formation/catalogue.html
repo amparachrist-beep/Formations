@@ -6,51 +6,210 @@
 
 {% block extra_css %}
 <style>
-    .hero-section {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* Variables design modernes */
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        --primary-color: #6366f1;
+        --primary-hover: #4f46e5;
+        --success-color: #10b981;
+        --success-hover: #059669;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --border-light: #e5e7eb;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Bannière promotionnelle */
+    .promo-banner {
+        background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
         color: #fff;
-        padding: 4rem 0;
+        padding: 1rem 0;
+        position: relative;
+        overflow: hidden;
+        animation: slideDown 0.5s ease-out;
+    }
+
+    .promo-banner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { left: -100%; }
+        100% { left: 100%; }
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-100%);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .promo-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .promo-text {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .promo-icon {
+        font-size: 2rem;
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+
+    .promo-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .promo-description {
+        font-size: 0.875rem;
+        opacity: 0.95;
+        margin: 0;
+    }
+
+    .promo-price {
+        font-size: 1.5rem;
+        font-weight: 800;
+        background: rgba(255,255,255,0.2);
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+    }
+
+    .promo-date {
+        font-size: 0.75rem;
+        background: rgba(0,0,0,0.2);
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .promo-cta {
+        background: #fff;
+        color: #ef4444;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .promo-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    /* Hero section modernisée */
+    .hero-section {
+        background: var(--primary-gradient);
+        color: #fff;
+        padding: 5rem 0;
         margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+        background-size: cover;
+        opacity: 0.1;
     }
 
     .hero-section h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
+        font-size: 3rem;
+        font-weight: 800;
         margin-bottom: 1rem;
+        background: linear-gradient(135deg, #fff 0%, #e0e7ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     .hero-section p {
         font-size: 1.25rem;
         opacity: 0.95;
-        max-width: 700px;
+        max-width: 600px;
+        line-height: 1.6;
     }
 
-    .results-count {
-        font-size: 0.95rem;
-        color: var(--text-secondary);
-        margin-bottom: 1.5rem;
-    }
-
+    /* Cartes formations modernisées */
     .formations-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 3rem;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
     }
 
     .formation-card {
         background: #fff;
-        border: 1px solid var(--border-color);
+        border-radius: 16px;
         overflow: hidden;
-        transition: all 0.2s;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid var(--border-light);
+        position: relative;
     }
 
     .formation-card:hover {
-        box-shadow: 0 2px 4px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.08);
-        transform: translateY(-2px);
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+        border-color: transparent;
+    }
+
+    /* Badge populaire */
+    .popular-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: var(--primary-gradient);
+        color: #fff;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        z-index: 2;
+        box-shadow: var(--shadow-sm);
     }
 
     .formation-image-wrapper {
@@ -58,7 +217,7 @@
         width: 100%;
         padding-top: 56.25%;
         overflow: hidden;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--primary-gradient);
     }
 
     .formation-image {
@@ -67,72 +226,83 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .formation-card:hover .formation-image {
+        transform: scale(1.05);
     }
 
     .formation-content {
-        padding: 1rem;
+        padding: 1.5rem;
         flex: 1;
         display: flex;
         flex-direction: column;
     }
 
     .formation-title {
-        font-size: 1rem;
+        font-size: 1.125rem;
         font-weight: 700;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
+        color: var(--text-primary);
+        line-height: 1.4;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
 
+    /* Catégorie */
+    .formation-category {
+        display: inline-block;
+        background: #f3f4f6;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        margin-bottom: 0.75rem;
+        font-weight: 500;
+    }
+
     .formation-description {
         font-size: 0.875rem;
         color: var(--text-secondary);
-        line-height: 1.7;
-        margin-bottom: 0.5rem;
-        max-height: 4.9em;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
         overflow: hidden;
     }
 
-    .formation-description.expanded {
-        max-height: none;
-        overflow: visible;
-    }
-
-    .formation-description p {
-        margin: 0 0 0.4rem;
-    }
-
-    .voir-plus-link {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: var(--primary-color);
-        text-decoration: none;
-        background: none;
-        border: none;
-        padding: 0;
-        align-self: flex-start;
-        cursor: pointer;
-        display: inline-block;
-    }
-
-    .voir-plus-link:hover {
-        text-decoration: underline;
-    }
-
-    .rating {
+    /* Section rating améliorée */
+    .rating-section {
         display: flex;
         align-items: center;
-        gap: 0.25rem;
-        font-size: 0.875rem;
-        margin: 0.5rem 0;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
     }
 
-    .rating-value,
     .rating-stars {
-        color: #b4690e;
+        display: flex;
+        align-items: center;
+        gap: 0.125rem;
+    }
+
+    .star {
+        color: #fbbf24;
+        font-size: 0.875rem;
+    }
+
+    .star-empty {
+        color: #d1d5db;
+    }
+
+    .rating-value {
         font-weight: 700;
+        color: var(--text-primary);
+        font-size: 0.875rem;
     }
 
     .rating-count {
@@ -140,147 +310,453 @@
         color: var(--text-secondary);
     }
 
+    /* Éléments de confiance - NOUVEAU */
+    .trust-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin: 1rem 0;
+        padding: 0.75rem 0;
+        border-top: 1px solid var(--border-light);
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .trust-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        transition: all 0.2s;
+    }
+
+    .trust-item:hover {
+        color: var(--success-color);
+        transform: translateX(2px);
+    }
+
+    .trust-icon {
+        font-size: 0.875rem;
+    }
+
+    .trust-icon.success {
+        color: var(--success-color);
+    }
+
+    /* Prix et CTA */
     .formation-footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-top: 0.75rem;
-        border-top: 1px solid var(--border-color);
+        padding-top: 1rem;
         margin-top: auto;
         gap: 1rem;
+        flex-direction: column;
+        align-items: stretch;
     }
 
-    .formation-prix {
-        font-size: 1.25rem;
-        font-weight: 700;
-    }
-
-    .btn-detail {
-        background: var(--primary-color);
-        color: #fff;
-        border: none;
-        padding: 0.5rem 1rem;
-        font-size: 0.875rem;
-        font-weight: 600;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: all 0.2s;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .btn-detail:hover {
-        background: var(--primary-hover);
-        transform: translateY(-1px);
-    }
-
-    .btn-add-cart {
-        background: #28a745;
-        color: #fff;
-        border: none;
-        padding: 0.5rem 1rem;
-        font-size: 0.875rem;
-        font-weight: 600;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .btn-add-cart:hover {
-        background: #218838;
-        transform: translateY(-1px);
-    }
-
-    .footer-buttons {
+    .price-section {
         display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
         gap: 0.5rem;
     }
 
+    .formation-prix {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--primary-color);
+        line-height: 1;
+    }
+
+    .old-price {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        text-decoration: line-through;
+    }
+
+    .price-badge {
+        background: #fef3c7;
+        color: #d97706;
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    /* Boutons modernisés */
+    .btn-discover {
+        background: transparent;
+        color: var(--primary-color);
+        border: 1.5px solid var(--primary-color);
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        flex: 1;
+    }
+
+    .btn-discover:hover {
+        background: var(--primary-color);
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .btn-buy {
+        background: var(--success-color);
+        color: #fff;
+        border: none;
+        padding: 0.625rem 1.25rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        flex: 1;
+    }
+
+    .btn-buy:hover {
+        background: var(--success-hover);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .btn-buy:active {
+        transform: translateY(0);
+    }
+
+    /* Bouton flottant WhatsApp */
+    .whatsapp-float {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 1000;
+        animation: fadeInUp 0.5s ease-out;
+    }
+
+    .whatsapp-button {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        color: #fff;
+        padding: 0.875rem 1.5rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.875rem;
+        box-shadow: var(--shadow-lg);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: none;
+        cursor: pointer;
+    }
+
+    .whatsapp-button:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-xl);
+        gap: 1rem;
+    }
+
+    .whatsapp-icon {
+        width: 24px;
+        height: 24px;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.596 1.978.962 3.149.962 3.178 0 5.767-2.586 5.768-5.766.001-3.18-2.585-5.766-5.768-5.766zm3.392 8.244c-.144.405-.837.775-1.17.824-.266.04-.555.062-.856-.062-.253-.104-.547-.232-.795-.436-.881-.726-1.443-1.754-1.587-2.714-.052-.35-.076-.706.005-1.06.08-.354.274-.66.553-.902.116-.102.23-.19.368-.234.135-.044.293-.057.439-.013.253.076.426.24.553.49.152.296.201.624.229.964.036.447-.066.885-.18 1.317-.122.464.133.877.432 1.211.326.364.744.615 1.188.762.206.068.428.106.635.106.292 0 .557-.108.746-.286.203-.19.331-.445.379-.717.047-.27.021-.547-.032-.811-.079-.394-.281-.746-.55-1.018-.221-.224-.483-.384-.755-.5-.257-.109-.53-.16-.79-.204-.291-.05-.583-.03-.86.058-.272.086-.526.228-.746.423-.329.296-.569.675-.666 1.114-.097.44-.047.898.117 1.32.164.422.438.794.751 1.101.209.204.455.363.725.471.278.112.578.164.881.155.264-.009.529-.062.777-.173.245-.111.474-.264.68-.453.205-.189.384-.408.528-.65.144-.242.252-.504.315-.777.063-.273.08-.555.048-.829-.032-.273-.109-.538-.225-.783-.117-.245-.28-.463-.474-.642-.194-.179-.42-.316-.663-.408-.242-.092-.5-.136-.754-.128-.254.008-.5.052-.726.138-.226.086-.431.216-.607.383-.176.167-.327.369-.44.592-.113.223-.19.464-.227.71-.037.246-.034.498.009.745.043.247.126.482.246.698.12.216.276.407.458.563.182.156.387.277.607.356.22.079.453.113.682.097.229-.016.451-.07.656-.166.205-.096.391-.234.545-.404.154-.17.274-.369.352-.585.078-.216.112-.447.095-.674-.017-.227-.077-.444-.175-.642-.098-.198-.231-.374-.391-.516-.16-.142-.344-.249-.54-.316-.196-.067-.402-.092-.603-.071z"/></svg>') center/contain no-repeat;
+        background-size: contain;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive design amélioré */
     @media (max-width: 768px) {
-        .formation-footer {
+        .promo-content {
             flex-direction: column;
-            align-items: stretch;
-        }
-
-        .footer-buttons {
-            flex-direction: column;
-        }
-
-        .btn-detail, .btn-add-cart {
             text-align: center;
         }
+
+        .promo-text {
+            justify-content: center;
+        }
+
+        .promo-price {
+            font-size: 1.25rem;
+        }
+
+        .hero-section {
+            padding: 3rem 0;
+        }
+
+        .hero-section h1 {
+            font-size: 2rem;
+        }
+
+        .formations-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .btn-group {
+            flex-direction: column;
+        }
+
+        .trust-badges {
+            justify-content: space-between;
+        }
+
+        .trust-item {
+            font-size: 0.7rem;
+        }
+
+        .whatsapp-button {
+            padding: 0.75rem 1.25rem;
+        }
+
+        .whatsapp-button span {
+            display: none;
+        }
+
+        .whatsapp-button {
+            padding: 0.75rem;
+            border-radius: 50%;
+        }
+
+        .whatsapp-icon {
+            margin: 0;
+        }
+    }
+
+    /* Animation de chargement */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .formation-card {
+        animation: fadeIn 0.5s ease-out forwards;
+        opacity: 0;
+    }
+
+    .formation-card:nth-child(1) { animation-delay: 0.1s; }
+    .formation-card:nth-child(2) { animation-delay: 0.2s; }
+    .formation-card:nth-child(3) { animation-delay: 0.3s; }
+    .formation-card:nth-child(4) { animation-delay: 0.4s; }
+    .formation-card:nth-child(5) { animation-delay: 0.5s; }
+    .formation-card:nth-child(6) { animation-delay: 0.6s; }
+
+    /* Compteur promo */
+    .countdown-timer {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .countdown-unit {
+        background: rgba(0,0,0,0.3);
+        padding: 0.25rem 0.5rem;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
     }
 </style>
 {% endblock %}
 
 {% block content %}
+<!-- Bannière promotionnelle -->
+<div class="promo-banner">
+    <div class="container-udemy">
+        <div class="promo-content">
+            <div class="promo-text">
+                <div class="promo-icon">🔥</div>
+                <div>
+                    <div class="promo-title">PROMOTION EXCEPTIONNELLE</div>
+                    <div class="promo-description">
+                        🔥 Toutes les formations à partir de 1000 FCFA seulement pendant 7 jours
+                    </div>
+                </div>
+                <div class="promo-price">À partir de 1000 FCFA</div>
+                <div class="promo-date">
+                    ⏰ Offre valable jusqu'au 25 mai 2026
+                    <div class="countdown-timer" id="countdown">
+                        <span class="countdown-unit">7j</span>
+                    </div>
+                </div>
+            </div>
+            <a href="#formations" class="promo-cta">
+                👉 Commencez votre formation dès aujourd'hui →
+            </a>
+        </div>
+    </div>
+</div>
+
 <div class="hero-section">
     <div class="container-udemy">
-        <h1>Développez vos compétences professionnelles</h1>
-        <p>Découvrez nos formations pratiques et commencez à apprendre dès aujourd'hui</p>
+        <h1>🚀 Apprenez des compétences qui génèrent des revenus</h1>
+        <p>Découvrez nos formations pratiques et transformez votre carrière dès aujourd'hui</p>
     </div>
 </div>
 
-<div class="container-udemy">
-{% if formations %}
-<p class="results-count">
-    <strong>{{ formations|length }}</strong> formation{{ formations|length|pluralize }} disponible{{ formations|length|pluralize }}
-</p>
+<div class="container-udemy" id="formations">
+    {% if formations %}
+    <div class="formations-grid">
+        {% for formation in formations %}
+        <div class="formation-card">
+            {% if forloop.first %}
+            <div class="popular-badge">
+                ⭐ Populaire
+            </div>
+            {% endif %}
 
-<div class="formations-grid">
-{% for formation in formations %}
-<div class="formation-card">
+            <div class="formation-image-wrapper">
+                {% if formation.image %}
+                    <img src="{{ formation.image.url }}" class="formation-image" alt="{{ formation.titre }}" loading="lazy">
+                {% else %}
+                    <div class="formation-image" style="display: flex; align-items: center; justify-content: center; color: white;">
+                        🎓 Formation
+                    </div>
+                {% endif %}
+            </div>
 
-    <div class="formation-image-wrapper">
-        {% if formation.image %}
-            <img src="{{ formation.image.url }}" class="formation-image" alt="{{ formation.titre }}">
-        {% endif %}
-    </div>
+            <div class="formation-content">
+                <h3 class="formation-title">{{ formation.titre }}</h3>
 
-    <div class="formation-content">
-        <h3 class="formation-title">{{ formation.titre }}</h3>
+                <div class="formation-description">
+                    {{ formation.description|striptags|truncatewords:25 }}
+                </div>
 
-        <div class="formation-description" id="desc-{{ formation.id }}">
-            {{ formation.description|linebreaks }}
-        </div>
+                <!-- Éléments de confiance -->
+                <div class="trust-badges">
+                    <div class="trust-item">
+                        <span class="trust-icon success">✅</span>
+                        <span>Accès immédiat</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-icon success">🎓</span>
+                        <span>Certifiante</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-icon success">💬</span>
+                        <span>Support WhatsApp</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-icon success">🔒</span>
+                        <span>Paiement sécurisé</span>
+                    </div>
+                </div>
 
-        <!-- Lien "Voir plus" qui redirige vers la page détail -->
-        <a href="{% url 'detail_formation' formation.id %}" class="voir-plus-link">
-            Voir plus &rarr;
-        </a>
+                <div class="formation-footer">
+                    <div class="price-section">
+                        <div class="formation-prix">{{ formation.prix|floatformat:"0" }} FCFA</div>
+                        <div class="price-badge">💰 Meilleur prix</div>
+                    </div>
 
-        <div class="rating">
-            <span class="rating-value">4.5</span>
-            <span class="rating-stars">
-                ★★★★☆
-            </span>
-            <span class="rating-count">(127)</span>
-        </div>
-
-        <div class="formation-footer">
-            <div class="formation-prix">{{ formation.prix }} FCFA</div>
-
-            <div class="footer-buttons">
-                <a href="{% url 'detail_formation' formation.id %}" class="btn-detail">
-                    Détails
-                </a>
-                <form method="post" action="{% url 'ajouter_panier' formation.id %}" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn-add-cart">
-                        Ajouter
-                    </button>
-                </form>
+                    <div class="btn-group">
+                        <a href="{% url 'detail_formation' formation.id %}" class="btn-discover">
+                            Voir la formation
+                        </a>
+                        <form method="post" action="{% url 'ajouter_panier' formation.id %}" style="display: inline; width: 100%;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-buy">
+                                🛒 Acheter maintenant
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
+        {% endfor %}
     </div>
+    {% else %}
+    <div style="text-align: center; padding: 4rem 2rem;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">📚</div>
+        <h3 style="margin-bottom: 0.5rem;">Aucune formation disponible</h3>
+        <p style="color: var(--text-secondary);">De nouvelles formations arrivent bientôt !</p>
+    </div>
+    {% endif %}
+</div>
 
+<!-- Bouton flottant WhatsApp -->
+<div class="whatsapp-float">
+    <a href="https://wa.me/242061814279?text=Bonjour%2C%20je%20souhaite%20avoir%20plus%20d%27informations%20sur%20vos%20formations."
+       class="whatsapp-button"
+       target="_blank"
+       rel="noopener noreferrer">
+        <div class="whatsapp-icon"></div>
+        <span>💬 Nous écrire sur WhatsApp</span>
+    </a>
 </div>
-{% endfor %}
-</div>
-{% else %}
-<div style="text-align: center; padding: 3rem;">
-    <p>Aucune formation disponible pour le moment.</p>
-</div>
-{% endif %}
-</div>
+
+<script>
+    // Animation supplémentaire au scroll
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.formation-card');
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        cards.forEach(card => {
+            observer.observe(card);
+        });
+
+        // Compteur à rebours simple
+        function updateCountdown() {
+            const endDate = new Date('May 25, 2026 23:59:59').getTime();
+            const now = new Date().getTime();
+            const distance = endDate - now;
+
+            if (distance > 0) {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const countdownElement = document.getElementById('countdown');
+                if (countdownElement) {
+                    countdownElement.innerHTML = `<span class="countdown-unit">${days}j ${hours}h</span>`;
+                }
+            }
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 3600000); // Mise à jour toutes les heures
+    });
+</script>
 {% endblock %}
