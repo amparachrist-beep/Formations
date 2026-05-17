@@ -601,19 +601,19 @@
                 <div>
                     <div class="promo-title">PROMOTION EXCEPTIONNELLE</div>
                     <div class="promo-description">
-                        🔥 Toutes les formations à partir de 1000 FCFA seulement pendant 7 jours
+                        Toutes les formations à partir de 1000 FCFA seulement pendant 7 jours
                     </div>
                 </div>
                 <div class="promo-price">À partir de 1000 FCFA</div>
                 <div class="promo-date">
-                    ⏰ Offre valable jusqu'au 25 mai 2026
+                    Offre valable jusqu'au 25 mai 2026
                     <div class="countdown-timer" id="countdown">
                         <span class="countdown-unit">7j</span>
                     </div>
                 </div>
             </div>
             <a href="#formations" class="promo-cta">
-                👉 Commencez votre formation dès aujourd'hui →
+                Commencez votre formation dès aujourd'hui →
             </a>
         </div>
     </div>
@@ -621,7 +621,7 @@
 
 <div class="hero-section">
     <div class="container-udemy">
-        <h1>🚀 Apprenez des compétences qui génèrent des revenus</h1>
+        <h1>Apprenez des compétences qui génèrent des revenus</h1>
         <p>Découvrez nos formations pratiques et transformez votre carrière dès aujourd'hui</p>
     </div>
 </div>
@@ -676,8 +676,23 @@
 
                 <div class="formation-footer">
                     <div class="price-section">
-                        <div class="formation-prix">{{ formation.prix|floatformat:"0" }} FCFA</div>
-                        <div class="price-badge">💰 Meilleur prix</div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+
+                            <!-- Ancien prix barré -->
+                            <span class="old-price">
+                                {{ formation.prix|floatformat:"0" }} FCFA
+                            </span>
+
+                            <!-- Nouveau prix promo -->
+                            <span class="formation-prix" style="color: #ef4444;">
+                                1000 FCFA
+                            </span>
+
+                        </div>
+
+                        <div class="price-badge">
+                            Promo limitée
+                        </div>
                     </div>
 
                     <div class="btn-group">
