@@ -245,6 +245,19 @@
         background: #f8f9fa;
         border-radius: 8px;
     }
+        /* Espacement entre les boutons dans la sidebar */
+    .sidebar-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .sidebar-buttons .btn-buy,
+    .sidebar-buttons .btn-whatsapp {
+        display: block;
+        text-align: center;
+        width: 100%;
+    }
 
     /* Responsive */
     @media (max-width: 768px) {
@@ -454,13 +467,15 @@
                             </div>
                         {% endif %}
                     </div>
-                    <a href="{% url 'achat_direct' formation.id %}" class="btn-buy">
-                        <i class="bi bi-lightning-charge-fill"></i>
-                        Acheter maintenant
-                    </a>
-                    <a href="https://wa.me/242061814279" class="btn-whatsapp" style="display: flex; justify-content: center;">
-                        <i class="bi bi-whatsapp"></i> Question ?
-                    </a>
+                    <div class="sidebar-buttons">
+                        <a href="{% url 'achat_direct' formation.id %}" class="btn-buy">
+                            <i class="bi bi-lightning-charge-fill"></i>
+                            Acheter maintenant
+                        </a>
+                        <a href="https://wa.me/242061814279" class="btn-whatsapp">
+                            <i class="bi bi-whatsapp"></i> Question ?
+                        </a>
+                    </div>
                     <hr>
                     <div style="font-size: 0.875rem; color: var(--text-secondary);">
                         <i class="bi bi-shield-check"></i> Paiement sécurisé<br>
