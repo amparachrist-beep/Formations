@@ -1097,13 +1097,7 @@
     {% endfor %}
 
 </div>
-
-
-
-
-
 <script>
-    // Animation supplémentaire au scroll
     document.addEventListener('DOMContentLoaded', function() {
         const cards = document.querySelectorAll('.formation-card');
 
@@ -1125,15 +1119,18 @@
             observer.observe(card);
         });
 
+    });
+
     function updateCountdown() {
-    const end = new Date('2026-05-25T23:59:59').getTime();
-    const diff = Math.max(0, end - Date.now());
-    const pad = n => String(n).padStart(2, '0');
-    document.getElementById('cd-days').textContent  = pad(Math.floor(diff / 86400000));
-    document.getElementById('cd-hours').textContent = pad(Math.floor((diff % 86400000) / 3600000));
-    document.getElementById('cd-mins').textContent  = pad(Math.floor((diff % 3600000) / 60000));
-}
-updateCountdown();
-setInterval(updateCountdown, 60000);
+        const end = new Date('2026-05-25T23:59:59').getTime();
+        const diff = Math.max(0, end - Date.now());
+        const pad = n => String(n).padStart(2, '0');
+        document.getElementById('cd-days').textContent  = pad(Math.floor(diff / 86400000));
+        document.getElementById('cd-hours').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+        document.getElementById('cd-mins').textContent  = pad(Math.floor((diff % 3600000) / 60000));
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 60000);
 </script>
 {% endblock %}
