@@ -292,12 +292,11 @@
 </div>
 
                 <div class="hero-buttons">
-                    <form method="post" action="{% url 'ajouter_panier' formation.id %}" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-buy" style="border: none; cursor: pointer;">
-                            <i class="bi bi-cart-check"></i> Acheter maintenant
-                        </button>
-                    </form>
+
+                    <a href="{% url 'achat_direct' formation.id %}" class="btn-buy">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                        Acheter maintenant
+                    </a>
                     <a href="https://wa.me/242061814279?text=Bonjour%2C%20je%20souhaite%20avoir%20plus%20d%27informations%20sur%20la%20formation%20{{ formation.titre|urlencode }}"
                        class="btn-whatsapp" target="_blank">
                         <i class="bi bi-whatsapp"></i> Poser une question sur WhatsApp
@@ -455,12 +454,10 @@
                             </div>
                         {% endif %}
                     </div>
-                    <form method="post" action="{% url 'ajouter_panier' formation.id %}" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-buy" style="border: none; cursor: pointer;">
-                            <i class="bi bi-cart-check"></i> Acheter maintenant
-                        </button>
-                    </form>
+                    <a href="{% url 'achat_direct' formation.id %}" class="btn-buy">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                        Acheter maintenant
+                    </a>
                     <a href="https://wa.me/242061814279" class="btn-whatsapp" style="display: flex; justify-content: center;">
                         <i class="bi bi-whatsapp"></i> Question ?
                     </a>

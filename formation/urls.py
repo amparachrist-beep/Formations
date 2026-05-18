@@ -16,4 +16,9 @@ urlpatterns = [
         views.detail_formation,
         name='detail_formation'
     ),
+    path(
+        'achat-direct/<int:formation_id>/',
+        views.achat_direct_view,
+        name='achat_direct'
+    ),
 ]

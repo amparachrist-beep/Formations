@@ -219,3 +219,22 @@ def detail_formation(request, id):
         'formation/detail_formation.html',
         context
     )
+
+def achat_direct_view(request, formation_id):
+    """Acheter une seule formation directement"""
+
+    formation = get_object_or_404(
+        Formation,
+        id=formation_id,
+        active=True
+    )
+
+    # Créer un panier temporaire avec UNE seule formation
+    request.session['panier'] = {
+        str(formation.id): {
+            'titre': formation.titre,
+            'prix': str(formation.prix_actuel),
+        }
+    }
+
+    return redirect('checkout')
