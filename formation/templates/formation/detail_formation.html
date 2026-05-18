@@ -274,9 +274,22 @@
                 <p style="font-size: 1.25rem; opacity: 0.95;">{{ formation.description|truncatewords:20 }}</p>
 
                 <div class="price">
-                    <span class="price-tag">{{ formation.prix }} FCFA</span>
-                    <span style="font-size: 1rem; opacity: 0.9;"> - Accès à vie</span>
-                </div>
+                {% if formation.prix_promo %}
+                    <span style="text-decoration: line-through; opacity:0.7; margin-right:10px;">
+                        {{ formation.prix|floatformat:"0" }} FCFA
+                    </span>
+
+                    <span class="price-tag" style="background:#ef4444;">
+                        {{ formation.prix_promo|floatformat:"0" }} FCFA
+                    </span>
+                {% else %}
+                    <span class="price-tag">
+                        {{ formation.prix|floatformat:"0" }} FCFA
+                    </span>
+                {% endif %}
+
+    <span style="font-size: 1rem; opacity: 0.9;"> - Accès à vie</span>
+</div>
 
                 <div class="hero-buttons">
                     <form method="post" action="{% url 'ajouter_panier' formation.id %}" style="display: inline;">
@@ -426,7 +439,21 @@
                 <!-- CTA rapide -->
                 <div class="formation-section" style="text-align: center;">
                     <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem;">
-                        {{ formation.prix }} FCFA
+                        {% if formation.prix_promo %}
+                            <div>
+                                <span style="text-decoration: line-through; color:gray; font-size:1rem;">
+                                    {{ formation.prix|floatformat:"0" }} FCFA
+                                </span>
+                            </div>
+
+                            <div style="font-size: 2rem; font-weight: 700; color: #ef4444;">
+                                {{ formation.prix_promo|floatformat:"0" }} FCFA
+                            </div>
+                        {% else %}
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color);">
+                                {{ formation.prix|floatformat:"0" }} FCFA
+                            </div>
+                        {% endif %}
                     </div>
                     <form method="post" action="{% url 'ajouter_panier' formation.id %}" style="display: inline;">
                         {% csrf_token %}
