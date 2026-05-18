@@ -8,13 +8,16 @@ from .models import Formation, Client, Commande
 from .forms import ClientForm
 from .utils import generer_message_whatsapp, envoyer_acces_formation_email
 import urllib.parse
-
+from django.core.paginator import Paginator
 
 # ==================== CATALOGUE ====================
 
 def catalogue_view(request):
     """Affiche toutes les formations actives"""
     formations = Formation.objects.filter(active=True).order_by('date_creation')
+    paginator = Paginator(formations, 3)  # 👈 5 formations par page
+    page_number = request.GET.get('page')
+    formations = paginator.get_page(page_number)
     return render(request, 'formation/catalogue.html', {'formations': formations})
 
 

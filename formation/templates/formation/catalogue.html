@@ -736,6 +736,31 @@
     </a>
 </div>
 
+<div style="display:flex; justify-content:center; gap:8px; margin:2rem 0;">
+
+    {% for num in formations.paginator.page_range %}
+        <a href="?page={{ num }}"
+           style="padding:6px 10px; border-radius:5px;
+           border:1px solid #ddd;
+           text-decoration:none;
+
+           {% if formations.number == num %}
+               background:#6366f1;
+               color:white;
+               border-color:#6366f1;
+           {% else %}
+               color:#333;
+           {% endif %}">
+            {{ num }}
+        </a>
+    {% endfor %}
+
+</div>
+
+
+
+
+
 <script>
     // Animation supplémentaire au scroll
     document.addEventListener('DOMContentLoaded', function() {
