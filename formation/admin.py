@@ -8,7 +8,7 @@ from .models import FormationDetail, FormationImage
 
 @admin.register(Formation)
 class FormationAdmin(admin.ModelAdmin):
-    list_display = ['titre', 'prix', 'active', 'date_creation']
+    list_display = ['titre', 'prix_affiche', 'active', 'date_creation']
     list_filter = ['active', 'date_creation']
     search_fields = ['titre', 'description']
     list_editable = ['active']
@@ -16,7 +16,7 @@ class FormationAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Informations principales', {
-            'fields': ('titre', 'description', 'prix', 'image', 'active')
+            'fields': ('titre', 'description', 'prix', 'prix_promo', 'image', 'active')
         }),
         ('Accès à la formation', {
             'fields': ('lien_youtube', 'lien_drive')
@@ -27,6 +27,9 @@ class FormationAdmin(admin.ModelAdmin):
         }),
     )
 
+    @admin.display(description="Prix (actuel)")
+    def prix_affiche(self, obj):
+        return obj.prix_actuel
 
 # ==================== CLIENT ====================
 
