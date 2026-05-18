@@ -397,24 +397,6 @@
         <p>Plus qu'une étape avant d'accéder à vos formations</p>
     </div>
 
-    <!-- Étapes de progression -->
-    <div class="progress-steps">
-        <div class="step">
-            <div class="step-number">1</div>
-            <span class="step-label">Panier</span>
-        </div>
-        <div class="step-separator"></div>
-        <div class="step">
-            <div class="step-number">2</div>
-            <span class="step-label">Informations</span>
-        </div>
-        <div class="step-separator"></div>
-        <div class="step inactive">
-            <div class="step-number">3</div>
-            <span class="step-label">Paiement</span>
-        </div>
-    </div>
-
     <div class="checkout-layout">
         <!-- Formulaire -->
         <div class="checkout-form">
@@ -460,53 +442,15 @@
                     </div>
                 </div>
 
-                <!-- Moyens de paiement (AJOUTÉ) -->
-                <div class="payment-methods-section">
-                    <h4>💳 Moyens de paiement acceptés :</h4>
-                    <div class="payment-methods-list">
-                        <span class="payment-badge">📱 Airtel Money</span>
-                        <span class="payment-badge">📱 MTN Mobile Money</span>
-                        <span class="payment-badge">💳 Carte bancaire (Visa/Mastercard)</span>
-                        <span class="payment-badge">🏦 Wave</span>
-                    </div>
-                </div>
 
-                <!-- Garanties (AMÉLIORÉES) -->
-                <div class="guarantees">
-                    <h4>✅ Nos garanties</h4>
-                    <div class="guarantee-item">
-                        <i class="bi bi-shield-check"></i>
-                        <span>Paiement 100% sécurisé via Moneroo</span>
-                    </div>
-                    <div class="guarantee-item">
-                        <i class="bi bi-clock-history"></i>
-                        <span>Accès envoyé immédiatement après paiement</span>
-                    </div>
-                    <div class="guarantee-item">
-                        <i class="bi bi-headset"></i>
-                        <span>Support WhatsApp disponible 7j/7</span>
-                    </div>
-                    <div class="guarantee-item">
-                        <i class="bi bi-infinity"></i>
-                        <span>Accès à vie aux formations + mises à jour</span>
-                    </div>
-                    <div class="guarantee-item">
-                        <i class="bi bi-arrow-repeat"></i>
-                        <span>Garantie satisfait ou remboursé 7 jours</span>
-                    </div>
-                </div>
 
                 <!-- Bouton émotionnel (AMÉLIORÉ) -->
                 <button type="submit" class="btn-payment">
                     <i class="bi bi-unlock-fill"></i>
-                    Débloquer mon accès — {{ total }} FCFA
+                    payez Maintenant — {{ total }} FCFA
                 </button>
 
                 <!-- Phrase d'urgence (AJOUTÉE) -->
-                <div class="urgency-text">
-                    <i class="bi bi-fire"></i>
-                    Rejoignez les <strong>{{ nb_apprenants }}+ apprenants</strong> qui développent déjà leurs compétences
-                </div>
 
                 <!-- Badge sécurité -->
                 <div class="secure-badge">
