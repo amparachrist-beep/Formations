@@ -78,11 +78,10 @@
 
     /* Layout checkout */
     .checkout-layout {
-        display: grid;
-        grid-template-columns: 1.5fr 1fr;
-        gap: 3rem;
-        margin-bottom: 3rem;
-    }
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+}
 
     /* Formulaire */
     .checkout-form {
@@ -459,41 +458,6 @@
                 </div>
             </form>
         </div>
-
-        <!-- Résumé -->
-        <div class="order-recap">
-            <h2>🛒 Récapitulatif</h2>
-
-            {% for formation in formations %}
-                <div class="recap-item">
-                    <div>
-                        {% if formation.image %}
-                            <img src="{{ formation.image.url }}" alt="{{ formation.titre }}" class="recap-image">
-                        {% else %}
-                            <div class="recap-image"></div>
-                        {% endif %}
-                    </div>
-                    <div class="recap-details">
-                        <div class="recap-title">{{ formation.titre }}</div>
-                        <div class="recap-price">{{ formation.prix }} FCFA</div>
-                    </div>
-                </div>
-            {% endfor %}
-
-            <div class="recap-total">
-                <span>Total à payer</span>
-                <span>{{ total }} FCFA</span>
-            </div>
-
-            <!-- Livraison -->
-            <div style="margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
-                <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem;">
-                    <i class="bi bi-envelope-paper"></i>
-                    <span>Livraison : Accès immédiat par email + WhatsApp</span>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Lien retour -->
     <div class="text-center mb-5">
