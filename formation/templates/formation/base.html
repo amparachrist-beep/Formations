@@ -203,7 +203,8 @@
 
       gtag('config', 'G-8JHHM49N3S');
     </script>
-
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
     {% block extra_css %}{% endblock %}
 </head>
 <body>

@@ -72,7 +72,9 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_DIRS = []
+STATICFILES_DIRS = [
+    BASE_DIR / "formation" / "static",
+]
 
 # Configuration media
 MEDIA_URL = '/media/'
