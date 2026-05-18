@@ -24,154 +24,411 @@
         --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
 
-    /* Bannière promotionnelle */
-    .promo-banner {
-        background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-        color: #fff;
-        padding: 1rem 0;
-        position: relative;
-        overflow: hidden;
-        animation: slideDown 0.5s ease-out;
-    }
+        .promo-banner-v2 {
+    background: #1a1040;
+    color: #fff;
+    overflow: hidden;
+    border-bottom: 1px solid #3d2a7a;
+}
 
-    .promo-banner::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        animation: shimmer 3s infinite;
-    }
-
-    @keyframes shimmer {
-        0% { left: -100%; }
-        100% { left: 100%; }
-    }
-
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateY(-100%);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .promo-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
-
-    .promo-text {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
-
-    .promo-icon {
-        font-size: 2rem;
-        animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.1); }
-    }
-
-    .promo-title {
-        font-size: 1.25rem;
-        font-weight: 800;
-        margin: 0;
-    }
-
-    .promo-description {
-        font-size: 0.875rem;
-        opacity: 0.95;
-        margin: 0;
-    }
-
-    .promo-price {
-        font-size: 1.5rem;
-        font-weight: 800;
-        background: rgba(255,255,255,0.2);
-        padding: 0.25rem 0.75rem;
-        border-radius: 50px;
-    }
-
-    .promo-date {
-        font-size: 0.75rem;
-        background: rgba(0,0,0,0.2);
-        padding: 0.25rem 0.75rem;
-        border-radius: 50px;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.25rem;
-    }
-
-    .promo-cta {
-        background: #fff;
-        color: #ef4444;
-        padding: 0.5rem 1rem;
-        border-radius: 50px;
-        text-decoration: none;
+    .promo-topbar {
+        background: #f59e0b;
+        color: #1a1040;
+        text-align: center;
+        padding: 5px 1rem;
+        font-size: 12px;
         font-weight: 600;
-        font-size: 0.875rem;
-        transition: all 0.3s;
+        letter-spacing: 0.06em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .topbar-dot {
+        width: 5px; height: 5px;
+        background: #1a1040;
+        border-radius: 50%;
+        opacity: 0.35;
+        display: inline-block;
+    }
+
+    .promo-main {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 2rem;
+        padding: 1.5rem 0;
+    }
+
+    .badge-hot {
+        background: #ef4444;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 5px;
+        margin-bottom: 0.5rem;
     }
 
-    .promo-cta:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-    }
-
-    /* Hero section modernisée */
-    .hero-section {
-        background: var(--primary-gradient);
+    .promo-heading {
+        font-size: 1.25rem;
+        font-weight: 700;
         color: #fff;
-        padding: 5rem 0;
-        margin-bottom: 3rem;
-        position: relative;
-        overflow: hidden;
+        line-height: 1.35;
+        margin: 0 0 0.25rem;
     }
 
-    .hero-section::before {
+    .promo-sub {
+        font-size: 0.8rem;
+        color: #a78bfa;
+        margin: 0;
+    }
+
+    .promo-center {
+        text-align: center;
+        padding: 1rem 2rem;
+        border-left: 1px solid #3d2a7a;
+        border-right: 1px solid #3d2a7a;
+    }
+
+    .price-label {
+        font-size: 11px;
+        color: #a78bfa;
+        letter-spacing: 0.06em;
+        margin-bottom: 4px;
+    }
+
+    .price-old {
+        font-size: 0.85rem;
+        color: #6b5ea8;
+        text-decoration: line-through;
+        margin-bottom: 3px;
+    }
+
+    .price-new {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #f59e0b;
+        line-height: 1;
+    }
+
+    .price-currency {
+        font-size: 1rem;
+        font-weight: 400;
+        color: #d97706;
+    }
+
+    .promo-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.75rem;
+    }
+
+    .countdown-label {
+        font-size: 11px;
+        color: #a78bfa;
+        margin-bottom: 6px;
+    }
+
+    .countdown-boxes {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .countdown-box {
+        background: rgba(255,255,255,0.07);
+        border: 1px solid #3d2a7a;
+        border-radius: 6px;
+        padding: 6px 10px;
+        text-align: center;
+        min-width: 46px;
+    }
+
+    .cd-num {
+        display: block;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1;
+    }
+
+    .cd-unit {
+        display: block;
+        font-size: 9px;
+        color: #6b5ea8;
+        letter-spacing: 0.05em;
+        margin-top: 2px;
+    }
+
+    .cd-sep {
+        font-size: 1.25rem;
+        color: #3d2a7a;
+        font-weight: 700;
+        margin-top: -6px;
+    }
+
+    .expiry-line {
+        font-size: 11px;
+        color: #6b5ea8;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 6px;
+    }
+
+    .expiry-dot {
+        width: 5px; height: 5px;
+        background: #ef4444;
+        border-radius: 50%;
+        display: inline-block;
+        animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.2; }
+    }
+
+    .btn-promo-cta {
+        background: #6366f1;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: background 0.2s;
+    }
+
+    .btn-promo-cta:hover {
+        background: #4f46e5;
+        color: #fff;
+    }
+
+    @media (max-width: 768px) {
+        .promo-main {
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            padding: 1.25rem 1rem;
+        }
+        .promo-center {
+            border: none;
+            border-top: 1px solid #3d2a7a;
+            border-bottom: 1px solid #3d2a7a;
+            padding: 1rem 0;
+        }
+        .promo-right { align-items: flex-start; }
+    }
+
+   .hero-section {
+    background: #0f0a2e;
+    padding: 4rem 0 3.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+    /* Cercles décoratifs */
+    .hero-section::before,
+    .hero-section::after {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
-        background-size: cover;
-        opacity: 0.1;
+        border-radius: 50%;
+        border: 1px solid rgba(99,102,241,0.12);
+        pointer-events: none;
+    }
+    .hero-section::before {
+        width: 600px; height: 600px;
+        top: -300px; right: -200px;
+    }
+    .hero-section::after {
+        width: 350px; height: 350px;
+        bottom: -175px; left: -100px;
     }
 
-    .hero-section h1 {
-        font-size: 3rem;
-        font-weight: 800;
-        margin-bottom: 1rem;
-        background: linear-gradient(135deg, #fff 0%, #e0e7ff 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+    .hero-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
     }
+
+    /* Eyebrow badge */
+    .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(99,102,241,0.15);
+        border: 1px solid rgba(99,102,241,0.3);
+        color: #a5b4fc;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 5px 14px;
+        border-radius: 20px;
+        margin-bottom: 1.25rem;
+        letter-spacing: 0.04em;
+    }
+    .hero-eyebrow-dot {
+        width: 6px; height: 6px;
+        background: #6366f1;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    /* Titre */
+    .hero-section h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        margin-bottom: 1rem;
+    }
+    .hero-highlight { color: #f59e0b; }
 
     .hero-section p {
-        font-size: 1.25rem;
-        opacity: 0.95;
-        max-width: 600px;
-        line-height: 1.6;
+        font-size: 1rem;
+        color: #94a3b8;
+        line-height: 1.7;
+        max-width: 440px;
+        margin-bottom: 2rem;
+    }
+
+    /* Actions */
+    .hero-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 2.5rem;
+    }
+
+    .btn-hero-primary {
+        background: #6366f1;
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.2s;
+    }
+    .btn-hero-primary:hover { background: #4f46e5; color: #fff; }
+
+    .btn-hero-ghost {
+        color: #a5b4fc;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: none;
+    }
+    .btn-play-circle {
+        width: 34px; height: 34px;
+        background: rgba(165,180,252,0.12);
+        border: 1px solid rgba(165,180,252,0.25);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Stats */
+    .hero-stats {
+        display: flex;
+        gap: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .stat-num {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1;
+        margin-bottom: 3px;
+    }
+    .stat-label { font-size: 0.75rem; color: #64748b; }
+
+    /* Cartes droite */
+    .hero-right { display: flex; flex-direction: column; gap: 0.875rem; }
+
+    .card-trust-featured {
+        background: rgba(99,102,241,0.1);
+        border: 1px solid rgba(99,102,241,0.25);
+        border-radius: 14px;
+        padding: 1.25rem;
+    }
+    .avatar-stack { display: flex; margin-bottom: 0.625rem; }
+    .avatar {
+        width: 30px; height: 30px;
+        border-radius: 50%;
+        border: 2px solid #0f0a2e;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 10px; font-weight: 600;
+        margin-left: -8px;
+    }
+    .avatar:first-child { margin-left: 0; }
+    .av1 { background: #1e3a5f; color: #7dc4ff; }
+    .av2 { background: #1a3320; color: #6ee7b7; }
+    .av3 { background: #3d2a7a; color: #a5b4fc; }
+    .trust-text { font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.5rem; }
+    .trust-text strong { color: #e2e8f0; }
+    .trust-rating { display: flex; align-items: center; gap: 8px; }
+    .rating-val { font-size: 0.9rem; font-weight: 700; color: #f59e0b; }
+    .stars { color: #f59e0b; font-size: 0.8rem; }
+    .rating-label { font-size: 0.75rem; color: #64748b; }
+
+    .card-trust {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 0.875rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+    }
+    .trust-icon-wrap {
+        width: 40px; height: 40px;
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 16px; flex-shrink: 0;
+    }
+    .icon-purple { background: rgba(99,102,241,0.2); color: #a5b4fc; }
+    .icon-amber  { background: rgba(245,158,11,0.2); color: #fcd34d; }
+    .icon-green  { background: rgba(16,185,129,0.2); color: #6ee7b7; }
+    .trust-title { font-size: 0.8rem; font-weight: 600; color: #e2e8f0; margin-bottom: 2px; }
+    .trust-sub   { font-size: 0.7rem; color: #64748b; }
+    .trust-badge {
+        margin-left: auto;
+        font-size: 11px; font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 20px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .badge-purple { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+    .badge-amber  { background: rgba(245,158,11,0.15); color: #fcd34d; }
+    .badge-green  { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero-section h1 { font-size: 1.75rem; }
+        .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+        .hero-right { display: none; }
+        .hero-stats { gap: 1.5rem; }
     }
 
     /* Cartes formations modernisées */
@@ -592,38 +849,124 @@
 {% endblock %}
 
 {% block content %}
-<!-- Bannière promotionnelle -->
-<div class="promo-banner">
-    <div class="container-udemy">
-        <div class="promo-content">
-            <div class="promo-text">
-                <div class="promo-icon">🔥</div>
-                <div>
-                    <div class="promo-title">PROMOTION EXCEPTIONNELLE</div>
-                    <div class="promo-description">
-                        Toutes les formations à partir de 1000 FCFA seulement pendant 7 jours
-                    </div>
-                </div>
-                <div class="promo-price">À partir de 1000 FCFA</div>
-                <div class="promo-date">
-                    Offre valable jusqu'au 25 mai 2026
-                    <div class="countdown-timer" id="countdown">
-                        <span class="countdown-unit">7j</span>
-                    </div>
-                </div>
+<!-- Bannière promotionnelle modernisée -->
+<div class="promo-banner-v2">
+  <div class="promo-topbar">
+    <span class="topbar-dot"></span>
+    OFFRE À DURÉE LIMITÉE — VENTE FLASH SUR TOUTES LES FORMATIONS
+    <span class="topbar-dot"></span>
+  </div>
+  <div class="container-udemy">
+    <div class="promo-main">
+
+      <!-- Gauche : texte -->
+      <div class="promo-left">
+        <span class="badge-hot">
+          <i class="bi bi-lightning-charge-fill"></i> Vente flash
+        </span>
+        <h2 class="promo-heading">Promotion exceptionnelle<br>sur toutes nos formations</h2>
+        <p class="promo-sub">Accès immédiat &middot; Support WhatsApp &middot; Paiement sécurisé</p>
+      </div>
+
+      <!-- Centre : prix -->
+      <div class="promo-center">
+        <div class="price-label">PRIX À PARTIR DE</div>
+        <div class="price-old">5 000 FCFA</div>
+        <div class="price-new">1 000 <span class="price-currency">FCFA</span></div>
+      </div>
+
+      <!-- Droite : compte à rebours + CTA -->
+      <div class="promo-right">
+        <div class="countdown-wrap">
+          <div class="countdown-label">
+            <i class="bi bi-clock"></i> Offre expire dans
+          </div>
+          <div class="countdown-boxes">
+            <div class="countdown-box">
+              <span class="cd-num" id="cd-days">07</span>
+              <span class="cd-unit">JOURS</span>
             </div>
-            <a href="#formations" class="promo-cta">
-                Profiter de la promotion →
-            </a>
+            <span class="cd-sep">:</span>
+            <div class="countdown-box">
+              <span class="cd-num" id="cd-hours">00</span>
+              <span class="cd-unit">HEURES</span>
+            </div>
+            <span class="cd-sep">:</span>
+            <div class="countdown-box">
+              <span class="cd-num" id="cd-mins">00</span>
+              <span class="cd-unit">MIN</span>
+            </div>
+          </div>
+          <div class="expiry-line">
+            <span class="expiry-dot"></span>
+            Valable jusqu'au 25 mai 2026
+          </div>
         </div>
+        <a href="#formations" class="btn-promo-cta">
+          En profiter maintenant <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+
     </div>
+  </div>
 </div>
 
 <div class="hero-section">
-    <div class="container-udemy">
-        <h1>Apprenez des compétences qui génèrent des revenus</h1>
+  <div class="container-udemy">
+    <div class="hero-grid">
+
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-dot"></span>
+          Plateforme de formation en ligne
+        </div>
+        <h1>Apprenez des compétences qui <span class="hero-highlight">génèrent des revenus</span></h1>
         <p>Découvrez nos formations pratiques et transformez votre carrière dès aujourd'hui</p>
+        <div class="hero-actions">
+          <a href="#formations" class="btn-hero-primary">
+            <i class="bi bi-rocket-takeoff-fill"></i>
+            Voir les formations
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="card-trust">
+          <div class="trust-icon-wrap icon-purple">
+            <i class="bi bi-lightning-charge-fill"></i>
+          </div>
+          <div>
+            <div class="trust-title">Accès immédiat après achat</div>
+            <div class="trust-sub">Commencez à apprendre en quelques minutes</div>
+          </div>
+          <span class="trust-badge badge-purple">Instantané</span>
+        </div>
+
+        <div class="card-trust">
+          <div class="trust-icon-wrap icon-amber">
+            <i class="bi bi-award-fill"></i>
+          </div>
+          <div>
+            <div class="trust-title">Accompagnement personnalisé</div>
+            <div class="trust-sub">Support WhatsApp inclus avec chaque formation</div>
+          </div>
+          <span class="trust-badge badge-amber">Inclus</span>
+        </div>
+
+        <div class="card-trust">
+          <div class="trust-icon-wrap icon-green">
+            <i class="bi bi-shield-check-fill"></i>
+          </div>
+          <div>
+            <div class="trust-title">Paiement 100 % sécurisé</div>
+            <div class="trust-sub">Vos transactions sont protégées</div>
+          </div>
+          <span class="trust-badge badge-green">Sécurisé</span>
+        </div>
+      </div>
+
     </div>
+  </div>
 </div>
 
 <div class="container-udemy" id="formations">
@@ -705,6 +1048,7 @@
                             Voir la formation
                         </a>
                         <a href="{% url 'achat_direct' formation.id %}" class="btn-buy">
+                            <i class="bi bi-lightning-charge-fill"></i>
                             ⚡ Acheter maintenant
                         </a>
                     </div>
@@ -781,24 +1125,15 @@
             observer.observe(card);
         });
 
-        // Compteur à rebours simple
-        function updateCountdown() {
-            const endDate = new Date('May 25, 2026 23:59:59').getTime();
-            const now = new Date().getTime();
-            const distance = endDate - now;
-
-            if (distance > 0) {
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const countdownElement = document.getElementById('countdown');
-                if (countdownElement) {
-                    countdownElement.innerHTML = `<span class="countdown-unit">${days}j ${hours}h</span>`;
-                }
-            }
-        }
-
-        updateCountdown();
-        setInterval(updateCountdown, 3600000); // Mise à jour toutes les heures
-    });
+    function updateCountdown() {
+    const end = new Date('2026-05-25T23:59:59').getTime();
+    const diff = Math.max(0, end - Date.now());
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('cd-days').textContent  = pad(Math.floor(diff / 86400000));
+    document.getElementById('cd-hours').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+    document.getElementById('cd-mins').textContent  = pad(Math.floor((diff % 3600000) / 60000));
+}
+updateCountdown();
+setInterval(updateCountdown, 60000);
 </script>
 {% endblock %}

@@ -238,3 +238,6 @@ def achat_direct_view(request, formation_id):
     }
 
     return redirect('checkout')
+
+def about(request):
+    return render(request, 'formations/about.html')

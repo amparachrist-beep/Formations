@@ -21,4 +21,5 @@ urlpatterns = [
         views.achat_direct_view,
         name='achat_direct'
     ),
+    path('a-propos/', views.about, name='about'),
 ]
