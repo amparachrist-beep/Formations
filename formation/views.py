@@ -14,7 +14,7 @@ import urllib.parse
 
 def catalogue_view(request):
     """Affiche toutes les formations actives"""
-    formations = Formation.objects.filter(active=True)
+    formations = Formation.objects.filter(active=True).order_by('date_creation')
     return render(request, 'formation/catalogue.html', {'formations': formations})
 
 
@@ -27,7 +27,7 @@ def ajouter_panier_view(request, formation_id):
     panier = request.session.get('panier', {})
     panier[str(formation.id)] = {
         'titre': formation.titre,
-        'prix': str(formation.prix),
+        'prix': str(formation.prix_actuel),
     }
     request.session['panier'] = panier
     messages.success(request, f'"{formation.titre}" ajoutée au panier !')
@@ -38,7 +38,7 @@ def panier_view(request):
     """Affiche le contenu du panier"""
     panier = request.session.get('panier', {})
     formations = Formation.objects.filter(id__in=panier.keys())
-    total = sum([f.prix for f in formations])
+    total = sum([f.prix_actuel for f in formations])
     return render(request, 'formation/panier.html', {'formations': formations, 'total': total})
 
 
@@ -71,7 +71,7 @@ def checkout_view(request):
         return redirect('catalogue')
 
     formations = Formation.objects.filter(id__in=panier.keys())
-    total = sum([f.prix for f in formations])
+    total = sum([f.prix_actuel for f in formations])
 
     if request.method == 'POST':
         form = ClientForm(request.POST)

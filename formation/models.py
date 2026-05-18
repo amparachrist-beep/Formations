@@ -12,6 +12,14 @@ class Formation(models.Model):
         validators=[MinValueValidator(0)],
         verbose_name="Prix (FCFA)"
     )
+    prix_promo = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0)],
+        verbose_name="Prix promotionnel"
+    )
     image = models.ImageField(
         upload_to='formation/',
         null=True,
@@ -36,6 +44,10 @@ class Formation(models.Model):
         verbose_name = "Formation"
         verbose_name_plural = "Formations"
         ordering = ['-date_creation']
+
+    @property
+    def prix_actuel(self):
+        return self.prix_promo if self.prix_promo else self.prix
 
     def __str__(self):
         return self.titre

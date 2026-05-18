@@ -679,14 +679,19 @@
                         <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
 
                             <!-- Ancien prix barré -->
-                            <span class="old-price">
-                                {{ formation.prix|floatformat:"0" }} FCFA
-                            </span>
+                            {% if formation.prix_promo %}
+                                <span class="old-price">
+                                    {{ formation.prix|floatformat:"0" }} FCFA
+                                </span>
 
-                            <!-- Nouveau prix promo -->
-                            <span class="formation-prix" style="color: #ef4444;">
-                                1000 FCFA
-                            </span>
+                                <span class="formation-prix" style="color: #ef4444;">
+                                    {{ formation.prix_promo|floatformat:"0" }} FCFA
+                                </span>
+                            {% else %}
+                                <span class="formation-prix">
+                                    {{ formation.prix|floatformat:"0" }} FCFA
+                                </span>
+                            {% endif %}
 
                         </div>
 
