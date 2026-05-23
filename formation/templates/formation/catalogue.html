@@ -1,12 +1,13 @@
 <!-- templates/formations/catalogue.html -->
 
 {% extends 'formation/base.html' %}
+{% load static %}
 
 {% block title %}Catalogue des formations{% endblock %}
 
 {% block extra_css %}
 <style>
-    /* Variables design modernes */
+    /* ===== VARIABLES GLOBALES ===== */
     :root {
         --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
         --primary-color: #6366f1;
@@ -18,18 +19,31 @@
         --text-primary: #1f2937;
         --text-secondary: #6b7280;
         --border-light: #e5e7eb;
-        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.25);
+
+        /* Palette sombre du site */
+        --dark-bg:       #0a0720;
+        --dark-surface:  #0f0a2e;
+        --dark-card:     #1a1040;
+        --dark-border:   rgba(99,102,241,0.2);
+        --dark-border-hover: rgba(245,158,11,0.35);
+        --dark-text:     #e2e8f0;
+        --dark-muted:    #94a3b8;
+        --dark-subtle:   #64748b;
+        --accent-gold:   #f59e0b;
+        --accent-purple: #a5b4fc;
     }
 
-        .promo-banner-v2 {
-    background: #1a1040;
-    color: #fff;
-    overflow: hidden;
-    border-bottom: 1px solid #3d2a7a;
-}
+    /* ===== BANNIÈRE PROMO ===== */
+    .promo-banner-v2 {
+        background: #1a1040;
+        color: #fff;
+        overflow: hidden;
+        border-bottom: 1px solid #3d2a7a;
+    }
 
     .promo-topbar {
         background: #f59e0b;
@@ -53,167 +67,6 @@
         display: inline-block;
     }
 
-    .promo-main {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        align-items: center;
-        gap: 2rem;
-        padding: 1.5rem 0;
-    }
-
-    .badge-hot {
-        background: #ef4444;
-        color: #fff;
-        font-size: 12px;
-        font-weight: 600;
-        padding: 4px 12px;
-        border-radius: 20px;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        margin-bottom: 0.5rem;
-    }
-
-    .promo-heading {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #fff;
-        line-height: 1.35;
-        margin: 0 0 0.25rem;
-    }
-
-    .promo-sub {
-        font-size: 0.8rem;
-        color: #a78bfa;
-        margin: 0;
-    }
-
-    .promo-center {
-        text-align: center;
-        padding: 1rem 2rem;
-        border-left: 1px solid #3d2a7a;
-        border-right: 1px solid #3d2a7a;
-    }
-
-    .price-label {
-        font-size: 11px;
-        color: #a78bfa;
-        letter-spacing: 0.06em;
-        margin-bottom: 4px;
-    }
-
-    .price-old {
-        font-size: 0.85rem;
-        color: #6b5ea8;
-        text-decoration: line-through;
-        margin-bottom: 3px;
-    }
-
-    .price-new {
-        font-size: 2rem;
-        font-weight: 800;
-        color: #f59e0b;
-        line-height: 1;
-    }
-
-    .price-currency {
-        font-size: 1rem;
-        font-weight: 400;
-        color: #d97706;
-    }
-
-    .promo-right {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 0.75rem;
-    }
-
-    .countdown-label {
-        font-size: 11px;
-        color: #a78bfa;
-        margin-bottom: 6px;
-    }
-
-    .countdown-boxes {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .countdown-box {
-        background: rgba(255,255,255,0.07);
-        border: 1px solid #3d2a7a;
-        border-radius: 6px;
-        padding: 6px 10px;
-        text-align: center;
-        min-width: 46px;
-    }
-
-    .cd-num {
-        display: block;
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #fff;
-        line-height: 1;
-    }
-
-    .cd-unit {
-        display: block;
-        font-size: 9px;
-        color: #6b5ea8;
-        letter-spacing: 0.05em;
-        margin-top: 2px;
-    }
-
-    .cd-sep {
-        font-size: 1.25rem;
-        color: #3d2a7a;
-        font-weight: 700;
-        margin-top: -6px;
-    }
-
-    .expiry-line {
-        font-size: 11px;
-        color: #6b5ea8;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        margin-top: 6px;
-    }
-
-    .expiry-dot {
-        width: 5px; height: 5px;
-        background: #ef4444;
-        border-radius: 50%;
-        display: inline-block;
-        animation: blink 1.5s infinite;
-    }
-
-    @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.2; }
-    }
-
-    .btn-promo-cta {
-        background: #6366f1;
-        color: #fff;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-size: 0.875rem;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        transition: background 0.2s;
-    }
-
-    .btn-promo-cta:hover {
-        background: #4f46e5;
-        color: #fff;
-    }
-
     @media (max-width: 768px) {
         .promo-main {
             grid-template-columns: 1fr;
@@ -229,14 +82,34 @@
         .promo-right { align-items: flex-start; }
     }
 
-   .hero-section {
-    background: #0f0a2e;
-    padding: 4rem 0 3.5rem;
-    position: relative;
-    overflow: hidden;
-}
+    /* ===== HERO AVEC VOTRE IMAGE FLOUTÉE EN JAUNE ===== */
+    .hero-section {
+        background: #0a0720;
+        padding: 5rem 0 6rem;
+        position: relative;
+        overflow: hidden;
+        min-height: 550px;
+        display: flex;
+        align-items: center;
+    }
 
-    /* Cercles décoratifs */
+    /* VOTRE IMAGE hero-background.png floutée en jaune */
+    .hero-blurred-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("{% static 'images/hero-background.png' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        filter: blur(10px) brightness(1.15) sepia(0.4) saturate(1.3);
+        opacity: 0.35;
+        z-index: 0;
+        transform: scale(1.08);
+    }
+
     .hero-section::before,
     .hero-section::after {
         content: '';
@@ -244,229 +117,261 @@
         border-radius: 50%;
         border: 1px solid rgba(99,102,241,0.12);
         pointer-events: none;
+        z-index: 0;
     }
-    .hero-section::before {
-        width: 600px; height: 600px;
-        top: -300px; right: -200px;
-    }
-    .hero-section::after {
-        width: 350px; height: 350px;
-        bottom: -175px; left: -100px;
+    .hero-section::before { width: 600px; height: 600px; top: -300px; right: -200px; }
+    .hero-section::after  { width: 350px; height: 350px; bottom: -175px; left: -100px; }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
     }
 
-    .hero-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 3rem;
-        align-items: center;
-    }
-
-    /* Eyebrow badge */
     .hero-eyebrow {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
-        background: rgba(99,102,241,0.15);
-        border: 1px solid rgba(99,102,241,0.3);
-        color: #a5b4fc;
-        font-size: 0.75rem;
-        font-weight: 500;
-        padding: 5px 14px;
-        border-radius: 20px;
-        margin-bottom: 1.25rem;
-        letter-spacing: 0.04em;
+        background: rgba(99,102,241,0.2);
+        border: 1px solid rgba(99,102,241,0.4);
+        color: #c7d2fe;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 6px 18px;
+        border-radius: 40px;
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.06em;
+        backdrop-filter: blur(4px);
     }
     .hero-eyebrow-dot {
         width: 6px; height: 6px;
-        background: #6366f1;
+        background: #f59e0b;
         border-radius: 50%;
         display: inline-block;
+        animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(1.2); }
     }
 
-    /* Titre */
     .hero-section h1 {
-        font-size: 2.5rem;
+        font-size: 3.2rem;
         font-weight: 800;
         color: #fff;
         line-height: 1.2;
         letter-spacing: -0.02em;
-        margin-bottom: 1rem;
+        margin-bottom: 1.2rem;
+        text-shadow: 0 2px 20px rgba(0,0,0,0.3);
     }
-    .hero-highlight { color: #f59e0b; }
+    .hero-highlight {
+        color: #f59e0b;
+        position: relative;
+        display: inline-block;
+    }
+    .hero-highlight::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #f59e0b, #fcd34d, #f59e0b);
+        border-radius: 3px;
+    }
 
     .hero-section p {
-        font-size: 1rem;
-        color: #94a3b8;
+        font-size: 1.15rem;
+        color: #e2e8f0;
         line-height: 1.7;
-        max-width: 440px;
-        margin-bottom: 2rem;
+        max-width: 650px;
+        margin: 0 auto 2rem auto;
+        text-shadow: 0 1px 10px rgba(0,0,0,0.2);
     }
 
-    /* Actions */
     .hero-actions {
         display: flex;
+        justify-content: center;
         align-items: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-bottom: 2.5rem;
+        margin-top: 0.5rem;
     }
 
+    /* BOUTON VOIR LES FORMATIONS - Centré, plus large, fond noir, effet doré au clic */
     .btn-hero-primary {
-        background: #6366f1;
-        color: #fff;
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        font-weight: 600;
+        background: #000000;
+        color: #ffffff;
+        padding: 1rem 3rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 700;
         text-decoration: none;
         display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: background 0.2s;
-    }
-    .btn-hero-primary:hover { background: #4f46e5; color: #fff; }
-
-    .btn-hero-ghost {
-        color: #a5b4fc;
-        font-size: 0.9rem;
-        font-weight: 500;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: none;
-    }
-    .btn-play-circle {
-        width: 34px; height: 34px;
-        background: rgba(165,180,252,0.12);
-        border: 1px solid rgba(165,180,252,0.25);
-        border-radius: 50%;
-        display: flex;
         align-items: center;
         justify-content: center;
+        gap: 12px;
+        transition: all 0.25s ease;
+        border: 1px solid rgba(255,255,255,0.15);
+        cursor: pointer;
+        min-width: 260px;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
 
-    /* Stats */
-    .hero-stats {
-        display: flex;
-        gap: 2rem;
-        padding-top: 2rem;
-        border-top: 1px solid rgba(255,255,255,0.07);
+    .btn-hero-primary i {
+        font-size: 1.2rem;
+        transition: transform 0.2s;
     }
-    .stat-num {
+
+    .btn-hero-primary:hover {
+        background: #1a1a1a;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        border-color: rgba(255,255,255,0.25);
+    }
+
+    /* Effet doré au clic */
+    .btn-hero-primary:active {
+        transform: translateY(2px);
+        background: linear-gradient(135deg, #d4af37 0%, #f5d061 50%, #c5a028 100%);
+        color: #000000;
+        border-color: #d4af37;
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+        transition: all 0.05s ease;
+    }
+
+    .btn-hero-primary:active i {
+        transform: scale(1.15);
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 3rem 0 4rem;
+            min-height: 450px;
+        }
+        .hero-section h1 {
+            font-size: 1.8rem;
+        }
+        .hero-section p {
+            font-size: 0.95rem;
+            padding: 0 1rem;
+        }
+        .btn-hero-primary {
+            padding: 0.8rem 2rem;
+            font-size: 0.95rem;
+            min-width: 220px;
+        }
+        .hero-eyebrow {
+            font-size: 0.7rem;
+            padding: 4px 14px;
+        }
+    }
+
+    /* ===== SECTION FORMATIONS ===== */
+    .formations-section {
+        background: var(--dark-bg);
+        padding: 3rem 0 4rem;
+    }
+
+    .formations-section-title {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--accent-gold);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 0.4rem;
+    }
+
+    .formations-section-heading {
         font-size: 1.5rem;
         font-weight: 800;
         color: #fff;
-        line-height: 1;
-        margin-bottom: 3px;
-    }
-    .stat-label { font-size: 0.75rem; color: #64748b; }
-
-    /* Cartes droite */
-    .hero-right { display: flex; flex-direction: column; gap: 0.875rem; }
-
-    .card-trust-featured {
-        background: rgba(99,102,241,0.1);
-        border: 1px solid rgba(99,102,241,0.25);
-        border-radius: 14px;
-        padding: 1.25rem;
-    }
-    .avatar-stack { display: flex; margin-bottom: 0.625rem; }
-    .avatar {
-        width: 30px; height: 30px;
-        border-radius: 50%;
-        border: 2px solid #0f0a2e;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 10px; font-weight: 600;
-        margin-left: -8px;
-    }
-    .avatar:first-child { margin-left: 0; }
-    .av1 { background: #1e3a5f; color: #7dc4ff; }
-    .av2 { background: #1a3320; color: #6ee7b7; }
-    .av3 { background: #3d2a7a; color: #a5b4fc; }
-    .trust-text { font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.5rem; }
-    .trust-text strong { color: #e2e8f0; }
-    .trust-rating { display: flex; align-items: center; gap: 8px; }
-    .rating-val { font-size: 0.9rem; font-weight: 700; color: #f59e0b; }
-    .stars { color: #f59e0b; font-size: 0.8rem; }
-    .rating-label { font-size: 0.75rem; color: #64748b; }
-
-    .card-trust {
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 12px;
-        padding: 0.875rem 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.875rem;
-    }
-    .trust-icon-wrap {
-        width: 40px; height: 40px;
-        border-radius: 10px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 16px; flex-shrink: 0;
-    }
-    .icon-purple { background: rgba(99,102,241,0.2); color: #a5b4fc; }
-    .icon-amber  { background: rgba(245,158,11,0.2); color: #fcd34d; }
-    .icon-green  { background: rgba(16,185,129,0.2); color: #6ee7b7; }
-    .trust-title { font-size: 0.8rem; font-weight: 600; color: #e2e8f0; margin-bottom: 2px; }
-    .trust-sub   { font-size: 0.7rem; color: #64748b; }
-    .trust-badge {
-        margin-left: auto;
-        font-size: 11px; font-weight: 600;
-        padding: 3px 10px;
-        border-radius: 20px;
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
-    .badge-purple { background: rgba(99,102,241,0.15); color: #a5b4fc; }
-    .badge-amber  { background: rgba(245,158,11,0.15); color: #fcd34d; }
-    .badge-green  { background: rgba(16,185,129,0.15); color: #6ee7b7; }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .hero-section h1 { font-size: 1.75rem; }
-        .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
-        .hero-right { display: none; }
-        .hero-stats { gap: 1.5rem; }
+        margin-bottom: 2rem;
     }
 
-    /* Cartes formations modernisées */
     .formations-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-        gap: 2rem;
-        margin-bottom: 4rem;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.8rem;
+        margin-bottom: 3rem;
     }
 
+    /* ===== CARTES FORMATIONS AMÉLIORÉES ===== */
     .formation-card {
-        background: #fff;
-        border-radius: 16px;
+        background: var(--dark-card);
+        border-radius: 20px;
         overflow: hidden;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid var(--border-light);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid var(--dark-border);
         position: relative;
+        display: flex;
+        flex-direction: column;
+        animation: fadeInCard 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+        opacity: 0;
     }
 
     .formation-card:hover {
         transform: translateY(-8px);
-        box-shadow: var(--shadow-xl);
-        border-color: transparent;
+        border-color: var(--dark-border-hover);
+        box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 0 2px rgba(245,158,11,0.2);
     }
 
-    /* Badge populaire */
+    .formation-card:nth-child(1) { animation-delay: 0.05s; }
+    .formation-card:nth-child(2) { animation-delay: 0.1s; }
+    .formation-card:nth-child(3) { animation-delay: 0.15s; }
+    .formation-card:nth-child(4) { animation-delay: 0.2s; }
+    .formation-card:nth-child(5) { animation-delay: 0.25s; }
+    .formation-card:nth-child(6) { animation-delay: 0.3s; }
+
+    @keyframes fadeInCard {
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+        to   {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .formation-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+        transition: left 0.5s ease;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .formation-card:hover::before {
+        left: 100%;
+    }
+
     .popular-badge {
         position: absolute;
         top: 1rem;
         right: 1rem;
         background: var(--primary-gradient);
         color: #fff;
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
+        padding: 0.25rem 0.8rem;
+        border-radius: 25px;
+        font-size: 0.7rem;
         font-weight: 600;
-        z-index: 2;
-        box-shadow: var(--shadow-sm);
+        z-index: 3;
+        letter-spacing: 0.02em;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        animation: pulseBadge 2s infinite;
+    }
+
+    @keyframes pulseBadge {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
     }
 
     .formation-image-wrapper {
@@ -474,7 +379,7 @@
         width: 100%;
         padding-top: 56.25%;
         overflow: hidden;
-        background: var(--primary-gradient);
+        background: linear-gradient(135deg, #1e1060 0%, #2d1b8a 100%);
     }
 
     .formation-image {
@@ -487,177 +392,151 @@
     }
 
     .formation-card:hover .formation-image {
-        transform: scale(1.05);
+        transform: scale(1.06);
+    }
+
+    .formation-image-wrapper::after {
+        content: '🔍 Voir le détail';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(0deg, rgba(0,0,0,0.8), transparent);
+        color: white;
+        font-size: 0.7rem;
+        text-align: center;
+        padding: 8px;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+        z-index: 2;
+    }
+
+    .formation-card:hover .formation-image-wrapper::after {
+        transform: translateY(0);
     }
 
     .formation-content {
-        padding: 1.5rem;
+        padding: 1.35rem;
         flex: 1;
         display: flex;
         flex-direction: column;
     }
 
     .formation-title {
-        font-size: 1.125rem;
+        font-size: 1.1rem;
         font-weight: 700;
-        margin-bottom: 0.75rem;
-        color: var(--text-primary);
+        margin-bottom: 0.6rem;
+        color: #ffffff;
         line-height: 1.4;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
-    }
-
-    /* Catégorie */
-    .formation-category {
-        display: inline-block;
-        background: #f3f4f6;
-        color: var(--text-secondary);
-        font-size: 0.75rem;
-        padding: 0.25rem 0.75rem;
-        border-radius: 12px;
-        margin-bottom: 0.75rem;
-        font-weight: 500;
+        letter-spacing: -0.2px;
     }
 
     .formation-description {
-        font-size: 0.875rem;
-        color: var(--text-secondary);
-        line-height: 1.6;
+        font-size: 0.85rem;
+        color: #cbd5e1;
+        line-height: 1.65;
         margin-bottom: 1rem;
         display: -webkit-box;
-        -webkit-line-clamp: 3;
+        -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        flex-grow: 0;
     }
 
-    /* Section rating améliorée */
-    .rating-section {
+    .card-trust-badges {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+        margin: 0.9rem 0;
+        padding: 0.9rem 0;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .card-trust-item {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-        flex-wrap: wrap;
+        gap: 8px;
+        font-size: 0.74rem;
+        color: #cbd5e1;
+        font-weight: 500;
     }
 
-    .rating-stars {
-        display: flex;
-        align-items: center;
-        gap: 0.125rem;
+    .card-trust-item i {
+        font-size: 13px;
+        flex-shrink: 0;
     }
 
-    .star {
-        color: #fbbf24;
-        font-size: 0.875rem;
-    }
+    .cti-purple { color: #a5b4fc; }
+    .cti-amber  { color: #fcd34d; }
+    .cti-green  { color: #6ee7b7; }
+    .cti-red    { color: #fca5a5; }
 
-    .star-empty {
-        color: #d1d5db;
-    }
-
-    .rating-value {
-        font-weight: 700;
-        color: var(--text-primary);
-        font-size: 0.875rem;
-    }
-
-    .rating-count {
-        font-size: 0.75rem;
-        color: var(--text-secondary);
-    }
-
-    /* Éléments de confiance - NOUVEAU */
-    .trust-badges {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        margin: 1rem 0;
-        padding: 0.75rem 0;
-        border-top: 1px solid var(--border-light);
-        border-bottom: 1px solid var(--border-light);
-    }
-
-    .trust-item {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.75rem;
-        color: var(--text-secondary);
-        transition: all 0.2s;
-    }
-
-    .trust-item:hover {
-        color: var(--success-color);
-        transform: translateX(2px);
-    }
-
-    .trust-icon {
-        font-size: 0.875rem;
-    }
-
-    .trust-icon.success {
-        color: var(--success-color);
-    }
-
-    /* Prix et CTA */
     .formation-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 1rem;
         margin-top: auto;
-        gap: 1rem;
-        flex-direction: column;
-        align-items: stretch;
+        padding-top: 0.9rem;
     }
 
-    .price-section {
+    .price-row {
         display: flex;
+        align-items: center;
         justify-content: space-between;
-        align-items: baseline;
         flex-wrap: wrap;
         gap: 0.5rem;
+        margin-bottom: 0.9rem;
+    }
+
+    .price-group {
+        display: flex;
+        align-items: baseline;
+        gap: 0.6rem;
+        flex-wrap: wrap;
     }
 
     .formation-prix {
         font-size: 1.5rem;
         font-weight: 800;
-        color: var(--primary-color);
+        color: var(--accent-gold);
         line-height: 1;
     }
 
     .old-price {
-        font-size: 0.875rem;
-        color: var(--text-secondary);
+        font-size: 0.8rem;
+        color: #8b7bb5;
         text-decoration: line-through;
     }
 
-    .price-badge {
-        background: #fef3c7;
-        color: #d97706;
-        font-size: 0.7rem;
-        padding: 0.25rem 0.5rem;
-        border-radius: 12px;
+    .promo-tag {
+        background: rgba(245,158,11,0.15);
+        color: #fcd34d;
+        font-size: 0.65rem;
         font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 12px;
+        border: 1px solid rgba(245,158,11,0.3);
+        white-space: nowrap;
+        letter-spacing: 0.3px;
     }
 
-    .btn-group {
+    .btn-group-card {
         display: flex;
         gap: 0.75rem;
     }
 
-    /* Boutons modernisés */
     .btn-discover {
-        background: transparent;
-        color: var(--primary-color);
-        border: 1.5px solid var(--primary-color);
-        padding: 0.625rem 1rem;
-        font-size: 0.875rem;
+        background: rgba(99,102,241,0.1);
+        color: #c7d2fe;
+        border: 1.5px solid rgba(99,102,241,0.4);
+        padding: 0.65rem 0.9rem;
+        font-size: 0.8rem;
         font-weight: 600;
-        border-radius: 8px;
+        border-radius: 10px;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.25s ease;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
@@ -667,40 +546,98 @@
     }
 
     .btn-discover:hover {
-        background: var(--primary-color);
-        color: #fff;
+        background: rgba(99,102,241,0.25);
+        color: #e0e7ff;
+        border-color: rgba(99,102,241,0.8);
         transform: translateY(-2px);
     }
 
     .btn-buy {
-        background: var(--success-color);
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: #fff;
         border: none;
-        padding: 0.625rem 1.25rem;
-        font-size: 0.875rem;
+        padding: 0.65rem 0.9rem;
+        font-size: 0.8rem;
         font-weight: 600;
-        border-radius: 8px;
+        border-radius: 10px;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.25s ease;
+        text-decoration: none;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
         flex: 1;
-        text-decoration: none;
     }
 
     .btn-buy:hover {
-        background: var(--success-hover);
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
         transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
+        box-shadow: 0 6px 16px rgba(16,185,129,0.35);
     }
 
     .btn-buy:active {
-        transform: translateY(0);
+        transform: translateY(1px);
     }
 
-    /* Bouton flottant WhatsApp */
+    .empty-state {
+        text-align: center;
+        padding: 5rem 2rem;
+        background: var(--dark-card);
+        border: 1px solid var(--dark-border);
+        border-radius: 16px;
+    }
+
+    .empty-state-icon {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .empty-state h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--dark-text);
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+        color: var(--dark-muted);
+        font-size: 0.9rem;
+    }
+
+    .pagination-wrap {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        margin: 1rem 0 2rem;
+        flex-wrap: wrap;
+    }
+
+    .pagination-wrap a {
+        padding: 7px 13px;
+        border-radius: 8px;
+        border: 1px solid #3d2a7a;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--dark-muted);
+        background: var(--dark-card);
+        transition: all 0.2s;
+    }
+
+    .pagination-wrap a:hover {
+        border-color: rgba(99,102,241,0.6);
+        color: #a5b4fc;
+        background: rgba(99,102,241,0.08);
+    }
+
+    .pagination-wrap a.active {
+        background: #6366f1;
+        color: #fff;
+        border-color: #6366f1;
+    }
+
     .whatsapp-float {
         position: fixed;
         bottom: 2rem;
@@ -729,345 +666,172 @@
     .whatsapp-button:hover {
         transform: translateY(-4px);
         box-shadow: var(--shadow-xl);
-        gap: 1rem;
+        color: #fff;
     }
 
     .whatsapp-icon {
-        width: 24px;
-        height: 24px;
+        width: 24px; height: 24px;
         background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.596 1.978.962 3.149.962 3.178 0 5.767-2.586 5.768-5.766.001-3.18-2.585-5.766-5.768-5.766zm3.392 8.244c-.144.405-.837.775-1.17.824-.266.04-.555.062-.856-.062-.253-.104-.547-.232-.795-.436-.881-.726-1.443-1.754-1.587-2.714-.052-.35-.076-.706.005-1.06.08-.354.274-.66.553-.902.116-.102.23-.19.368-.234.135-.044.293-.057.439-.013.253.076.426.24.553.49.152.296.201.624.229.964.036.447-.066.885-.18 1.317-.122.464.133.877.432 1.211.326.364.744.615 1.188.762.206.068.428.106.635.106.292 0 .557-.108.746-.286.203-.19.331-.445.379-.717.047-.27.021-.547-.032-.811-.079-.394-.281-.746-.55-1.018-.221-.224-.483-.384-.755-.5-.257-.109-.53-.16-.79-.204-.291-.05-.583-.03-.86.058-.272.086-.526.228-.746.423-.329.296-.569.675-.666 1.114-.097.44-.047.898.117 1.32.164.422.438.794.751 1.101.209.204.455.363.725.471.278.112.578.164.881.155.264-.009.529-.062.777-.173.245-.111.474-.264.68-.453.205-.189.384-.408.528-.65.144-.242.252-.504.315-.777.063-.273.08-.555.048-.829-.032-.273-.109-.538-.225-.783-.117-.245-.28-.463-.474-.642-.194-.179-.42-.316-.663-.408-.242-.092-.5-.136-.754-.128-.254.008-.5.052-.726.138-.226.086-.431.216-.607.383-.176.167-.327.369-.44.592-.113.223-.19.464-.227.71-.037.246-.034.498.009.745.043.247.126.482.246.698.12.216.276.407.458.563.182.156.387.277.607.356.22.079.453.113.682.097.229-.016.451-.07.656-.166.205-.096.391-.234.545-.404.154-.17.274-.369.352-.585.078-.216.112-.447.095-.674-.017-.227-.077-.444-.175-.642-.098-.198-.231-.374-.391-.516-.16-.142-.344-.249-.54-.316-.196-.067-.402-.092-.603-.071z"/></svg>') center/contain no-repeat;
         background-size: contain;
+        flex-shrink: 0;
     }
 
     @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Responsive design amélioré */
     @media (max-width: 768px) {
-        .promo-content {
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .promo-text {
-            justify-content: center;
-        }
-
-        .promo-price {
-            font-size: 1.25rem;
-        }
-
-        .hero-section {
-            padding: 3rem 0;
-        }
-
-        .hero-section h1 {
-            font-size: 2rem;
-        }
-
         .formations-grid {
             grid-template-columns: 1fr;
-            gap: 1.5rem;
+            gap: 1.2rem;
         }
 
-        .btn-group {
+        .card-trust-badges {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .btn-group-card {
             flex-direction: column;
         }
 
-        .trust-badges {
-            justify-content: space-between;
-        }
-
-        .trust-item {
-            font-size: 0.7rem;
-        }
-
-        .whatsapp-button {
-            padding: 0.75rem 1.25rem;
-        }
-
-        .whatsapp-button span {
-            display: none;
-        }
-
-        .whatsapp-button {
-            padding: 0.75rem;
-            border-radius: 50%;
-        }
-
-        .whatsapp-icon {
-            margin: 0;
-        }
-    }
-
-    /* Animation de chargement */
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .formation-card {
-        animation: fadeIn 0.5s ease-out forwards;
-        opacity: 0;
-    }
-
-    .formation-card:nth-child(1) { animation-delay: 0.1s; }
-    .formation-card:nth-child(2) { animation-delay: 0.2s; }
-    .formation-card:nth-child(3) { animation-delay: 0.3s; }
-    .formation-card:nth-child(4) { animation-delay: 0.4s; }
-    .formation-card:nth-child(5) { animation-delay: 0.5s; }
-    .formation-card:nth-child(6) { animation-delay: 0.6s; }
-
-    /* Compteur promo */
-    .countdown-timer {
-        display: flex;
-        gap: 0.5rem;
-        margin-top: 0.5rem;
-    }
-
-    .countdown-unit {
-        background: rgba(0,0,0,0.3);
-        padding: 0.25rem 0.5rem;
-        border-radius: 8px;
-        font-size: 0.75rem;
-        font-weight: 600;
+        .whatsapp-button span { display: none; }
+        .whatsapp-button { padding: 0.875rem; border-radius: 50%; }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Bannière promotionnelle modernisée -->
+
+<!-- ===== BANNIÈRE PROMOTIONNELLE ===== -->
 <div class="promo-banner-v2">
-  <div class="promo-topbar">
-    <span class="topbar-dot"></span>
-    OFFRE À DURÉE LIMITÉE — VENTE FLASH SUR TOUTES LES FORMATIONS
-    <span class="topbar-dot"></span>
-  </div>
-  <div class="container-udemy">
-    <div class="promo-main">
-
-      <!-- Gauche : texte -->
-      <div class="promo-left">
-        <span class="badge-hot">
-          <i class="bi bi-lightning-charge-fill"></i> Vente flash
-        </span>
-        <h2 class="promo-heading">Promotion exceptionnelle<br>sur toutes nos formations</h2>
-        <p class="promo-sub">Accès immédiat &middot; Support WhatsApp &middot; Paiement sécurisé</p>
-      </div>
-
-      <!-- Centre : prix -->
-      <div class="promo-center">
-        <div class="price-label">PRIX À PARTIR DE</div>
-        <div class="price-old">5 000 FCFA</div>
-        <div class="price-new">1 000 <span class="price-currency">FCFA</span></div>
-      </div>
-
-      <!-- Droite : compte à rebours + CTA -->
-      <div class="promo-right">
-        <div class="countdown-wrap">
-          <div class="countdown-label">
-            <i class="bi bi-clock"></i> Offre expire dans
-          </div>
-          <div class="countdown-boxes">
-            <div class="countdown-box">
-              <span class="cd-num" id="cd-days">07</span>
-              <span class="cd-unit">JOURS</span>
-            </div>
-            <span class="cd-sep">:</span>
-            <div class="countdown-box">
-              <span class="cd-num" id="cd-hours">00</span>
-              <span class="cd-unit">HEURES</span>
-            </div>
-            <span class="cd-sep">:</span>
-            <div class="countdown-box">
-              <span class="cd-num" id="cd-mins">00</span>
-              <span class="cd-unit">MIN</span>
-            </div>
-          </div>
-          <div class="expiry-line">
-            <span class="expiry-dot"></span>
-            Valable jusqu'au 25 mai 2026
-          </div>
-        </div>
-        <a href="#formations" class="btn-promo-cta">
-          En profiter maintenant <i class="bi bi-arrow-right"></i>
-        </a>
-      </div>
-
+    <div class="promo-topbar">
+        <span class="topbar-dot"></span>
+        OFFRE À DURÉE LIMITÉE — VENTE FLASH SUR TOUTES LES FORMATIONS
+        <span class="topbar-dot"></span>
     </div>
-  </div>
 </div>
 
+<!-- ===== HERO AVEC VOTRE IMAGE hero-background.png ===== -->
 <div class="hero-section">
-  <div class="container-udemy">
-    <div class="hero-grid">
-
-      <div class="hero-left">
-        <div class="hero-eyebrow">
-          <span class="hero-eyebrow-dot"></span>
-          Plateforme de formation en ligne
+    <div class="hero-blurred-image"></div>
+    <div class="container-udemy">
+        <div class="hero-content">
+            <div class="hero-eyebrow">
+                <span class="hero-eyebrow-dot"></span>
+                PLATEFORME DE FORMATION EN LIGNE
+            </div>
+            <h1>Apprenez des compétences qui <span class="hero-highlight">génèrent des revenus</span></h1>
+            <p>Découvrez nos formations pratiques et transformez votre carrière dès aujourd'hui</p>
+            <div class="hero-actions">
+                <a href="#formations" class="btn-hero-primary" id="voirFormationsBtn">
+                    <i class="bi bi-rocket-takeoff-fill"></i>
+                    VOIR LES FORMATIONS
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
         </div>
-        <h1>Apprenez des compétences qui <span class="hero-highlight">génèrent des revenus</span></h1>
-        <p>Découvrez nos formations pratiques et transformez votre carrière dès aujourd'hui</p>
-        <div class="hero-actions">
-          <a href="#formations" class="btn-hero-primary">
-            <i class="bi bi-rocket-takeoff-fill"></i>
-            Voir les formations
-          </a>
-        </div>
-      </div>
-
-      <div class="hero-right">
-        <div class="card-trust">
-          <div class="trust-icon-wrap icon-purple">
-            <i class="bi bi-lightning-charge-fill"></i>
-          </div>
-          <div>
-            <div class="trust-title">Accès immédiat après achat</div>
-            <div class="trust-sub">Commencez à apprendre en quelques minutes</div>
-          </div>
-          <span class="trust-badge badge-purple">Instantané</span>
-        </div>
-
-        <div class="card-trust">
-          <div class="trust-icon-wrap icon-amber">
-            <i class="bi bi-award-fill"></i>
-          </div>
-          <div>
-            <div class="trust-title">Accompagnement personnalisé</div>
-            <div class="trust-sub">Support WhatsApp inclus avec chaque formation</div>
-          </div>
-          <span class="trust-badge badge-amber">Inclus</span>
-        </div>
-
-        <div class="card-trust">
-          <div class="trust-icon-wrap icon-green">
-            <i class="bi bi-shield-check-fill"></i>
-          </div>
-          <div>
-            <div class="trust-title">Paiement 100 % sécurisé</div>
-            <div class="trust-sub">Vos transactions sont protégées</div>
-          </div>
-          <span class="trust-badge badge-green">Sécurisé</span>
-        </div>
-      </div>
-
     </div>
-  </div>
 </div>
 
-<div class="container-udemy" id="formations">
-    {% if formations %}
-    <div class="formations-grid">
-        {% for formation in formations %}
-        <div class="formation-card">
-            {% if forloop.first %}
-            <div class="popular-badge">
-                ⭐ Populaire
-            </div>
-            {% endif %}
+<!-- ===== GRILLE DES FORMATIONS ===== -->
+<div class="formations-section" id="formations">
+    <div class="container-udemy">
 
-            <div class="formation-image-wrapper">
-                {% if formation.image %}
-                    <img src="{{ formation.image.url }}" class="formation-image" alt="{{ formation.titre }}" loading="lazy">
-                {% else %}
-                    <div class="formation-image" style="display: flex; align-items: center; justify-content: center; color: white;">
-                        🎓 Formation
-                    </div>
+        {% if formations %}
+
+        <div class="formations-grid">
+            {% for formation in formations %}
+            <div class="formation-card">
+
+                {% if forloop.first %}
+                <div class="popular-badge">⭐ Populaire</div>
                 {% endif %}
-            </div>
 
-            <div class="formation-content">
-                <h3 class="formation-title">{{ formation.titre }}</h3>
-
-                <div class="formation-description">
-                    {{ formation.description|striptags|truncatewords:25 }}
+                <div class="formation-image-wrapper">
+                    {% if formation.image %}
+                        <img src="{{ formation.image.url }}" class="formation-image" alt="{{ formation.titre }}" loading="lazy">
+                    {% else %}
+                        <div class="formation-image" style="display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎓</div>
+                    {% endif %}
                 </div>
 
-                <!-- Éléments de confiance -->
-                <div class="trust-badges">
-                    <div class="trust-item">
-                        <span class="trust-icon success">✅</span>
-                        <span>Accès immédiat</span>
-                    </div>
-                    <div class="trust-item">
-                        <span class="trust-icon success">👨‍🏫</span>
-                        <span>Accompagnement inclus</span>
-                    </div>
-                    <div class="trust-item">
-                        <span class="trust-icon success">💬</span>
-                        <span>Support WhatsApp</span>
-                    </div>
-                    <div class="trust-item">
-                        <span class="trust-icon success">🔒</span>
-                        <span>Paiement sécurisé</span>
-                    </div>
-                </div>
+                <div class="formation-content">
 
-                <div class="formation-footer">
-                    <div class="price-section">
-                        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                    <h3 class="formation-title">{{ formation.titre }}</h3>
+                    <p class="formation-description">{{ formation.description|striptags|truncatewords:20 }}</p>
 
-                            <!-- Ancien prix barré -->
-                            {% if formation.prix_promo %}
-                                <span class="old-price">
-                                    {{ formation.prix|floatformat:"0" }} FCFA
-                                </span>
-
-                                <span class="formation-prix" style="color: #ef4444;">
-                                    {{ formation.prix_promo|floatformat:"0" }} FCFA
-                                </span>
-                            {% else %}
-                                <span class="formation-prix">
-                                    {{ formation.prix|floatformat:"0" }} FCFA
-                                </span>
-                            {% endif %}
-
+                    <div class="card-trust-badges">
+                        <div class="card-trust-item">
+                            <i class="bi bi-lightning-charge-fill cti-purple"></i>
+                            <span>Accès immédiat</span>
                         </div>
-
-                        <div class="price-badge">
-                            Promo limitée
+                        <div class="card-trust-item">
+                            <i class="bi bi-award-fill cti-amber"></i>
+                            <span>Accompagnement</span>
+                        </div>
+                        <div class="card-trust-item">
+                            <i class="bi bi-chat-dots-fill cti-green"></i>
+                            <span>Support WhatsApp</span>
+                        </div>
+                        <div class="card-trust-item">
+                            <i class="bi bi-shield-check-fill cti-red"></i>
+                            <span>Paiement sécurisé</span>
                         </div>
                     </div>
 
-                    <div class="btn-group">
-                        <a href="{% url 'detail_formation' formation.id %}" class="btn-discover">
-                            Voir la formation
-                        </a>
-                        <a href="{% url 'achat_direct' formation.id %}" class="btn-buy">
-                            <i class="bi bi-lightning-charge-fill"></i>
-                            Acheter maintenant
-                        </a>
+                    <div class="formation-footer">
+                        <div class="price-row">
+                            <div class="price-group">
+                                {% if formation.prix_promo %}
+                                    <span class="old-price">{{ formation.prix|floatformat:"0" }} FCFA</span>
+                                    <span class="formation-prix" style="color:#ef4444;">{{ formation.prix_promo|floatformat:"0" }} FCFA</span>
+                                {% else %}
+                                    <span class="formation-prix">{{ formation.prix|floatformat:"0" }} FCFA</span>
+                                {% endif %}
+                            </div>
+                            <span class="promo-tag">Promo limitée</span>
+                        </div>
+
+                        <div class="btn-group-card">
+                            <a href="{% url 'detail_formation' formation.id %}" class="btn-discover">
+                                <i class="bi bi-eye"></i>
+                                Voir la formation
+                            </a>
+                            <a href="{% url 'achat_direct' formation.id %}" class="btn-buy">
+                                <i class="bi bi-lightning-charge-fill"></i>
+                                Acheter maintenant
+                            </a>
+                        </div>
                     </div>
+
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+
+        <div class="pagination-wrap">
+            {% for num in formations.paginator.page_range %}
+                <a href="?page={{ num }}"
+                   class="{% if formations.number == num %}active{% endif %}">
+                    {{ num }}
+                </a>
+            {% endfor %}
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+            <div class="empty-state-icon">📚</div>
+            <h3>Aucune formation disponible</h3>
+            <p>De nouvelles formations arrivent bientôt !</p>
+        </div>
+
+        {% endif %}
+
     </div>
-    {% else %}
-    <div style="text-align: center; padding: 4rem 2rem;">
-        <div style="font-size: 4rem; margin-bottom: 1rem;">📚</div>
-        <h3 style="margin-bottom: 0.5rem;">Aucune formation disponible</h3>
-        <p style="color: var(--text-secondary);">De nouvelles formations arrivent bientôt !</p>
-    </div>
-    {% endif %}
 </div>
 
-<!-- Bouton flottant WhatsApp -->
 <div class="whatsapp-float">
     <a href="https://wa.me/242061814279?text=Bonjour%2C%20je%20souhaite%20avoir%20plus%20d%27informations%20sur%20vos%20formations."
        class="whatsapp-button"
@@ -1078,35 +842,9 @@
     </a>
 </div>
 
-<div style="display:flex; justify-content:center; gap:8px; margin:2rem 0;">
-
-    {% for num in formations.paginator.page_range %}
-        <a href="?page={{ num }}"
-           style="padding:6px 10px; border-radius:5px;
-           border:1px solid #ddd;
-           text-decoration:none;
-
-           {% if formations.number == num %}
-               background:#6366f1;
-               color:white;
-               border-color:#6366f1;
-           {% else %}
-               color:#333;
-           {% endif %}">
-            {{ num }}
-        </a>
-    {% endfor %}
-
-</div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const cards = document.querySelectorAll('.formation-card');
-
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
         const observer = new IntersectionObserver(function(entries) {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1114,24 +852,19 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+        cards.forEach(card => observer.observe(card));
 
-        cards.forEach(card => {
-            observer.observe(card);
-        });
-
+        const voirBtn = document.getElementById('voirFormationsBtn');
+        if (voirBtn) {
+            voirBtn.addEventListener('click', function(e) {
+                this.style.transition = 'all 0.05s ease';
+                setTimeout(() => {
+                    this.style.transition = '';
+                }, 100);
+            });
+        }
     });
-
-    function updateCountdown() {
-        const end = new Date('2026-05-25T23:59:59').getTime();
-        const diff = Math.max(0, end - Date.now());
-        const pad = n => String(n).padStart(2, '0');
-        document.getElementById('cd-days').textContent  = pad(Math.floor(diff / 86400000));
-        document.getElementById('cd-hours').textContent = pad(Math.floor((diff % 86400000) / 3600000));
-        document.getElementById('cd-mins').textContent  = pad(Math.floor((diff % 3600000) / 60000));
-    }
-
-    updateCountdown();
-    setInterval(updateCountdown, 60000);
 </script>
+
 {% endblock %}

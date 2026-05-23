@@ -1,101 +1,163 @@
 <!-- templates/formations/checkout.html -->
 
 {% extends 'formation/base.html' %}
+{% load static %}
 
-{% block title %}Finaliser votre commande{% endblock %}
+{% block title %}Finaliser votre commande | Formation Pro{% endblock %}
 
 {% block extra_css %}
 <style>
-    /* Page header */
-    .checkout-header {
-        text-align: center;
-        padding: 2rem 0;
-        border-bottom: 1px solid var(--border-color);
-        margin-bottom: 3rem;
+    /* ===== VARIABLES GLOBALES (même thème que catalogue) ===== */
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        --primary-color: #6366f1;
+        --primary-hover: #4f46e5;
+        --success-color: #10b981;
+        --success-hover: #059669;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --border-light: #e5e7eb;
+        --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.25);
+
+        /* Palette sombre du site (identique au catalogue) */
+        --dark-bg:       #0a0720;
+        --dark-surface:  #0f0a2e;
+        --dark-card:     #1a1040;
+        --dark-border:   rgba(99,102,241,0.2);
+        --dark-border-hover: rgba(245,158,11,0.35);
+        --dark-text:     #e2e8f0;
+        --dark-muted:    #94a3b8;
+        --dark-subtle:   #64748b;
+        --accent-gold:   #f59e0b;
+        --accent-purple: #a5b4fc;
     }
 
-    .checkout-header h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin-bottom: 0.5rem;
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
-    .checkout-header p {
-        color: var(--text-secondary);
+    body {
+        background: var(--dark-bg);
+        color: var(--dark-text);
     }
 
-    /* Étapes de progression */
-    .progress-steps {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 3rem;
+    .container-udemy {
+        max-width: 1280px;
+        margin: 0 auto;
         padding: 0 2rem;
     }
 
-    .step {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        position: relative;
+    /* ===== BANNIÈRE PROMO ===== */
+    .promo-banner-v2 {
+        background: #1a1040;
+        color: #fff;
+        overflow: hidden;
+        border-bottom: 1px solid #3d2a7a;
     }
 
-    .step-number {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: var(--primary-color);
-        color: #fff;
+    .promo-topbar {
+        background: #f59e0b;
+        color: #1a1040;
+        text-align: center;
+        padding: 5px 1rem;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: 700;
-        font-size: 1.125rem;
-        z-index: 1;
+        gap: 8px;
     }
 
-    .step.inactive .step-number {
-        background: var(--border-color);
-        color: var(--text-secondary);
+    .topbar-dot {
+        width: 5px; height: 5px;
+        background: #1a1040;
+        border-radius: 50%;
+        opacity: 0.35;
+        display: inline-block;
     }
 
-    .step-label {
+    /* ===== PAGE HEADER ===== */
+    .checkout-header {
+        text-align: center;
+        padding: 3rem 0 2rem;
+        position: relative;
+    }
+
+    .checkout-header h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+        letter-spacing: -0.02em;
+    }
+
+    .checkout-header p {
+        color: var(--dark-muted);
+        font-size: 1rem;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    /* = badge doré = */
+    .header-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(245,158,11,0.15);
+        border: 1px solid rgba(245,158,11,0.3);
+        color: #fcd34d;
+        font-size: 0.75rem;
         font-weight: 600;
-        color: var(--text-primary);
+        padding: 5px 14px;
+        border-radius: 40px;
+        margin-bottom: 1.5rem;
     }
 
-    .step.inactive .step-label {
-        color: var(--text-secondary);
-    }
-
-    .step-separator {
-        width: 80px;
-        height: 2px;
-        background: var(--border-color);
-        margin: 0 1rem;
-    }
-
-    /* Layout checkout */
+    /* ===== LAYOUT PRINCIPAL ===== */
     .checkout-layout {
-    grid-template-columns: 1fr;
-    max-width: 600px;
-    margin: 0 auto 3rem;
-}
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 2rem;
+        margin: 2rem 0 4rem;
+    }
 
-    /* Formulaire */
+    /* ===== FORMULAIRE ===== */
     .checkout-form {
-        background: #fff;
-        border: 1px solid var(--border-color);
+        background: var(--dark-card);
+        border: 1px solid var(--dark-border);
+        border-radius: 20px;
         padding: 2rem;
-        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .checkout-form:hover {
+        border-color: var(--dark-border-hover);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
 
     .checkout-form h2 {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         font-weight: 700;
+        color: #fff;
         margin-bottom: 1.5rem;
-        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .checkout-form h2 i {
+        color: var(--accent-gold);
     }
 
     .form-section {
@@ -103,22 +165,24 @@
     }
 
     .form-section h3 {
-        font-size: 1.125rem;
+        font-size: 0.85rem;
         font-weight: 600;
-        margin-bottom: 1rem;
-        color: var(--text-primary);
+        color: var(--accent-gold);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 1.25rem;
     }
 
     .form-group-custom {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
     }
 
     .form-group-custom label {
         display: block;
         font-weight: 600;
-        color: var(--text-primary);
+        color: var(--dark-text);
         margin-bottom: 0.5rem;
-        font-size: 0.875rem;
+        font-size: 0.85rem;
     }
 
     .form-group-custom label span {
@@ -127,50 +191,59 @@
 
     .form-control-custom {
         width: 100%;
-        padding: 0.875rem;
-        border: 1px solid var(--border-color);
-        border-radius: 4px;
-        font-size: 1rem;
-        transition: border-color 0.2s;
+        padding: 0.875rem 1rem;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--dark-border);
+        border-radius: 12px;
+        font-size: 0.95rem;
+        color: var(--dark-text);
+        transition: all 0.2s ease;
     }
 
     .form-control-custom:focus {
         outline: none;
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(86,36,208,.1);
+        border-color: var(--accent-gold);
+        background: rgba(255,255,255,0.08);
+        box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
     }
 
     .form-control-custom::placeholder {
-        color: #a1a7b3;
+        color: var(--dark-subtle);
     }
 
     .form-helper {
-        font-size: 0.8125rem;
-        color: var(--text-secondary);
+        font-size: 0.7rem;
+        color: var(--dark-muted);
         margin-top: 0.375rem;
+        display: flex;
+        align-items: center;
+        gap: 4px;
     }
 
     .form-error {
         color: var(--danger-color);
-        font-size: 0.8125rem;
+        font-size: 0.75rem;
         margin-top: 0.375rem;
         display: block;
     }
 
-    /* Garanties améliorées */
+    /* ===== GARANTIES ===== */
     .guarantees {
-        background: #f8f9fa;
-        padding: 1.5rem;
+        background: rgba(16,185,129,0.08);
+        border: 1px solid rgba(16,185,129,0.2);
+        border-radius: 16px;
+        padding: 1.25rem;
         margin: 1.5rem 0;
-        border-left: 4px solid var(--success-color);
-        border-radius: 8px;
     }
 
     .guarantees h4 {
-        font-size: 1rem;
+        font-size: 0.9rem;
         font-weight: 700;
         margin-bottom: 1rem;
-        color: var(--text-primary);
+        color: #6ee7b7;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     .guarantee-item {
@@ -178,25 +251,28 @@
         align-items: center;
         gap: 0.75rem;
         padding: 0.5rem 0;
-        font-size: 0.875rem;
-        color: var(--text-primary);
+        font-size: 0.8rem;
+        color: var(--dark-muted);
     }
 
     .guarantee-item i {
         color: var(--success-color);
-        font-size: 1.125rem;
+        font-size: 1rem;
+        width: 20px;
     }
 
-    /* Moyens de paiement */
+    /* ===== MOYENS DE PAIEMENT ===== */
     .payment-methods-section {
         margin: 1.5rem 0;
     }
 
     .payment-methods-section h4 {
-        font-size: 0.875rem;
+        font-size: 0.8rem;
         font-weight: 600;
         margin-bottom: 0.75rem;
-        color: var(--text-secondary);
+        color: var(--dark-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
 
     .payment-methods-list {
@@ -207,28 +283,29 @@
 
     .payment-badge {
         padding: 0.5rem 1rem;
-        background: #f8f9fa;
-        border: 1px solid var(--border-color);
-        border-radius: 50px;
-        font-size: 0.875rem;
-        font-weight: 600;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--dark-border);
+        border-radius: 40px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--dark-muted);
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
     }
 
-    /* Bouton de paiement amélioré */
+    /* ===== BOUTON DE PAIEMENT ===== */
     .btn-payment {
-        background: var(--primary-color);
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: #fff;
         width: 100%;
         padding: 1.25rem;
         font-weight: 700;
-        font-size: 1.125rem;
+        font-size: 1.1rem;
         border: none;
-        border-radius: 8px;
+        border-radius: 14px;
         margin-top: 1.5rem;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -237,31 +314,33 @@
     }
 
     .btn-payment:hover {
-        background: var(--primary-hover);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(86,36,208,.2);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(16,185,129,0.3);
+        filter: brightness(1.05);
     }
 
-    .btn-payment i {
-        font-size: 1.25rem;
+    .btn-payment:active {
+        transform: translateY(1px);
     }
 
-    /* Phrase d'urgence */
+    /* ===== URGENCE TEXT ===== */
     .urgency-text {
         text-align: center;
         margin: 1rem 0;
         padding: 0.75rem;
-        background: #fff8e1;
-        border-radius: 8px;
-        font-size: 0.875rem;
-        color: var(--text-primary);
+        background: rgba(245,158,11,0.1);
+        border: 1px solid rgba(245,158,11,0.2);
+        border-radius: 12px;
+        font-size: 0.8rem;
+        color: #fcd34d;
     }
 
     .urgency-text i {
-        color: #ff9800;
+        color: #f59e0b;
+        margin-right: 6px;
     }
 
-    /* Secure payment badge */
+    /* ===== SECURE BADGE ===== */
     .secure-badge {
         display: flex;
         align-items: center;
@@ -269,54 +348,60 @@
         gap: 0.5rem;
         padding: 1rem;
         margin-top: 1rem;
-        background: #f8f9fa;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        font-size: 0.875rem;
-        color: var(--text-secondary);
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--dark-border);
+        border-radius: 12px;
+        font-size: 0.8rem;
+        color: var(--dark-muted);
     }
 
     .secure-badge i {
-        color: var(--success-color);
-        font-size: 1.25rem;
+        color: #a5b4fc;
+        font-size: 1.1rem;
     }
 
-    /* Résumé de commande */
+    /* ===== RÉSUMÉ DE COMMANDE ===== */
     .order-recap {
-        background: #fff;
-        border: 1px solid var(--border-color);
-        padding: 2rem;
-        border-radius: 8px;
+        background: var(--dark-card);
+        border: 1px solid var(--dark-border);
+        border-radius: 20px;
+        padding: 1.5rem;
         position: sticky;
         top: 24px;
         height: fit-content;
+        transition: all 0.3s ease;
+    }
+
+    .order-recap:hover {
+        border-color: var(--dark-border-hover);
     }
 
     .order-recap h2 {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
         font-weight: 700;
-        margin-bottom: 1.5rem;
-        color: var(--text-primary);
+        color: #fff;
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--dark-border);
     }
 
     .recap-item {
         display: flex;
         gap: 1rem;
         padding: 1rem 0;
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .recap-item:last-of-type {
-        border-bottom: none;
+        border-bottom: 1px solid var(--dark-border);
     }
 
     .recap-image {
-        width: 80px;
+        width: 70px;
         height: 45px;
         object-fit: cover;
         flex-shrink: 0;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 4px;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        border-radius: 8px;
     }
 
     .recap-details {
@@ -324,31 +409,55 @@
     }
 
     .recap-title {
-        font-size: 0.875rem;
+        font-size: 0.85rem;
         font-weight: 600;
-        color: var(--text-primary);
+        color: #fff;
         margin-bottom: 0.25rem;
         line-height: 1.4;
     }
 
     .recap-price {
-        font-size: 0.875rem;
+        font-size: 0.8rem;
         font-weight: 700;
-        color: var(--text-primary);
+        color: var(--accent-gold);
     }
 
     .recap-total {
         display: flex;
         justify-content: space-between;
-        padding: 1.5rem 0 1rem;
-        margin-top: 1rem;
-        border-top: 2px solid var(--text-primary);
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--text-primary);
+        padding: 1.25rem 0 0.5rem;
+        margin-top: 0.5rem;
+        border-top: 2px solid var(--accent-gold);
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #fff;
     }
 
-/* Bouton flottant WhatsApp */
+    .recap-total span:last-child {
+        color: var(--accent-gold);
+    }
+
+    /* ===== LIEN RETOUR ===== */
+    .back-link {
+        text-align: center;
+        margin: 2rem 0 3rem;
+    }
+
+    .back-link a {
+        color: var(--dark-muted);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .back-link a:hover {
+        color: var(--accent-gold);
+    }
+
+    /* ===== WHATSAPP FLOTTANT ===== */
     .whatsapp-float {
         position: fixed;
         bottom: 2rem;
@@ -377,19 +486,26 @@
     .whatsapp-button:hover {
         transform: translateY(-4px);
         box-shadow: var(--shadow-xl);
-        gap: 1rem;
+        color: #fff;
     }
 
     .whatsapp-icon {
-        width: 24px;
-        height: 24px;
+        width: 24px; height: 24px;
         background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.596 1.978.962 3.149.962 3.178 0 5.767-2.586 5.768-5.766.001-3.18-2.585-5.766-5.768-5.766zm3.392 8.244c-.144.405-.837.775-1.17.824-.266.04-.555.062-.856-.062-.253-.104-.547-.232-.795-.436-.881-.726-1.443-1.754-1.587-2.714-.052-.35-.076-.706.005-1.06.08-.354.274-.66.553-.902.116-.102.23-.19.368-.234.135-.044.293-.057.439-.013.253.076.426.24.553.49.152.296.201.624.229.964.036.447-.066.885-.18 1.317-.122.464.133.877.432 1.211.326.364.744.615 1.188.762.206.068.428.106.635.106.292 0 .557-.108.746-.286.203-.19.331-.445.379-.717.047-.27.021-.547-.032-.811-.079-.394-.281-.746-.55-1.018-.221-.224-.483-.384-.755-.5-.257-.109-.53-.16-.79-.204-.291-.05-.583-.03-.86.058-.272.086-.526.228-.746.423-.329.296-.569.675-.666 1.114-.097.44-.047.898.117 1.32.164.422.438.794.751 1.101.209.204.455.363.725.471.278.112.578.164.881.155.264-.009.529-.062.777-.173.245-.111.474-.264.68-.453.205-.189.384-.408.528-.65.144-.242.252-.504.315-.777.063-.273.08-.555.048-.829-.032-.273-.109-.538-.225-.783-.117-.245-.28-.463-.474-.642-.194-.179-.42-.316-.663-.408-.242-.092-.5-.136-.754-.128-.254.008-.5.052-.726.138-.226.086-.431.216-.607.383-.176.167-.327.369-.44.592-.113.223-.19.464-.227.71-.037.246-.034.498.009.745.043.247.126.482.246.698.12.216.276.407.458.563.182.156.387.277.607.356.22.079.453.113.682.097.229-.016.451-.07.656-.166.205-.096.391-.234.545-.404.154-.17.274-.369.352-.585.078-.216.112-.447.095-.674-.017-.227-.077-.444-.175-.642-.098-.198-.231-.374-.391-.516-.16-.142-.344-.249-.54-.316-.196-.067-.402-.092-.603-.071z"/></svg>') center/contain no-repeat;
         background-size: contain;
+        flex-shrink: 0;
     }
-    /* Responsive */
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 992px) {
         .checkout-layout {
             grid-template-columns: 1fr;
+            gap: 1.5rem;
         }
 
         .order-recap {
@@ -397,18 +513,28 @@
             order: -1;
         }
 
-        .progress-steps {
-            flex-direction: column;
-            gap: 1rem;
+        .container-udemy {
+            padding: 0 1.5rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .checkout-header h1 {
+            font-size: 1.8rem;
         }
 
-        .step-separator {
-            width: 2px;
-            height: 40px;
-            margin: 0;
+        .checkout-form,
+        .order-recap {
+            padding: 1.25rem;
         }
-        .whatsapp-button {
-            padding: 0.75rem 1.25rem;
+
+        .checkout-form h2 {
+            font-size: 1.1rem;
+        }
+
+        .btn-payment {
+            padding: 1rem;
+            font-size: 1rem;
         }
 
         .whatsapp-button span {
@@ -416,49 +542,31 @@
         }
 
         .whatsapp-button {
-            padding: 0.75rem;
+            padding: 0.875rem;
             border-radius: 50%;
-        }
-
-        .whatsapp-icon {
-            margin: 0;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .checkout-header h1 {
-            font-size: 1.5rem;
-        }
-
-        .checkout-form,
-        .order-recap {
-            padding: 1.5rem;
-        }
-
-        .progress-steps {
-            display: none;
-        }
-    }
-
-
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
         }
     }
 </style>
 {% endblock %}
 
 {% block content %}
+
+<!-- ===== BANNIÈRE PROMOTIONNELLE (même que catalogue) ===== -->
+<div class="promo-banner-v2">
+    <div class="promo-topbar">
+        <span class="topbar-dot"></span>
+        OFFRE À DURÉE LIMITÉE — VENTE FLASH SUR TOUTES LES FORMATIONS
+        <span class="topbar-dot"></span>
+    </div>
+</div>
+
 <div class="container-udemy">
     <!-- Header -->
     <div class="checkout-header">
+        <div class="header-badge">
+            <i class="bi bi-shield-check"></i>
+            Paiement sécurisé
+        </div>
         <h1>Finaliser votre commande</h1>
         <p>Plus qu'une étape avant d'accéder à vos formations</p>
     </div>
@@ -466,7 +574,10 @@
     <div class="checkout-layout">
         <!-- Formulaire -->
         <div class="checkout-form">
-            <h2>Vos informations</h2>
+            <h2>
+                <i class="bi bi-person-badge"></i>
+                Vos informations
+            </h2>
 
             <form method="post" id="checkout-form">
                 {% csrf_token %}
@@ -482,7 +593,10 @@
                         {% if form.nom_complet.errors %}
                             <span class="form-error">{{ form.nom_complet.errors.0 }}</span>
                         {% endif %}
-                        <small class="form-helper">Votre nom tel qu'il apparaîtra sur la facture</small>
+                        <small class="form-helper">
+                            <i class="bi bi-info-circle"></i>
+                            Votre nom tel qu'il apparaîtra sur la facture
+                        </small>
                     </div>
 
                     <div class="form-group-custom">
@@ -493,7 +607,10 @@
                         {% if form.email.errors %}
                             <span class="form-error">{{ form.email.errors.0 }}</span>
                         {% endif %}
-                        <small class="form-helper">Vous recevrez vos accès à cette adresse</small>
+                        <small class="form-helper">
+                            <i class="bi bi-envelope"></i>
+                            Vous recevrez vos accès à cette adresse
+                        </small>
                     </div>
 
                     <div class="form-group-custom">
@@ -504,19 +621,33 @@
                         {% if form.whatsapp.errors %}
                             <span class="form-error">{{ form.whatsapp.errors.0 }}</span>
                         {% endif %}
-                        <small class="form-helper">Pour un support rapide et personnalisé</small>
+                        <small class="form-helper">
+                            <i class="bi bi-whatsapp"></i>
+                            Pour un support rapide et personnalisé
+                        </small>
                     </div>
                 </div>
 
 
 
-                <!-- Bouton émotionnel (AMÉLIORÉ) -->
+                <!-- Moyens de paiement -->
+                <div class="payment-methods-section">
+                    <h4>Moyens de paiement acceptés</h4>
+                    <div class="payment-methods-list">
+                        <span class="payment-badge"><i class="bi bi-credit-card"></i> Carte bancaire</span>
+                        <span class="payment-badge"><i class="bi bi-wallet2"></i> Mobile Money</span>
+                        <span class="payment-badge"><i class="bi bi-bank"></i> Virement</span>
+                    </div>
+                </div>
+
+
+
+                <!-- Bouton de paiement -->
                 <button type="submit" class="btn-payment">
                     <i class="bi bi-unlock-fill"></i>
-                    payez Maintenant — {{ total }} FCFA
+                    Payer maintenant — {{ total }} FCFA
+                    <i class="bi bi-arrow-right-short"></i>
                 </button>
-
-                <!-- Phrase d'urgence (AJOUTÉE) -->
 
                 <!-- Badge sécurité -->
                 <div class="secure-badge">
@@ -526,49 +657,84 @@
             </form>
         </div>
 
+        <!-- Résumé de commande -->
+        <div class="order-recap">
+            <h2>
+                <i class="bi bi-cart-check-fill"></i>
+                Résumé de votre commande
+            </h2>
+
+            {% for item in panier.items.all %}
+            <div class="recap-item">
+                {% if item.formation.image %}
+                    <img src="{{ item.formation.image.url }}" class="recap-image" alt="{{ item.formation.titre }}">
+                {% else %}
+                    <div class="recap-image" style="display: flex; align-items: center; justify-content: center;">🎓</div>
+                {% endif %}
+                <div class="recap-details">
+                    <div class="recap-title">{{ item.formation.titre }}</div>
+                    <div class="recap-price">{{ item.formation.prix|floatformat:"0" }} FCFA</div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="recap-total">
+                <span>Total à payer</span>
+                <span>{{ total }} FCFA</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Lien retour -->
-    <div class="text-center mb-5">
-        <a href="{% url 'panier' %}" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">
-            <i class="bi bi-arrow-left me-2"></i>Retour au panier
+    <div class="back-link">
+        <a href="{% url 'panier' %}">
+            <i class="bi bi-arrow-left"></i>
+            Retour au panier
         </a>
     </div>
 </div>
-    <div class="whatsapp-float">
-        <a href="https://wa.me/242061814279?text=Bonjour%2C%20je%20souhaite%20avoir%20plus%20d%27informations%20sur%20vos%20formations."
-           class="whatsapp-button"
-           target="_blank"
-           rel="noopener noreferrer">
-            <div class="whatsapp-icon"></div>
-            <span>Nous écrire sur WhatsApp</span>
-        </a>
-    </div>
+
+<!-- Bouton flottant WhatsApp -->
+<div class="whatsapp-float">
+    <a href="https://wa.me/242061814279?text=Bonjour%2C%20je%20souhaite%20avoir%20plus%20d%27informations%20sur%20vos%20formations."
+       class="whatsapp-button"
+       target="_blank"
+       rel="noopener noreferrer">
+        <div class="whatsapp-icon"></div>
+        <span>Nous écrire sur WhatsApp</span>
+    </a>
+</div>
+
 <script>
-// Validation basique côté client
-document.getElementById('checkout-form').addEventListener('submit', function(e) {
-    const nom = document.getElementById('id_nom_complet').value.trim();
-    const email = document.getElementById('id_email').value.trim();
-    const whatsapp = document.getElementById('id_whatsapp').value.trim();
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('checkout-form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const nom = document.getElementById('id_nom_complet').value.trim();
+                const email = document.getElementById('id_email').value.trim();
+                const whatsapp = document.getElementById('id_whatsapp').value.trim();
 
-    if (!nom || !email || !whatsapp) {
-        e.preventDefault();
-        alert('Veuillez remplir tous les champs obligatoires');
-        return false;
-    }
+                if (!nom || !email || !whatsapp) {
+                    e.preventDefault();
+                    alert('Veuillez remplir tous les champs obligatoires');
+                    return false;
+                }
 
-    // Validation email simple
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        e.preventDefault();
-        alert('Veuillez entrer une adresse email valide');
-        return false;
-    }
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    e.preventDefault();
+                    alert('Veuillez entrer une adresse email valide');
+                    return false;
+                }
 
-    // Validation whatsapp (optionnel mais utile)
-    if (whatsapp.length < 8) {
-        e.preventDefault();
-        alert('Veuillez entrer un numéro WhatsApp valide');
-        return false;
-    }
-});
+                if (whatsapp.length < 8) {
+                    e.preventDefault();
+                    alert('Veuillez entrer un numéro WhatsApp valide');
+                    return false;
+                }
+            });
+        }
+    });
 </script>
+
 {% endblock %}

@@ -1,62 +1,129 @@
 {% extends 'formation/base.html' %}
+{% load static %}
 
-{% block title %}Choisir votre mode de paiement{% endblock %}
+{% block title %}Choisir votre mode de paiement | Formation Pro{% endblock %}
 
 {% block extra_css %}
 <style>
-    /* RESET IMPORTANT */
+    /* ===== VARIABLES GLOBALES (même thème que catalogue) ===== */
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        --primary-color: #6366f1;
+        --primary-hover: #4f46e5;
+        --success-color: #10b981;
+        --success-hover: #059669;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --text-primary: #1f2937;
+        --text-secondary: #6b7280;
+        --border-light: #e5e7eb;
+        --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.25);
+
+        /* Palette sombre du site (identique au catalogue) */
+        --dark-bg:       #0a0720;
+        --dark-surface:  #0f0a2e;
+        --dark-card:     #1a1040;
+        --dark-border:   rgba(99,102,241,0.2);
+        --dark-border-hover: rgba(245,158,11,0.35);
+        --dark-text:     #e2e8f0;
+        --dark-muted:    #94a3b8;
+        --dark-subtle:   #64748b;
+        --accent-gold:   #f59e0b;
+        --accent-purple: #a5b4fc;
+    }
+
     * {
+        margin: 0;
+        padding: 0;
         box-sizing: border-box;
     }
 
-    html, body {
-        width: 100%;
-        max-width: 100%;
-        overflow-x: hidden;
+    body {
+        background: var(--dark-bg);
+        color: var(--dark-text);
     }
 
     .container-udemy {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 2rem;
         width: 100%;
-        overflow: hidden;
+        overflow-x: hidden;
     }
 
+    /* ===== BANNIÈRE PROMO ===== */
+    .promo-banner-v2 {
+        background: #1a1040;
+        color: #fff;
+        overflow: hidden;
+        border-bottom: 1px solid #3d2a7a;
+    }
+
+    .promo-topbar {
+        background: #f59e0b;
+        color: #1a1040;
+        text-align: center;
+        padding: 5px 1rem;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .topbar-dot {
+        width: 5px; height: 5px;
+        background: #1a1040;
+        border-radius: 50%;
+        opacity: 0.35;
+        display: inline-block;
+    }
+
+    /* ===== PAGE HEADER ===== */
     .page-header {
         padding: 2rem 0;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--dark-border);
         margin-bottom: 2rem;
-        width: 100%;
     }
 
     .page-header h1 {
         font-size: 2rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        word-wrap: break-word;
-        overflow-wrap: break-word;
+        font-weight: 800;
+        background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.02em;
     }
 
+    /* ===== LAYOUT PRINCIPAL ===== */
     .payment-layout {
         display: grid;
         grid-template-columns: 2fr 1fr;
         gap: 2rem;
         margin-bottom: 3rem;
-        width: 100%;
     }
 
-    /* Liste des opérateurs */
+    /* ===== SECTION OPÉRATEURS ===== */
     .operateurs-section {
-        background: #fff;
+        background: transparent;
         width: 100%;
-        overflow: hidden;
     }
 
     .section-title {
-        font-size: 1.25rem;
-        font-weight: 700;
+        font-size: 1rem;
+        font-weight: 600;
         margin-bottom: 1.5rem;
-        color: var(--text-primary);
+        color: var(--dark-muted);
+        letter-spacing: 0.03em;
     }
 
+    /* Grille opérateurs */
     .operateurs-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -65,19 +132,19 @@
     }
 
     .operateur-card {
-        border: 2px solid var(--border-color);
+        border: 2px solid var(--dark-border);
         padding: 1.75rem 1.25rem;
         text-align: center;
         text-decoration: none;
-        color: var(--text-primary);
-        transition: all 0.2s ease;
-        background: #fff;
+        transition: all 0.3s ease;
+        background: var(--dark-card);
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 1rem;
         position: relative;
         overflow: hidden;
+        border-radius: 16px;
     }
 
     .operateur-card::before {
@@ -87,16 +154,14 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: var(--op-color, #ccc);
-        transition: height 0.2s ease;
+        background: var(--op-color, #6366f1);
+        transition: height 0.3s ease;
     }
 
     .operateur-card:hover {
-        border-color: var(--op-color, #ccc);
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0,0,0,.12);
-        color: var(--text-primary);
-        text-decoration: none;
+        border-color: var(--op-color, var(--dark-border-hover));
+        transform: translateY(-6px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.3);
     }
 
     .operateur-card:hover::before {
@@ -104,94 +169,122 @@
     }
 
     .op-emoji {
-        font-size: 2.5rem;
+        font-size: 3rem;
         line-height: 1;
     }
 
     .op-nom {
         font-size: 1rem;
         font-weight: 700;
-        color: var(--text-primary);
+        color: #fff;
         line-height: 1.3;
     }
 
     .op-numero {
-        font-size: 0.875rem;
+        font-size: 0.8rem;
         font-weight: 600;
-        color: var(--text-secondary);
+        color: var(--dark-muted);
         font-family: monospace;
         letter-spacing: 0.05em;
+        background: rgba(255,255,255,0.05);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
     }
 
     .op-btn {
-        background: var(--op-color, #333);
+        background: var(--op-color, #6366f1);
         color: #fff;
         padding: 0.625rem 1.25rem;
-        font-size: 0.875rem;
-        font-weight: 700;
-        border-radius: 2px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 10px;
         width: 100%;
         margin-top: 0.5rem;
-        transition: opacity 0.2s;
+        transition: all 0.2s;
         text-decoration: none;
         display: inline-block;
     }
 
     .operateur-card:hover .op-btn {
-        opacity: 0.9;
+        filter: brightness(1.1);
+        transform: translateY(-1px);
     }
 
-    /* Instructions */
+    /* ===== INSTRUCTIONS ===== */
     .instructions-box {
-        background: #eff6ff;
-        border-left: 4px solid #3b82f6;
+        background: rgba(99,102,241,0.08);
+        border-left: 4px solid var(--accent-gold);
+        border-radius: 12px;
         padding: 1.25rem 1.5rem;
         margin-top: 1.5rem;
     }
 
     .instructions-box h3 {
-        font-size: 1rem;
+        font-size: 0.9rem;
         font-weight: 700;
-        color: #1e40af;
-        margin-bottom: 0.5rem;
+        color: #fcd34d;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     .instructions-box ol {
         margin: 0;
         padding-left: 1.25rem;
-        color: #1e40af;
-        font-size: 0.9375rem;
+        color: var(--dark-muted);
+        font-size: 0.85rem;
     }
 
     .instructions-box ol li {
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.5rem;
         line-height: 1.6;
     }
 
-    /* Résumé de commande */
+    /* ===== RÉSUMÉ DE COMMANDE ===== */
     .order-summary {
-        background: #fff;
-        border: 1px solid var(--border-color);
+        background: var(--dark-card);
+        border: 1px solid var(--dark-border);
+        border-radius: 20px;
         padding: 1.5rem;
         position: sticky;
         top: 24px;
         height: fit-content;
-        width: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .order-summary:hover {
+        border-color: var(--dark-border-hover);
     }
 
     .order-summary h3 {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
         font-weight: 700;
         margin-bottom: 1.5rem;
-        color: var(--text-primary);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--dark-border);
     }
 
     .summary-line {
         display: flex;
         justify-content: space-between;
         padding: 0.75rem 0;
-        color: var(--text-primary);
+        color: var(--dark-muted);
         flex-wrap: wrap;
+        font-size: 0.9rem;
+    }
+
+    .summary-line span:first-child {
+        font-weight: 500;
+    }
+
+    .summary-line span:last-child {
+        color: var(--dark-text);
+        font-weight: 500;
     }
 
     .summary-total {
@@ -199,60 +292,106 @@
         justify-content: space-between;
         padding: 1.5rem 0 1rem;
         margin-top: 1rem;
-        border-top: 1px solid var(--border-color);
+        border-top: 2px solid var(--accent-gold);
         font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--text-primary);
+        font-weight: 800;
+        color: #fff;
         flex-wrap: wrap;
     }
 
+    .summary-total span:last-child {
+        color: var(--accent-gold);
+    }
+
+    /* ===== LIEN RETOUR ===== */
     .back-link {
-        background: transparent;
-        color: var(--text-primary);
+        background: rgba(255,255,255,0.05);
+        color: var(--dark-muted);
         width: 100%;
-        padding: 0.75rem;
-        border: 1px solid var(--text-primary);
+        padding: 0.85rem;
+        border: 1px solid var(--dark-border);
+        border-radius: 12px;
         font-weight: 600;
         transition: all 0.2s;
         text-decoration: none;
         display: block;
         text-align: center;
-        border-radius: 0;
-        min-height: 44px;
         margin-top: 1rem;
     }
 
     .back-link:hover {
-        background: var(--text-primary);
-        color: #fff;
-        text-decoration: none;
+        background: rgba(99,102,241,0.1);
+        border-color: var(--accent-purple);
+        color: var(--accent-purple);
     }
 
-    /* Trust badges */
+    /* ===== TRUST BADGES ===== */
     .trust-badges {
         margin-top: 1.5rem;
         padding-top: 1.5rem;
-        border-top: 1px solid var(--border-color);
-        width: 100%;
+        border-top: 1px solid var(--dark-border);
     }
 
     .trust-item-small {
         display: flex;
         align-items: center;
-        padding: 0.5rem 0;
-        font-size: 0.875rem;
-        color: var(--text-secondary);
-        flex-wrap: wrap;
+        padding: 0.6rem 0;
+        font-size: 0.8rem;
+        color: var(--dark-muted);
+        gap: 0.75rem;
     }
 
     .trust-item-small i {
         color: var(--success-color);
-        font-size: 1.125rem;
-        margin-right: 0.75rem;
+        font-size: 1rem;
+        width: 24px;
+    }
+
+    /* ===== WHATSAPP FLOTTANT ===== */
+    .whatsapp-float {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 1000;
+        animation: fadeInUp 0.5s ease-out;
+    }
+
+    .whatsapp-button {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        color: #fff;
+        padding: 0.875rem 1.5rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.875rem;
+        box-shadow: var(--shadow-lg);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: none;
+        cursor: pointer;
+    }
+
+    .whatsapp-button:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-xl);
+        color: #fff;
+    }
+
+    .whatsapp-icon {
+        width: 24px; height: 24px;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.596 1.978.962 3.149.962 3.178 0 5.767-2.586 5.768-5.766.001-3.18-2.585-5.766-5.768-5.766zm3.392 8.244c-.144.405-.837.775-1.17.824-.266.04-.555.062-.856-.062-.253-.104-.547-.232-.795-.436-.881-.726-1.443-1.754-1.587-2.714-.052-.35-.076-.706.005-1.06.08-.354.274-.66.553-.902.116-.102.23-.19.368-.234.135-.044.293-.057.439-.013.253.076.426.24.553.49.152.296.201.624.229.964.036.447-.066.885-.18 1.317-.122.464.133.877.432 1.211.326.364.744.615 1.188.762.206.068.428.106.635.106.292 0 .557-.108.746-.286.203-.19.331-.445.379-.717.047-.27.021-.547-.032-.811-.079-.394-.281-.746-.55-1.018-.221-.224-.483-.384-.755-.5-.257-.109-.53-.16-.79-.204-.291-.05-.583-.03-.86.058-.272.086-.526.228-.746.423-.329.296-.569.675-.666 1.114-.097.44-.047.898.117 1.32.164.422.438.794.751 1.101.209.204.455.363.725.471.278.112.578.164.881.155.264-.009.529-.062.777-.173.245-.111.474-.264.68-.453.205-.189.384-.408.528-.65.144-.242.252-.504.315-.777.063-.273.08-.555.048-.829-.032-.273-.109-.538-.225-.783-.117-.245-.28-.463-.474-.642-.194-.179-.42-.316-.663-.408-.242-.092-.5-.136-.754-.128-.254.008-.5.052-.726.138-.226.086-.431.216-.607.383-.176.167-.327.369-.44.592-.113.223-.19.464-.227.71-.037.246-.034.498.009.745.043.247.126.482.246.698.12.216.276.407.458.563.182.156.387.277.607.356.22.079.453.113.682.097.229-.016.451-.07.656-.166.205-.096.391-.234.545-.404.154-.17.274-.369.352-.585.078-.216.112-.447.095-.674-.017-.227-.077-.444-.175-.642-.098-.198-.231-.374-.391-.516-.16-.142-.344-.249-.54-.316-.196-.067-.402-.092-.603-.071z"/></svg>') center/contain no-repeat;
+        background-size: contain;
         flex-shrink: 0;
     }
 
-    /* Responsive */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 992px) {
         .payment-layout {
             grid-template-columns: 1fr;
@@ -263,9 +402,17 @@
             position: static;
             order: -1;
         }
+
+        .container-udemy {
+            padding: 0 1.5rem;
+        }
     }
 
     @media (max-width: 768px) {
+        .page-header h1 {
+            font-size: 1.5rem;
+        }
+
         .operateurs-grid {
             grid-template-columns: 1fr;
         }
@@ -281,38 +428,34 @@
         .instructions-box ol {
             padding-left: 1rem;
         }
-    }
 
-    @media (max-width: 480px) {
-        .page-header {
-            padding: 1rem 0;
+        .whatsapp-button span {
+            display: none;
         }
 
-        .page-header h1 {
-            font-size: 1.5rem;
-        }
-
-        .section-title {
-            font-size: 1rem;
-        }
-
-        .summary-total {
-            font-size: 1.125rem;
-        }
-
-        .back-link {
-            font-size: 0.9rem;
-            padding: 0.75rem;
+        .whatsapp-button {
+            padding: 0.875rem;
+            border-radius: 50%;
         }
     }
 </style>
 {% endblock %}
 
 {% block content %}
+
+<!-- ===== BANNIÈRE PROMOTIONNELLE (même que catalogue) ===== -->
+<div class="promo-banner-v2">
+    <div class="promo-topbar">
+        <span class="topbar-dot"></span>
+        OFFRE À DURÉE LIMITÉE — VENTE FLASH SUR TOUTES LES FORMATIONS
+        <span class="topbar-dot"></span>
+    </div>
+</div>
+
 <div class="container-udemy">
     <!-- Header de page -->
     <div class="page-header">
-        <h1>💳 Choisissez votre mode de paiement</h1>
+        <h1>Choisissez votre mode de paiement</h1>
     </div>
 
     <div class="payment-layout">
@@ -322,7 +465,10 @@
 
             <!-- Instructions -->
             <div class="instructions-box">
-                <h3>Comment ça marche ?</h3>
+                <h3>
+                    <i class="bi bi-info-circle-fill"></i>
+                    Comment ça marche ?
+                </h3>
                 <ol>
                     <li>Cliquez sur votre opérateur ci-dessous</li>
                     <li>WhatsApp s'ouvre avec votre message pré-rempli</li>
@@ -343,7 +489,7 @@
                     <div class="op-nom">{{ op.nom }}</div>
                     <div class="op-numero">{{ op.numero_display }}</div>
                     <div class="op-btn">
-                        <i class="bi bi-whatsapp me-1"></i> Payer via WhatsApp
+                        <i class="bi bi-whatsapp"></i> Payer via WhatsApp
                     </div>
                 </a>
                 {% endfor %}
@@ -352,7 +498,10 @@
 
         <!-- Résumé de commande -->
         <div class="order-summary">
-            <h3>Récapitulatif</h3>
+            <h3>
+                <i class="bi bi-receipt"></i>
+                Récapitulatif
+            </h3>
 
             <div class="summary-line">
                 <span>Commande n° :</span>
@@ -381,21 +530,19 @@
             </a>
 
             <!-- Trust badges -->
-            <div class="trust-badges">
-                <div class="trust-item-small">
-                    <i class="bi bi-shield-check"></i>
-                    <span>Paiement sécurisé via WhatsApp</span>
-                </div>
-                <div class="trust-item-small">
-                    <i class="bi bi-infinity"></i>
-                    <span>Accès à vie aux formations</span>
-                </div>
-                <div class="trust-item-small">
-                    <i class="bi bi-headset"></i>
-                    <span>Support client disponible</span>
-                </div>
-            </div>
         </div>
     </div>
 </div>
+
+<!-- Bouton flottant WhatsApp -->
+<div class="whatsapp-float">
+    <a href="https://wa.me/242061814279?text=Bonjour%2C%20je%20souhaite%20avoir%20plus%20d%27informations%20sur%20vos%20formations."
+       class="whatsapp-button"
+       target="_blank"
+       rel="noopener noreferrer">
+        <div class="whatsapp-icon"></div>
+        <span>Nous écrire sur WhatsApp</span>
+    </a>
+</div>
+
 {% endblock %}

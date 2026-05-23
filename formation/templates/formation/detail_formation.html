@@ -6,353 +6,687 @@
 
 {% block extra_css %}
 <style>
-    /* Header de la formation */
+    /* ===== VARIABLES LOCALES ===== */
+    :root {
+        --dark-bg:      #0a0720;
+        --dark-surface: #0f0a2e;
+        --dark-card:    #1a1040;
+        --dark-border:  rgba(99,102,241,0.2);
+        --dark-text:    #e2e8f0;
+        --dark-muted:   #94a3b8;
+        --dark-subtle:  #64748b;
+        --accent-gold:  #f59e0b;
+        --accent-purple:#a5b4fc;
+        --accent-green: #6ee7b7;
+    }
+
+    /* ===== HERO ===== */
     .formation-hero {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--dark-surface);
         color: #fff;
-        padding: 4rem 0;
-        margin-bottom: 3rem;
+        padding: 4rem 0 3.5rem;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid var(--dark-border);
+    }
+
+    .formation-hero::before {
+        content: '';
+        position: absolute;
+        width: 600px; height: 600px;
+        border-radius: 50%;
+        border: 1px solid rgba(99,102,241,0.1);
+        top: -300px; right: -200px;
+        pointer-events: none;
+    }
+
+    .formation-hero::after {
+        content: '';
+        position: absolute;
+        width: 300px; height: 300px;
+        border-radius: 50%;
+        border: 1px solid rgba(245,158,11,0.1);
+        bottom: -150px; left: -80px;
+        pointer-events: none;
+    }
+
+    .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(99,102,241,0.15);
+        border: 1px solid rgba(99,102,241,0.3);
+        color: var(--accent-purple);
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 5px 14px;
+        border-radius: 20px;
+        margin-bottom: 1.25rem;
+        letter-spacing: 0.04em;
+    }
+
+    .hero-eyebrow-dot {
+        width: 6px; height: 6px;
+        background: #6366f1;
+        border-radius: 50%;
+        display: inline-block;
     }
 
     .formation-hero h1 {
-        font-size: 2.5rem;
+        font-size: 2.25rem;
         font-weight: 800;
         margin-bottom: 1rem;
+        color: #fff;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
     }
 
-    .formation-hero .price {
-        font-size: 2rem;
-        font-weight: 700;
-        margin: 1.5rem 0;
+    .formation-hero .hero-desc {
+        font-size: 1rem;
+        color: var(--dark-muted);
+        line-height: 1.7;
+        max-width: 560px;
+        margin-bottom: 1.5rem;
     }
 
-    .price-tag {
-        background: rgba(255,255,255,0.2);
-        display: inline-block;
-        padding: 0.5rem 1.5rem;
-        border-radius: 50px;
-    }
-
-    .hero-buttons {
+    /* Prix hero */
+    .hero-price-block {
         display: flex;
+        align-items: center;
         gap: 1rem;
         flex-wrap: wrap;
-        margin-top: 2rem;
+        margin-bottom: 2rem;
     }
 
-    .btn-buy {
-        background: #fff;
-        color: #667eea;
-        padding: 1rem 2rem;
-        font-weight: 700;
-        border-radius: 8px;
-        text-decoration: none;
-        transition: transform 0.2s;
+    .hero-price-old {
+        font-size: 1rem;
+        color: #6b5ea8;
+        text-decoration: line-through;
     }
 
-    .btn-buy:hover {
-        transform: translateY(-2px);
-        color: #667eea;
+    .hero-price-main {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--accent-gold);
+        line-height: 1;
     }
 
-    .btn-whatsapp {
-        background: #25D366;
+    .hero-price-main.promo { color: #ef4444; }
+
+    .hero-price-badge {
+        background: rgba(245,158,11,0.12);
+        border: 1px solid rgba(245,158,11,0.25);
+        color: #fcd34d;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 20px;
+    }
+
+    .hero-price-info {
+        font-size: 0.8rem;
+        color: var(--dark-subtle);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    /* Boutons hero */
+    .hero-buttons {
+        display: flex;
+        gap: 0.875rem;
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
+
+    .btn-hero-buy {
+        background: #10b981;
         color: #fff;
-        padding: 1rem 2rem;
+        padding: 0.875rem 1.75rem;
         font-weight: 700;
+        font-size: 0.95rem;
         border-radius: 8px;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 8px;
+        transition: all 0.2s;
+        border: none;
     }
 
-    .btn-whatsapp:hover {
-        background: #128C7E;
+    .btn-hero-buy:hover {
+        background: #059669;
         color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16,185,129,0.3);
     }
 
-    /* Sections de la formation */
-    .formation-section {
-        background: #fff;
-        border: 1px solid var(--border-color);
-        padding: 2rem;
-        margin-bottom: 2rem;
+    .btn-hero-whatsapp {
+        background: rgba(37,211,102,0.1);
+        border: 1px solid rgba(37,211,102,0.3);
+        color: #6ee7b7;
+        padding: 0.875rem 1.5rem;
+        font-weight: 600;
+        font-size: 0.9rem;
         border-radius: 8px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
+    }
+
+    .btn-hero-whatsapp:hover {
+        background: rgba(37,211,102,0.18);
+        color: #6ee7b7;
+    }
+
+    /* ===== LAYOUT PRINCIPAL ===== */
+    .detail-layout {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 2rem;
+        padding: 2.5rem 0 4rem;
+        align-items: start;
+    }
+
+    /* ===== SECTIONS CONTENU ===== */
+    .formation-section {
+        background: var(--dark-card);
+        border: 1px solid var(--dark-border);
+        padding: 1.75rem;
+        margin-bottom: 1.25rem;
+        border-radius: 14px;
+        transition: border-color 0.2s;
+    }
+
+    .formation-section:hover {
+        border-color: rgba(99,102,241,0.35);
     }
 
     .formation-section h2 {
-        font-size: 1.75rem;
+        font-size: 1.375rem;
         font-weight: 700;
-        margin-bottom: 1.5rem;
-        color: var(--text-primary);
+        margin-bottom: 1.25rem;
+        color: var(--dark-text);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
+    .formation-section h2 .section-icon {
+        width: 32px; height: 32px;
+        border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 15px;
+        flex-shrink: 0;
+    }
+
+    .si-purple { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+    .si-amber  { background: rgba(245,158,11,0.15); color: #fcd34d; }
+    .si-green  { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+    .si-red    { background: rgba(239,68,68,0.15);  color: #fca5a5; }
+    .si-blue   { background: rgba(59,130,246,0.15); color: #93c5fd; }
+
     .formation-section h3 {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
         font-weight: 600;
-        margin: 1.5rem 0 1rem;
-        color: var(--text-primary);
+        margin: 1.25rem 0 0.75rem;
+        color: var(--dark-text);
+    }
+
+    /* Description */
+    .description-content {
+        line-height: 1.8;
+        font-size: 0.925rem;
+        color: var(--dark-muted);
+    }
+
+    .description-content p { margin-bottom: 0.875rem; }
+    .description-content p:last-child { margin-bottom: 0; }
+
+    /* Skills grid */
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 0.75rem;
+        margin: 0.25rem 0;
+    }
+
+    .skill-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.875rem;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 10px;
+        transition: border-color 0.2s;
+    }
+
+    .skill-item:hover { border-color: rgba(16,185,129,0.3); }
+
+    .skill-item i {
+        color: #6ee7b7;
+        font-size: 1rem;
+        margin-top: 2px;
+        flex-shrink: 0;
+    }
+
+    .skill-item span {
+        font-size: 0.85rem;
+        color: var(--dark-text);
+        line-height: 1.5;
     }
 
     /* Accompagnement box */
     .accompagnement-box {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        padding: 2rem;
+        background: rgba(99,102,241,0.06);
+        border: 1px solid rgba(99,102,241,0.2);
+        padding: 1.5rem;
         border-radius: 12px;
-        margin: 1.5rem 0;
     }
 
     .accompagnement-box ul {
         list-style: none;
         padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
     }
 
     .accompagnement-box li {
-        padding: 0.75rem 0;
         display: flex;
         align-items: center;
-        gap: 0.75rem;
-        font-size: 1rem;
+        gap: 0.875rem;
+        font-size: 0.9rem;
+        color: var(--dark-text);
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgba(255,255,255,0.04);
     }
+
+    .accompagnement-box li:last-child { border-bottom: none; }
 
     .accompagnement-box li i {
-        color: #25D366;
-        font-size: 1.25rem;
-    }
-
-    /* Grille des compétences */
-    .skill-item {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 0.75rem;
-        background: #f8f9fa;
+        width: 32px; height: 32px;
         border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 15px;
+        flex-shrink: 0;
+        background: rgba(16,185,129,0.15);
+        color: #6ee7b7;
     }
 
-    .skill-item i {
-        color: var(--success-color);
-        font-size: 1.25rem;
+    /* Accompagnement depuis la BD */
+    .accompagnement-box p {
+        font-size: 0.9rem;
+        color: var(--dark-text);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
     }
 
     /* Public cible */
     .target-audience {
         display: flex;
         flex-wrap: wrap;
-        gap: 1rem;
-        margin: 1.5rem 0;
+        gap: 0.625rem;
+        margin: 1rem 0;
     }
 
     .audience-tag {
-        background: var(--primary-color);
-        color: #fff;
-        padding: 0.5rem 1rem;
-        border-radius: 50px;
+        background: rgba(99,102,241,0.12);
+        border: 1px solid rgba(99,102,241,0.25);
+        color: var(--accent-purple);
+        padding: 0.35rem 0.875rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .audience-tag:hover {
+        background: rgba(99,102,241,0.2);
+        color: #c7d2fe;
+    }
+
+    .audience-desc {
         font-size: 0.875rem;
+        color: var(--dark-muted);
+        margin-top: 0.75rem;
+        line-height: 1.6;
     }
 
     /* Bonus */
     .bonus-item {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         gap: 1rem;
         padding: 1rem;
-        background: #fff8e1;
-        border-left: 4px solid #ffc107;
-        margin-bottom: 1rem;
+        background: rgba(245,158,11,0.06);
+        border: 1px solid rgba(245,158,11,0.18);
+        border-radius: 10px;
+        margin-bottom: 0.75rem;
+        transition: border-color 0.2s;
     }
 
-    .bonus-item i {
-        color: #ffc107;
-        font-size: 1.5rem;
+    .bonus-item:last-child { margin-bottom: 0; }
+    .bonus-item:hover { border-color: rgba(245,158,11,0.35); }
+
+    .bonus-item-icon {
+        width: 40px; height: 40px;
+        background: rgba(245,158,11,0.12);
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px;
+        color: #fcd34d;
+        flex-shrink: 0;
     }
 
-    /* Galerie améliorée */
+    .bonus-item-text strong {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--dark-text);
+        margin-bottom: 3px;
+    }
+
+    .bonus-item-text p {
+        margin: 0;
+        font-size: 0.8rem;
+        color: var(--dark-muted);
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar-sticky {
+        position: sticky;
+        top: 88px;
+    }
+
+    .sidebar-card {
+        background: var(--dark-card);
+        border: 1px solid var(--dark-border);
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .sidebar-image {
+        width: 100%;
+        aspect-ratio: 16/9;
+        object-fit: cover;
+        display: block;
+    }
+
+    .sidebar-image-placeholder {
+        width: 100%;
+        aspect-ratio: 16/9;
+        background: linear-gradient(135deg, #1e1060 0%, #2d1b8a 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+    }
+
+    .sidebar-body {
+        padding: 1.5rem;
+    }
+
+    .sidebar-price-block {
+        text-align: center;
+        margin-bottom: 1.25rem;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .sidebar-price-old {
+        font-size: 0.875rem;
+        color: #6b5ea8;
+        text-decoration: line-through;
+        margin-bottom: 4px;
+    }
+
+    .sidebar-price-main {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--accent-gold);
+        line-height: 1;
+        margin-bottom: 6px;
+    }
+
+    .sidebar-price-main.promo { color: #ef4444; }
+
+    .sidebar-price-info {
+        font-size: 0.75rem;
+        color: var(--dark-subtle);
+    }
+
+    /* Boutons sidebar */
+    .sidebar-btn-buy {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 0.875rem;
+        background: #10b981;
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.2s;
+        margin-bottom: 0.625rem;
+    }
+
+    .sidebar-btn-buy:hover {
+        background: #059669;
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(16,185,129,0.3);
+    }
+
+    .sidebar-btn-wa {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 0.75rem;
+        background: rgba(37,211,102,0.08);
+        border: 1px solid rgba(37,211,102,0.25);
+        color: #6ee7b7;
+        font-weight: 600;
+        font-size: 0.875rem;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .sidebar-btn-wa:hover {
+        background: rgba(37,211,102,0.15);
+        color: #6ee7b7;
+    }
+
+    /* Trust items sidebar */
+    .sidebar-trust {
+        margin-top: 1.25rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+    }
+
+    .sidebar-trust-item {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        font-size: 0.8rem;
+        color: var(--dark-muted);
+    }
+
+    .sidebar-trust-item i {
+        font-size: 14px;
+        width: 20px;
+        text-align: center;
+    }
+
+    .sti-green { color: #6ee7b7; }
+    .sti-purple { color: #a5b4fc; }
+    .sti-amber  { color: #fcd34d; }
+
+    /* ===== GALERIE ===== */
     .gallery {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
     }
 
     .gallery-item {
         position: relative;
         overflow: hidden;
-        border-radius: 8px;
+        border-radius: 10px;
         cursor: pointer;
+        border: 1px solid var(--dark-border);
     }
 
     .gallery-item img {
         width: 100%;
-        height: 250px;
+        height: 160px;
         object-fit: cover;
         transition: transform 0.3s;
+        display: block;
     }
 
-    .gallery-item:hover img {
-        transform: scale(1.1);
-    }
+    .gallery-item:hover img { transform: scale(1.06); }
 
     .gallery-overlay {
         position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: rgba(0,0,0,0.7);
+        bottom: 0; left: 0; right: 0;
+        background: linear-gradient(transparent, rgba(10,7,32,0.85));
         color: #fff;
-        padding: 0.5rem;
+        padding: 0.75rem 0.5rem 0.5rem;
         text-align: center;
+        font-size: 0.8rem;
+        font-weight: 500;
         transform: translateY(100%);
         transition: transform 0.3s;
     }
 
-    .gallery-item:hover .gallery-overlay {
-        transform: translateY(0);
+    .gallery-item:hover .gallery-overlay { transform: translateY(0); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 992px) {
+        .detail-layout {
+            grid-template-columns: 1fr;
+        }
+        .sidebar-sticky {
+            position: static;
+            order: -1;
+        }
     }
 
-        /* Style pour la description avec linebreaks */
-    .description-content {
-        line-height: 1.7;
-        font-size: 1rem;
-        color: var(--text-secondary);
-    }
-
-    .description-content p {
-        margin-bottom: 1rem;
-    }
-
-    .description-content br {
-        display: block;
-        margin-bottom: 0.5rem;
-    }
-    /* Style pour les compétences dynamiques */
-    .skills-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1rem;
-        margin: 1.5rem 0;
-    }
-
-    .skills-grid p {
-        margin: 0;
-    }
-
-    .skills-grid .skill-item {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 0.75rem;
-        background: #f8f9fa;
-        border-radius: 8px;
-    }
-        /* Espacement entre les boutons dans la sidebar */
-    .sidebar-buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .sidebar-buttons .btn-buy,
-    .sidebar-buttons .btn-whatsapp {
-        display: block;
-        text-align: center;
-        width: 100%;
-    }
-
-    /* Responsive */
     @media (max-width: 768px) {
-        .formation-hero h1 {
-            font-size: 1.75rem;
-        }
-
-        .hero-buttons {
-            flex-direction: column;
-        }
-
-        .btn-buy, .btn-whatsapp {
-            text-align: center;
-            justify-content: center;
-        }
+        .formation-hero { padding: 2.5rem 0 2rem; }
+        .formation-hero h1 { font-size: 1.6rem; }
+        .hero-buttons { flex-direction: column; }
+        .btn-hero-buy, .btn-hero-whatsapp { justify-content: center; }
+        .skills-grid { grid-template-columns: 1fr; }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Hero section -->
+
+<!-- ===== HERO ===== -->
 <div class="formation-hero">
     <div class="container-udemy">
         <div class="row">
             <div class="col-lg-8">
+
+                <div class="hero-eyebrow">
+                    <span class="hero-eyebrow-dot"></span>
+                    Formation professionnelle
+                </div>
+
                 <h1>{{ formation.titre }}</h1>
-                <p style="font-size: 1.25rem; opacity: 0.95;">{{ formation.description|truncatewords:20 }}</p>
+                <p class="hero-desc">{{ formation.description|truncatewords:25 }}</p>
 
-                <div class="price">
-                {% if formation.prix_promo %}
-                    <span style="text-decoration: line-through; opacity:0.7; margin-right:10px;">
-                        {{ formation.prix|floatformat:"0" }} FCFA
+                <div class="hero-price-block">
+                    {% if formation.prix_promo %}
+                        <span class="hero-price-old">{{ formation.prix|floatformat:"0" }} FCFA</span>
+                        <span class="hero-price-main promo">{{ formation.prix_promo|floatformat:"0" }} FCFA</span>
+                        <span class="hero-price-badge">Promo</span>
+                    {% else %}
+                        <span class="hero-price-main">{{ formation.prix|floatformat:"0" }} FCFA</span>
+                    {% endif %}
+                    <span class="hero-price-info">
+                        <i class="bi bi-infinity"></i> Accès à vie
                     </span>
-
-                    <span class="price-tag" style="background:#ef4444;">
-                        {{ formation.prix_promo|floatformat:"0" }} FCFA
-                    </span>
-                {% else %}
-                    <span class="price-tag">
-                        {{ formation.prix|floatformat:"0" }} FCFA
-                    </span>
-                {% endif %}
-
-    <span style="font-size: 1rem; opacity: 0.9;"> - Accès à vie</span>
-</div>
+                </div>
 
                 <div class="hero-buttons">
-
-                    <a href="{% url 'achat_direct' formation.id %}" class="btn-buy">
+                    <a href="{% url 'achat_direct' formation.id %}" class="btn-hero-buy">
                         <i class="bi bi-lightning-charge-fill"></i>
                         Acheter maintenant
                     </a>
                     <a href="https://wa.me/242061814279?text=Bonjour%2C%20je%20souhaite%20avoir%20plus%20d%27informations%20sur%20la%20formation%20{{ formation.titre|urlencode }}"
-                       class="btn-whatsapp" target="_blank">
-                        <i class="bi bi-whatsapp"></i> Poser une question sur WhatsApp
+                       class="btn-hero-whatsapp" target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-whatsapp"></i>
+                        Poser une question
                     </a>
                 </div>
+
             </div>
         </div>
     </div>
 </div>
 
+<!-- ===== CONTENU PRINCIPAL ===== -->
+<div style="background: #0a0720;">
 <div class="container-udemy">
-    <div class="row">
-        <div class="col-lg-8">
-            <!-- Description complète -->
-            <div class="formation-section">
-                <h2>Description complète</h2>
-                <div class="description-content">
-                    {{ formation.detail.description_complete|default:formation.description|linebreaks }}
-                </div>
-            </div>
+<div class="detail-layout">
 
-            <!-- Ce que vous apprendrez (depuis FormationDetail) -->
-            {% if formation.detail.ce_que_vous_apprenez %}
-            <div class="formation-section">
-                <h2>Ce que vous allez apprendre</h2>
-                <div class="skills-grid">
-                    {{ formation.detail.ce_que_vous_apprenez|linebreaks }}
-                </div>
-            </div>
-            {% endif %}
+    <!-- Colonne principale -->
+    <div class="detail-main">
 
-            <!-- Compétences à développer (depuis FormationDetail) -->
+        <!-- Description complète -->
+        <div class="formation-section">
+            <h2>
+                <span class="section-icon si-purple"><i class="bi bi-file-text-fill"></i></span>
+                Description complète
+            </h2>
+            <div class="description-content">
+                {{ formation.detail.description_complete|default:formation.description|linebreaks }}
+            </div>
+        </div>
+
+        <!-- Ce que vous apprendrez -->
+        {% if formation.detail.ce_que_vous_apprenez %}
+        <div class="formation-section">
+            <h2>
+                <span class="section-icon si-green"><i class="bi bi-mortarboard-fill"></i></span>
+                Ce que vous allez apprendre
+            </h2>
+            <div class="skills-grid">
+                {{ formation.detail.ce_que_vous_apprenez|linebreaks }}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Compétences -->
+        <div class="formation-section">
+            <h2>
+                <span class="section-icon si-green"><i class="bi bi-graph-up-arrow"></i></span>
+                Les compétences que vous allez développer
+            </h2>
             {% if formation.detail.competences_a_developper %}
-            <div class="formation-section">
-                <h2>Les compétences que vous allez développer</h2>
                 <div class="skills-grid">
                     {{ formation.detail.competences_a_developper|linebreaks }}
                 </div>
-            </div>
             {% else %}
-            <!-- Fallback si aucune compétence dans la BD -->
-            <div class="formation-section">
-                <h2>Les compétences que vous allez développer</h2>
                 <div class="skills-grid">
                     <div class="skill-item">
                         <i class="bi bi-check-circle-fill"></i>
@@ -366,173 +700,203 @@
                         <i class="bi bi-check-circle-fill"></i>
                         <span>Autonomie sur les projets réels</span>
                     </div>
+                    <div class="skill-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Méthodes professionnelles éprouvées</span>
+                    </div>
                 </div>
-            </div>
             {% endif %}
-
-            <!-- Accompagnement (depuis FormationDetail) -->
-            {% if formation.detail.accompagnement %}
-            <div class="formation-section">
-                <h2>Accompagnement inclus</h2>
-                <div class="accompagnement-box">
-                    {{ formation.detail.accompagnement|linebreaks }}
-                </div>
-            </div>
-            {% else %}
-            <!-- Fallback si aucun accompagnement dans la BD -->
-            <div class="formation-section">
-                <h2>Votre accompagnement premium</h2>
-                <div class="accompagnement-box">
-                    <ul>
-                        <li><i class="bi bi-whatsapp"></i> Support WhatsApp dédié 7j/7</li>
-                        <li><i class="bi bi-person-check"></i> Suivi personnalisé par un expert</li>
-                        <li><i class="bi bi-question-circle"></i> Aide en cas de blocage - Réponse sous 24h</li>
-                        <li><i class="bi bi-trophy"></i> Conseils pratiques et retours d'expérience</li>
-                        <li><i class="bi bi-calendar-check"></i> Sessions de coaching mensuelles incluses</li>
-                    </ul>
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- À qui s'adresse cette formation -->
-            <div class="formation-section">
-                <h2>👥 À qui s'adresse cette formation ?</h2>
-                <div class="target-audience">
-                    {% for cible in formation.public_cible_list %}
-                        <span class="audience-tag">{{ cible }}</span>
-                    {% empty %}
-                        <span class="audience-tag">Débutants motivés</span>
-                        <span class="audience-tag">Professionnels en reconversion</span>
-                        <span class="audience-tag">Entrepreneurs</span>
-                        <span class="audience-tag">Étudiants</span>
-                    {% endfor %}
-                </div>
-                <p style="margin-top: 1rem;">{{ formation.detail.public_cible|default:"Cette formation est conçue pour tous ceux qui souhaitent acquérir des compétences pratiques et immédiatement utilisables." }}</p>
-            </div>
-
-            <!-- Bonus exclusifs -->
-            <div class="formation-section">
-                <h2>Bonus exclusifs</h2>
-                {% if formation.detail.bonus %}
-                    {{ formation.detail.bonus|linebreaks }}
-                {% else %}
-                    <div class="bonus-item">
-                        <i class="bi bi-file-earmark-pdf"></i>
-                        <div>
-                            <strong>Kit de ressources téléchargeables</strong>
-                            <p style="margin: 0; font-size: 0.875rem;">Templates, checklists et guides pratiques</p>
-                        </div>
-                    </div>
-                    <div class="bonus-item">
-                        <i class="bi bi-people"></i>
-                        <div>
-                            <strong>Communauté privée d'élite</strong>
-                            <p style="margin: 0; font-size: 0.875rem;">Échanges avec d'autres apprenants et experts</p>
-                        </div>
-                    </div>
-                    <div class="bonus-item">
-                        <i class="bi bi-diagram-3"></i>
-                        <div>
-                            <strong>Mises à jour à vie</strong>
-                            <p style="margin: 0; font-size: 0.875rem;">Accès aux nouvelles versions sans frais</p>
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-
         </div>
-        <!-- Sidebar sticky -->
-        <div class="col-lg-4">
-            <div style="position: sticky; top: 24px;">
+
+        <!-- Accompagnement -->
+        <div class="formation-section">
+            <h2>
+                <span class="section-icon si-purple"><i class="bi bi-headset"></i></span>
+                Votre accompagnement inclus
+            </h2>
+            <div class="accompagnement-box">
+                {% if formation.detail.accompagnement %}
+                    {{ formation.detail.accompagnement|linebreaks }}
+                {% else %}
+                    <ul>
+                        <li>
+                            <i class="bi bi-whatsapp"></i>
+                            Support WhatsApp dédié 7j/7
+                        </li>
+                        <li>
+                            <i class="bi bi-person-check"></i>
+                            Suivi personnalisé par un expert
+                        </li>
+                        <li>
+                            <i class="bi bi-question-circle"></i>
+                            Aide en cas de blocage — Réponse sous 24h
+                        </li>
+                        <li>
+                            <i class="bi bi-trophy"></i>
+                            Conseils pratiques et retours d'expérience
+                        </li>
+                        <li>
+                            <i class="bi bi-calendar-check"></i>
+                            Sessions de coaching mensuelles incluses
+                        </li>
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Public cible -->
+        <div class="formation-section">
+            <h2>
+                <span class="section-icon si-blue"><i class="bi bi-people-fill"></i></span>
+                À qui s'adresse cette formation ?
+            </h2>
+            <div class="target-audience">
+                {% for cible in formation.public_cible_list %}
+                    <span class="audience-tag">{{ cible }}</span>
+                {% empty %}
+                    <span class="audience-tag">Débutants motivés</span>
+                    <span class="audience-tag">Professionnels en reconversion</span>
+                    <span class="audience-tag">Entrepreneurs</span>
+                    <span class="audience-tag">Étudiants</span>
+                {% endfor %}
+            </div>
+            <p class="audience-desc">
+                {{ formation.detail.public_cible|default:"Cette formation est conçue pour tous ceux qui souhaitent acquérir des compétences pratiques et immédiatement utilisables." }}
+            </p>
+        </div>
+
+        <!-- Bonus -->
+        <div class="formation-section">
+            <h2>
+                <span class="section-icon si-amber"><i class="bi bi-gift-fill"></i></span>
+                Bonus exclusifs
+            </h2>
+            {% if formation.detail.bonus %}
+                {{ formation.detail.bonus|linebreaks }}
+            {% else %}
+                <div class="bonus-item">
+                    <div class="bonus-item-icon"><i class="bi bi-file-earmark-pdf"></i></div>
+                    <div class="bonus-item-text">
+                        <strong>Kit de ressources téléchargeables</strong>
+                        <p>Templates, checklists et guides pratiques inclus</p>
+                    </div>
+                </div>
+                <div class="bonus-item">
+                    <div class="bonus-item-icon"><i class="bi bi-people"></i></div>
+                    <div class="bonus-item-text">
+                        <strong>Communauté privée d'élite</strong>
+                        <p>Échanges avec d'autres apprenants et experts</p>
+                    </div>
+                </div>
+                <div class="bonus-item">
+                    <div class="bonus-item-icon"><i class="bi bi-arrow-repeat"></i></div>
+                    <div class="bonus-item-text">
+                        <strong>Mises à jour à vie</strong>
+                        <p>Accès aux nouvelles versions sans frais supplémentaires</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Galerie -->
+        {% if formation.images.all %}
+        <div class="formation-section">
+            <h2>
+                <span class="section-icon si-blue"><i class="bi bi-images"></i></span>
+                Aperçu de la formation
+            </h2>
+            <div class="gallery">
+                {% for image in formation.images.all %}
+                    <div class="gallery-item">
+                        <img src="{{ image.image.url }}" alt="{{ image.titre }}" loading="lazy">
+                        <div class="gallery-overlay">{{ image.titre }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <div class="detail-sidebar">
+        <div class="sidebar-sticky">
+            <div class="sidebar-card">
+
                 {% if formation.image %}
-                    <img src="{{ formation.image.url }}" alt="{{ formation.titre }}" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
+                    <img src="{{ formation.image.url }}" alt="{{ formation.titre }}" class="sidebar-image">
+                {% else %}
+                    <div class="sidebar-image-placeholder">🎓</div>
                 {% endif %}
 
-                <!-- CTA rapide -->
-                <div class="formation-section" style="text-align: center;">
-                    <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem;">
-                        {% if formation.prix_promo %}
-                            <div>
-                                <span style="text-decoration: line-through; color:gray; font-size:1rem;">
-                                    {{ formation.prix|floatformat:"0" }} FCFA
-                                </span>
-                            </div>
+                <div class="sidebar-body">
 
-                            <div style="font-size: 2rem; font-weight: 700; color: #ef4444;">
-                                {{ formation.prix_promo|floatformat:"0" }} FCFA
-                            </div>
+                    <div class="sidebar-price-block">
+                        {% if formation.prix_promo %}
+                            <div class="sidebar-price-old">{{ formation.prix|floatformat:"0" }} FCFA</div>
+                            <div class="sidebar-price-main promo">{{ formation.prix_promo|floatformat:"0" }} FCFA</div>
                         {% else %}
-                            <div style="font-size: 2rem; font-weight: 700; color: var(--primary-color);">
-                                {{ formation.prix|floatformat:"0" }} FCFA
-                            </div>
+                            <div class="sidebar-price-main">{{ formation.prix|floatformat:"0" }} FCFA</div>
                         {% endif %}
+                        <div class="sidebar-price-info">
+                            <i class="bi bi-infinity"></i> Accès à vie inclus
+                        </div>
                     </div>
-                    <div class="sidebar-buttons">
-                        <a href="{% url 'achat_direct' formation.id %}" class="btn-buy">
-                            <i class="bi bi-lightning-charge-fill"></i>
-                            Acheter maintenant
-                        </a>
-                        <a href="https://wa.me/242061814279" class="btn-whatsapp">
-                            <i class="bi bi-whatsapp"></i> Question ?
-                        </a>
+
+                    <a href="{% url 'achat_direct' formation.id %}" class="sidebar-btn-buy">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                        Acheter maintenant
+                    </a>
+
+                    <a href="https://wa.me/242061814279?text=Bonjour%2C%20je%20veux%20des%20infos%20sur%20{{ formation.titre|urlencode }}"
+                       class="sidebar-btn-wa" target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-whatsapp"></i>
+                        Une question ?
+                    </a>
+
+                    <div class="sidebar-trust">
+                        <div class="sidebar-trust-item">
+                            <i class="bi bi-shield-check-fill sti-green"></i>
+                            <span>Paiement 100% sécurisé</span>
+                        </div>
+                        <div class="sidebar-trust-item">
+                            <i class="bi bi-lightning-charge-fill sti-purple"></i>
+                            <span>Accès immédiat après paiement</span>
+                        </div>
+                        <div class="sidebar-trust-item">
+                            <i class="bi bi-infinity sti-amber"></i>
+                            <span>Accès à vie à la formation</span>
+                        </div>
+                        <div class="sidebar-trust-item">
+                            <i class="bi bi-headset sti-green"></i>
+                            <span>Support WhatsApp inclus</span>
+                        </div>
                     </div>
-                    <hr>
-                    <div style="font-size: 0.875rem; color: var(--text-secondary);">
-                        <i class="bi bi-shield-check"></i> Paiement sécurisé<br>
-                        <i class="bi bi-clock-history"></i> Accès immédiat<br>
-                        <i class="bi bi-arrow-repeat"></i> Garantie 7 jours
-                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Galerie -->
-    {% if formation.images.all %}
-        <div class="formation-section">
-            <h2>📸 Aperçu de la formation</h2>
-            <div class="gallery">
-                {% for image in formation.images.all %}
-                    <div class="gallery-item">
-                        <img src="{{ image.image.url }}" alt="{{ image.titre }}">
-                        <div class="gallery-overlay">
-                            {{ image.titre }}
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
 </div>
-<!-- Lightbox simple -->
+</div>
+</div>
+
+<!-- Lightbox -->
 <script>
 document.querySelectorAll('.gallery-item').forEach(item => {
     item.addEventListener('click', function() {
         const imgSrc = this.querySelector('img').src;
         const modal = document.createElement('div');
-        modal.style.position = 'fixed';
-        modal.style.top = 0;
-        modal.style.left = 0;
-        modal.style.width = '100%';
-        modal.style.height = '100%';
-        modal.style.backgroundColor = 'rgba(0,0,0,0.9)';
-        modal.style.zIndex = 9999;
-        modal.style.display = 'flex';
-        modal.style.alignItems = 'center';
-        modal.style.justifyContent = 'center';
-        modal.style.cursor = 'pointer';
-
+        modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,7,32,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:pointer;';
         const img = document.createElement('img');
         img.src = imgSrc;
-        img.style.maxWidth = '90%';
-        img.style.maxHeight = '90%';
-        img.style.borderRadius = '8px';
-
+        img.style.cssText = 'max-width:90%;max-height:90%;border-radius:12px;box-shadow:0 0 60px rgba(99,102,241,0.3);';
         modal.appendChild(img);
         document.body.appendChild(modal);
-
         modal.addEventListener('click', () => modal.remove());
     });
 });
 </script>
+
 {% endblock %}
