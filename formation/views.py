@@ -9,6 +9,13 @@ from .forms import ClientForm
 from .utils import generer_message_whatsapp, envoyer_acces_formation_email
 import urllib.parse
 from django.core.paginator import Paginator
+from django.urls import reverse
+from django.conf import settings
+from django.utils import timezone
+import json
+import logging
+import requests
+from .services.senepay import senepay
 
 # ==================== CATALOGUE ====================
 
