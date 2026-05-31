@@ -1,4 +1,4 @@
-# services/senepay.py (créez ce dossier et ce fichier)
+# services/senepay.py
 import requests
 from django.conf import settings
 
@@ -16,7 +16,7 @@ class SenePayClient:
             "X-Api-Secret": self.api_secret,
         }
 
-    def create_checkout(self, amount, order_ref, success_url, cancel_url, webhook_url):
+    def create_checkout(self, amount, order_ref, success_url, cancel_url, webhook_url, country=None):
         """Crée une session de paiement"""
         url = f"{self.base_url}/api/v1/checkout/sessions"
         payload = {
@@ -26,8 +26,11 @@ class SenePayClient:
             "successUrl": success_url,
             "cancelUrl": cancel_url,
             "webhookUrl": webhook_url,
-            "country": "SN",
         }
+        # Ajouter le pays seulement s'il est spécifié
+        if country:
+            payload["country"] = country
+
         response = requests.post(url, json=payload, headers=self._headers())
         response.raise_for_status()
         return response.json()
