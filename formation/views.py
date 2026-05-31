@@ -103,8 +103,10 @@ def checkout_view(request):
 
 # ==================== CHOIX PAIEMENT MOBILE MONEY ====================
 
+# views.py - Version modifiée (sans redemander le téléphone)
+
 def choix_paiement_view(request, commande_id):
-    """Page de choix du mode de paiement Mobile Money via WhatsApp"""
+    """Page de choix du paiement Mobile Money via SenePay"""
     commande = get_object_or_404(Commande, id=commande_id)
 
     # Sécurité : vérifier que c'est bien la commande en cours dans la session
@@ -112,56 +114,51 @@ def choix_paiement_view(request, commande_id):
         messages.error(request, 'Session invalide. Veuillez recommencer.')
         return redirect('catalogue')
 
+    # Vérifier que la commande n'est pas déjà payée
+    if commande.statut in ['paye', 'acces_envoye']:
+        messages.warning(request, 'Cette commande a déjà été payée.')
+        return redirect('confirmation')
+
     formations = commande.formations.all()
-    noms_formations = ', '.join([f.titre for f in formations])
 
-    # Message pré-rempli envoyé sur WhatsApp
-    message = (
-        f"Bonjour ! Je souhaite régler ma commande n°{commande.id}.\n"
-        f"🎓 Formation(s) : {noms_formations}\n"
-        f"💰 Montant : {commande.montant_total} FCFA\n"
-        f"👤 Nom : {commande.client.nom_complet}\n"
-        f"📧 Email : {commande.client.email}\n"
-        f"Je vous envoie ma preuve de paiement."
-    )
-    message_encode = urllib.parse.quote(message)
-
+    # Opérateurs supportés par SenePay
     OPERATEURS = [
         {
-            'id': 'airtel',
-            'nom': 'Airtel Money',
-            'numero_display': '05 334 40 85',
-            'numero_whatsapp': '242053344085',
-            'couleur': '#E8192C',
-            'logo_emoji': '🔴',
-        },
-        {
-            'id': 'mtn',
-            'nom': 'Mobile Money (MTN)',
-            'numero_display': '06 181 42 79',
-            'numero_whatsapp': '242061814279',
-            'couleur': '#FFCC00',
-            'logo_emoji': '🟡',
+            'id': 'wave',
+            'nom': 'Wave',
+            'icon': '🌊',
+            'couleur': '#00B4D8',
+            'description': 'Paiement instantané'
         },
         {
             'id': 'orange',
             'nom': 'Orange Money',
-            'numero_display': '+221 78 178 33 02',
-            'numero_whatsapp': '221781783302',
+            'icon': '🟠',
             'couleur': '#FF6600',
-            'logo_emoji': '🟠',
+            'description': 'Nécessite code OTP'
+        },
+        {
+            'id': 'mtn',
+            'nom': 'MTN Mobile Money',
+            'icon': '🟡',
+            'couleur': '#FFCC00',
+            'description': 'Confirmation par USSD'
+        },
+        {
+            'id': 'free',
+            'nom': 'Free Money',
+            'icon': '🔴',
+            'couleur': '#E8192C',
+            'description': 'Paiement mobile Free'
         },
     ]
-
-    # Ajouter le lien WhatsApp à chaque opérateur
-    for op in OPERATEURS:
-        op['whatsapp_url'] = f"https://wa.me/{op['numero_whatsapp']}?text={message_encode}"
 
     return render(request, 'formation/choix_paiement.html', {
         'commande': commande,
         'formations': formations,
         'operateurs': OPERATEURS,
         'total': commande.montant_total,
+        'client_phone': commande.client.whatsapp,  # ← Numéro déjà existant !
     })
 
 
@@ -241,3 +238,167 @@ def achat_direct_view(request, formation_id):
 
 def about(request):
     return render(request, 'formation/about.html')
+
+
+# views.py - AJOUTEZ CES FONCTIONS
+
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, JsonResponse
+from .services.senepay import senepay
+import json
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+def paiement_senepay(request, commande_id):
+    """Redirige vers la page de paiement SenePay"""
+
+    commande = get_object_or_404(Commande, id=commande_id)
+
+    # Vérifier que c'est la bonne commande
+    if request.session.get('commande_en_cours') != commande_id:
+        messages.error(request, 'Session invalide')
+        return redirect('catalogue')
+
+    # Éviter double paiement
+    if commande.statut in ['paye', 'acces_envoye']:
+        messages.warning(request, 'Cette commande est déjà payée')
+        return redirect('confirmation')
+
+    # Récupération des données POST (opérateur et téléphone)
+    if request.method == 'POST':
+        operator = request.POST.get('operator')
+        phone = request.POST.get('phone')
+
+        if not operator or not phone:
+            messages.error(request, 'Opérateur ou numéro de téléphone manquant')
+            return redirect('choix_paiement', commande_id=commande.id)
+
+        # Nettoyer le numéro de téléphone (enlever les espaces, +, etc.)
+        phone = ''.join(filter(str.isdigit, phone))
+
+        # Sauvegarde dans la commande
+        commande.operateur_paiement = operator
+        commande.reference_paiement = phone
+        commande.save()
+    else:
+        # Si pas de POST (accès direct), utiliser les données existantes
+        if not commande.reference_paiement:
+            messages.error(request, 'Informations de paiement manquantes')
+            return redirect('choix_paiement', commande_id=commande.id)
+        phone = commande.reference_paiement
+        operator = commande.operateur_paiement
+
+    try:
+        # Construction des URLs absolues
+        site_url = settings.SITE_URL if hasattr(settings, 'SITE_URL') else request.build_absolute_uri('/').rstrip('/')
+
+        # Création de la session de paiement SenePay
+        session = senepay.create_checkout(
+            amount=commande.montant_total,
+            order_ref=f"CMD-{commande.id}",
+            success_url=f"{site_url}{reverse('paiement_succes')}",
+            cancel_url=f"{site_url}{reverse('paiement_annule')}",
+            webhook_url=f"{site_url}{reverse('senepay_webhook')}"
+        )
+
+        # Sauvegarde des informations SenePay
+        commande.session_token = session['sessionToken']
+        commande.senepay_status = session['status']
+        commande.save()
+
+        logger.info(f"Session SenePay créée pour commande #{commande.id}: {session['sessionToken']}")
+
+        # Redirection vers la page de paiement SenePay
+        return redirect(session['checkoutUrl'])
+
+    except requests.exceptions.HTTPError as e:
+        # Gestion spécifique des erreurs HTTP
+        error_msg = ""
+        if e.response.status_code == 401:
+            error_msg = "Erreur d'authentification SenePay. Vérifiez vos clés API."
+        elif e.response.status_code == 403:
+            error_msg = "Compte SenePay non validé. Vérifiez votre KYC."
+        elif e.response.status_code == 400:
+            try:
+                error_data = e.response.json()
+                error_msg = error_data.get('message', 'Paramètres invalides')
+            except:
+                error_msg = "Paramètres de paiement invalides"
+        else:
+            error_msg = f"Erreur SenePay: {str(e)}"
+
+        logger.error(f"Erreur HTTP SenePay: {e.response.status_code} - {error_msg}")
+        messages.error(request, error_msg)
+        return redirect('choix_paiement', commande_id=commande.id)
+
+    except Exception as e:
+        logger.error(f"Erreur SenePay inattendue: {str(e)}")
+        messages.error(request, f"Erreur technique: {str(e)}")
+        return redirect('panier')
+
+@csrf_exempt
+def senepay_webhook(request):
+    """Reçoit la confirmation de paiement depuis SenePay"""
+
+    try:
+        payload = json.loads(request.body)
+    except:
+        return HttpResponse("Invalid JSON", status=400)
+
+    logger.info(f"Webhook reçu: {payload}")
+
+    # Paiement réussi
+    if payload.get('event') == 'checkout.session.completed':
+        session_token = payload.get('sessionToken')
+        transaction_id = payload.get('transactionId')
+
+        try:
+            commande = Commande.objects.get(session_token=session_token)
+
+            # Marquer comme payée
+            commande.statut = 'paye'
+            commande.date_paiement = timezone.now()
+            commande.senepay_transaction_id = transaction_id
+            commande.senepay_status = 'completed'
+            commande.save()
+
+            # 🔥 ENVOI DES ACCÈS PAR EMAIL
+            from .utils import envoyer_acces_formation_email
+
+            # Préparez les liens
+            liens_acces = []
+            for formation in commande.formations.all():
+                if formation.lien_drive:
+                    liens_acces.append({'titre': formation.titre, 'lien': formation.lien_drive})
+                elif formation.lien_youtube:
+                    liens_acces.append({'titre': formation.titre, 'lien': formation.lien_youtube})
+
+            # Envoi
+            envoyer_acces_formation_email(
+                email=commande.client.email,
+                nom_client=commande.client.nom_complet,
+                formations=liens_acces,
+                commande_id=commande.id
+            )
+
+            # Optionnel: envoyer un message WhatsApp de confirmation
+            logger.info(f"✅ Commande #{commande.id} payée avec succès")
+
+        except Commande.DoesNotExist:
+            logger.error(f"Commande non trouvée pour token: {session_token}")
+
+    return HttpResponse("OK", status=200)
+
+
+def paiement_succes(request):
+    """Page après paiement réussi"""
+    return render(request, 'formation/paiement_succes.html')
+
+
+def paiement_annule(request):
+    """Page après annulation"""
+    messages.warning(request, 'Paiement annulé')
+    return redirect('catalogue')

@@ -206,3 +206,20 @@ LOGGING = {
 
 # ==================== ADMINS (pour notifications d'erreur) ====================
 ADMINS = [('Franck NKOU AMPA', 'nkouampafranck49@gmail.com')]
+
+# settings.py - AJOUTEZ CES LIGNES
+
+import environ
+
+env = environ.Env()
+
+# SenePay Production
+SENEPAY_API_KEY = env("SENEPAY_API_KEY")      # pk_live_xxxxxxxxxx
+SENEPAY_API_SECRET = env("SENEPAY_API_SECRET") # sk_live_xxxxxxxxxx
+
+# Votre URL de site (IMPORTANT pour les webhooks)
+SITE_URL = env("SITE_URL", default="https://votre-domaine.com")
+
+# Si vous utilisez Railway/Render, ils ont souvent une variable d'environnement
+if not SITE_URL and 'RAILWAY_PUBLIC_DOMAIN' in os.environ:
+    SITE_URL = f"https://{os.environ['RAILWAY_PUBLIC_DOMAIN']}"

@@ -163,6 +163,10 @@ class Commande(models.Model):
     date_paiement = models.DateTimeField(null=True, blank=True)
     date_acces_envoye = models.DateTimeField(null=True, blank=True)
 
+    session_token = models.CharField(max_length=200, blank=True, null=True)
+    senepay_transaction_id = models.CharField(max_length=200, blank=True, null=True)
+    senepay_status = models.CharField(max_length=50, blank=True, null=True)
+
     class Meta:
         verbose_name = "Commande"
         verbose_name_plural = "Commandes"

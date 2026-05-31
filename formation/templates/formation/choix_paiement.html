@@ -1,11 +1,11 @@
 {% extends 'formation/base.html' %}
 {% load static %}
 
-{% block title %}Choisir votre mode de paiement | Formation Pro{% endblock %}
+{% block title %}Paiement sécurisé | Formation Pro{% endblock %}
 
 {% block extra_css %}
 <style>
-    /* ===== VARIABLES GLOBALES (même thème que catalogue) ===== */
+    /* ===== VARIABLES GLOBALES ===== */
     :root {
         --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
         --primary-color: #6366f1;
@@ -22,7 +22,7 @@
         --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
         --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.25);
 
-        /* Palette sombre du site (identique au catalogue) */
+        /* Palette sombre */
         --dark-bg:       #0a0720;
         --dark-surface:  #0f0a2e;
         --dark-card:     #1a1040;
@@ -126,7 +126,7 @@
     /* Grille opérateurs */
     .operateurs-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 1.25rem;
         margin-bottom: 2rem;
     }
@@ -135,7 +135,6 @@
         border: 2px solid var(--dark-border);
         padding: 1.75rem 1.25rem;
         text-align: center;
-        text-decoration: none;
         transition: all 0.3s ease;
         background: var(--dark-card);
         display: flex;
@@ -145,6 +144,7 @@
         position: relative;
         overflow: hidden;
         border-radius: 16px;
+        cursor: pointer;
     }
 
     .operateur-card::before {
@@ -168,6 +168,11 @@
         height: 6px;
     }
 
+    .operateur-card.selected {
+        border-color: var(--success-color);
+        box-shadow: 0 0 0 2px var(--success-color);
+    }
+
     .op-emoji {
         font-size: 3rem;
         line-height: 1;
@@ -180,65 +185,80 @@
         line-height: 1.3;
     }
 
-    .op-numero {
-        font-size: 0.8rem;
-        font-weight: 600;
+    .op-description {
+        font-size: 0.75rem;
         color: var(--dark-muted);
-        font-family: monospace;
-        letter-spacing: 0.05em;
-        background: rgba(255,255,255,0.05);
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
     }
 
-    .op-btn {
-        background: var(--op-color, #6366f1);
-        color: #fff;
-        padding: 0.625rem 1.25rem;
-        font-size: 0.8rem;
-        font-weight: 600;
-        border-radius: 10px;
-        width: 100%;
-        margin-top: 0.5rem;
+    .radio-indicator {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid var(--dark-border);
+        background: transparent;
         transition: all 0.2s;
-        text-decoration: none;
-        display: inline-block;
     }
 
-    .operateur-card:hover .op-btn {
-        filter: brightness(1.1);
-        transform: translateY(-1px);
+    .operateur-card.selected .radio-indicator {
+        border-color: var(--success-color);
+        background: var(--success-color);
+        box-shadow: inset 0 0 0 3px var(--dark-card);
     }
 
-    /* ===== INSTRUCTIONS ===== */
-    .instructions-box {
-        background: rgba(99,102,241,0.08);
-        border-left: 4px solid var(--accent-gold);
-        border-radius: 12px;
-        padding: 1.25rem 1.5rem;
-        margin-top: 1.5rem;
+    /* Info client */
+    .client-info {
+        margin-top: 2rem;
+        padding: 1.25rem;
+        background: var(--dark-card);
+        border-radius: 16px;
+        border: 1px solid var(--dark-border);
     }
 
-    .instructions-box h3 {
+    .client-info h4 {
         font-size: 0.9rem;
-        font-weight: 700;
-        color: #fcd34d;
         margin-bottom: 0.75rem;
+        color: var(--accent-gold);
+    }
+
+    .client-info p {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .client-info .phone-number {
+        font-family: monospace;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--dark-text);
+    }
+
+    /* Bouton payer */
+    .btn-payer {
+        background: var(--success-color);
+        color: white;
+        border: none;
+        padding: 1rem;
+        font-size: 1rem;
+        font-weight: 700;
+        border-radius: 12px;
+        width: 100%;
+        transition: all 0.2s;
+        cursor: pointer;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 1rem;
     }
 
-    .instructions-box ol {
-        margin: 0;
-        padding-left: 1.25rem;
-        color: var(--dark-muted);
-        font-size: 0.85rem;
+    .btn-payer:hover:not(:disabled) {
+        background: var(--success-hover);
+        transform: translateY(-2px);
     }
 
-    .instructions-box ol li {
-        margin-bottom: 0.5rem;
-        line-height: 1.6;
+    .btn-payer:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 
     /* ===== RÉSUMÉ DE COMMANDE ===== */
@@ -347,48 +367,33 @@
         width: 24px;
     }
 
-    /* ===== WHATSAPP FLOTTANT ===== */
-    .whatsapp-float {
+    /* ===== LOADER ===== */
+    .loader-overlay {
         position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        z-index: 1000;
-        animation: fadeInUp 0.5s ease-out;
-    }
-
-    .whatsapp-button {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(10,7,32,0.95);
+        z-index: 9999;
         display: flex;
         align-items: center;
-        gap: 0.75rem;
-        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-        color: #fff;
-        padding: 0.875rem 1.5rem;
-        border-radius: 50px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 0.875rem;
-        box-shadow: var(--shadow-lg);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: none;
-        cursor: pointer;
+        justify-content: center;
+        flex-direction: column;
+        gap: 1rem;
     }
 
-    .whatsapp-button:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-xl);
-        color: #fff;
+    .loader-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid var(--dark-border);
+        border-top-color: var(--accent-gold);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
     }
 
-    .whatsapp-icon {
-        width: 24px; height: 24px;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.596 1.978.962 3.149.962 3.178 0 5.767-2.586 5.768-5.766.001-3.18-2.585-5.766-5.768-5.766zm3.392 8.244c-.144.405-.837.775-1.17.824-.266.04-.555.062-.856-.062-.253-.104-.547-.232-.795-.436-.881-.726-1.443-1.754-1.587-2.714-.052-.35-.076-.706.005-1.06.08-.354.274-.66.553-.902.116-.102.23-.19.368-.234.135-.044.293-.057.439-.013.253.076.426.24.553.49.152.296.201.624.229.964.036.447-.066.885-.18 1.317-.122.464.133.877.432 1.211.326.364.744.615 1.188.762.206.068.428.106.635.106.292 0 .557-.108.746-.286.203-.19.331-.445.379-.717.047-.27.021-.547-.032-.811-.079-.394-.281-.746-.55-1.018-.221-.224-.483-.384-.755-.5-.257-.109-.53-.16-.79-.204-.291-.05-.583-.03-.86.058-.272.086-.526.228-.746.423-.329.296-.569.675-.666 1.114-.097.44-.047.898.117 1.32.164.422.438.794.751 1.101.209.204.455.363.725.471.278.112.578.164.881.155.264-.009.529-.062.777-.173.245-.111.474-.264.68-.453.205-.189.384-.408.528-.65.144-.242.252-.504.315-.777.063-.273.08-.555.048-.829-.032-.273-.109-.538-.225-.783-.117-.245-.28-.463-.474-.642-.194-.179-.42-.316-.663-.408-.242-.092-.5-.136-.754-.128-.254.008-.5.052-.726.138-.226.086-.431.216-.607.383-.176.167-.327.369-.44.592-.113.223-.19.464-.227.71-.037.246-.034.498.009.745.043.247.126.482.246.698.12.216.276.407.458.563.182.156.387.277.607.356.22.079.453.113.682.097.229-.016.451-.07.656-.166.205-.096.391-.234.545-.404.154-.17.274-.369.352-.585.078-.216.112-.447.095-.674-.017-.227-.077-.444-.175-.642-.098-.198-.231-.374-.391-.516-.16-.142-.344-.249-.54-.316-.196-.067-.402-.092-.603-.071z"/></svg>') center/contain no-repeat;
-        background-size: contain;
-        flex-shrink: 0;
-    }
-
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to   { opacity: 1; transform: translateY(0); }
+    @keyframes spin {
+        to { transform: rotate(360deg); }
     }
 
     /* ===== RESPONSIVE ===== */
@@ -419,23 +424,15 @@
 
         .operateur-card {
             padding: 1rem;
+            flex-direction: row;
+            justify-content: space-between;
+            text-align: left;
         }
 
-        .instructions-box {
-            padding: 1rem;
-        }
-
-        .instructions-box ol {
-            padding-left: 1rem;
-        }
-
-        .whatsapp-button span {
-            display: none;
-        }
-
-        .whatsapp-button {
-            padding: 0.875rem;
-            border-radius: 50%;
+        .operateur-card .op-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
         }
     }
 </style>
@@ -443,11 +440,11 @@
 
 {% block content %}
 
-<!-- ===== BANNIÈRE PROMOTIONNELLE (même que catalogue) ===== -->
+<!-- ===== BANNIÈRE PROMOTIONNELLE ===== -->
 <div class="promo-banner-v2">
     <div class="promo-topbar">
         <span class="topbar-dot"></span>
-        OFFRE À DURÉE LIMITÉE — VENTE FLASH SUR TOUTES LES FORMATIONS
+        PAIEMENT 100% SÉCURISÉ — Mobile Money (Wave, Orange, MTN, Free)
         <span class="topbar-dot"></span>
     </div>
 </div>
@@ -455,44 +452,68 @@
 <div class="container-udemy">
     <!-- Header de page -->
     <div class="page-header">
-        <h1>Choisissez votre mode de paiement</h1>
+        <h1>Paiement sécurisé</h1>
     </div>
 
     <div class="payment-layout">
-        <!-- Opérateurs section -->
+        <!-- Section paiement -->
         <div class="operateurs-section">
-            <p class="section-title">Sélectionnez votre opérateur pour finaliser votre achat</p>
-
-            <!-- Instructions -->
-            <div class="instructions-box">
-                <h3>
-                    <i class="bi bi-info-circle-fill"></i>
-                    Comment ça marche ?
-                </h3>
-                <ol>
-                    <li>Cliquez sur votre opérateur ci-dessous</li>
-                    <li>WhatsApp s'ouvre avec votre message pré-rempli</li>
-                    <li>Envoyez votre capture de paiement Mobile Money</li>
-                    <li>Recevez vos accès aux formations par email sous 24h</li>
-                </ol>
-            </div>
+            <p class="section-title">Choisissez votre opérateur Mobile Money</p>
 
             <!-- Cartes opérateurs -->
             <div class="operateurs-grid">
                 {% for op in operateurs %}
-                <a href="{{ op.whatsapp_url }}"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   class="operateur-card"
-                   style="--op-color: {{ op.couleur }}">
-                    <div class="op-emoji">{{ op.logo_emoji }}</div>
-                    <div class="op-nom">{{ op.nom }}</div>
-                    <div class="op-numero">{{ op.numero_display }}</div>
-                    <div class="op-btn">
-                        <i class="bi bi-whatsapp"></i> Payer via WhatsApp
+                <div class="operateur-card"
+                     data-operator="{{ op.id }}"
+                     style="--op-color: {{ op.couleur }}"
+                     onclick="selectOperator('{{ op.id }}')">
+                    <div class="op-emoji">{{ op.icon }}</div>
+                    <div class="op-info">
+                        <div class="op-nom">{{ op.nom }}</div>
+                        <div class="op-description">{{ op.description }}</div>
                     </div>
-                </a>
+                    <div class="radio-indicator"></div>
+                </div>
                 {% endfor %}
+            </div>
+
+            <!-- Informations client (numéro déjà renseigné) -->
+            <div class="client-info">
+                <h4>📱 Paiement avec le numéro :</h4>
+                <p class="phone-number">+{{ client_phone }}</p>
+                <p class="text-muted small mt-2">
+                    <i class="bi bi-info-circle"></i>
+                    Ce numéro a été renseigné lors de la commande.
+                    <br>Assurez-vous qu'il est bien votre numéro Mobile Money.
+                </p>
+            </div>
+
+            <!-- Formulaire caché -->
+            <form method="post" id="paymentForm" action="{% url 'paiement_senepay' commande.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="operator" id="selectedOperator" required>
+                <input type="hidden" name="phone" value="{{ client_phone }}">
+
+                <button type="submit" class="btn-payer" id="submitBtn" disabled>
+                    <span>💰</span>
+                    Payer {{ total }} FCFA
+                    <span>🔒</span>
+                </button>
+            </form>
+
+            <!-- Informations de sécurité -->
+            <div class="instructions-box" style="margin-top: 1rem; background: rgba(99,102,241,0.08); border-left-color: var(--accent-gold); padding: 1rem;">
+                <h3 style="font-size: 0.85rem;">
+                    <i class="bi bi-shield-check"></i>
+                    Comment ça marche ?
+                </h3>
+                <ol style="font-size: 0.8rem;">
+                    <li>Sélectionnez votre opérateur</li>
+                    <li>Cliquez sur "Payer"</li>
+                    <li>Vous serez redirigé vers la page sécurisée SenePay</li>
+                    <li>Confirmez la transaction sur votre téléphone</li>
+                    <li>Recevez vos accès immédiatement par email</li>
+                </ol>
             </div>
         </div>
 
@@ -521,7 +542,7 @@
             </div>
 
             <div class="summary-total">
-                <span>Total :</span>
+                <span>Total à payer :</span>
                 <span>{{ total }} FCFA</span>
             </div>
 
@@ -530,19 +551,66 @@
             </a>
 
             <!-- Trust badges -->
+            <div class="trust-badges">
+                <div class="trust-item-small">
+                    <i class="bi bi-shield-check"></i>
+                    <span>Paiement sécurisé par SenePay</span>
+                </div>
+                <div class="trust-item-small">
+                    <i class="bi bi-clock-history"></i>
+                    <span>Accès envoyés immédiatement après paiement</span>
+                </div>
+                <div class="trust-item-small">
+                    <i class="bi bi-headset"></i>
+                    <span>Support technique 7j/7</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Bouton flottant WhatsApp -->
-<div class="whatsapp-float">
-    <a href="https://wa.me/242061814279?text=Bonjour%2C%20je%20souhaite%20avoir%20plus%20d%27informations%20sur%20vos%20formations."
-       class="whatsapp-button"
-       target="_blank"
-       rel="noopener noreferrer">
-        <div class="whatsapp-icon"></div>
-        <span>Nous écrire sur WhatsApp</span>
-    </a>
+<!-- Loader overlay -->
+<div id="loaderOverlay" class="loader-overlay" style="display: none;">
+    <div class="loader-spinner"></div>
+    <div>Redirection vers la page de paiement...</div>
 </div>
+
+<script>
+    let selectedOperatorId = null;
+
+    function selectOperator(operatorId) {
+        // Désélectionner tous
+        document.querySelectorAll('.operateur-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+
+        // Sélectionner le nouveau
+        const selectedCard = document.querySelector(`.operateur-card[data-operator="${operatorId}"]`);
+        if (selectedCard) {
+            selectedCard.classList.add('selected');
+        }
+
+        // Mettre à jour le champ caché
+        selectedOperatorId = operatorId;
+        document.getElementById('selectedOperator').value = operatorId;
+
+        // Activer le bouton
+        document.getElementById('submitBtn').disabled = false;
+    }
+
+    // Afficher loader au submit
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+        if (!selectedOperatorId) {
+            e.preventDefault();
+            alert('Veuillez sélectionner un opérateur');
+            return;
+        }
+
+        // Afficher le loader
+        document.getElementById('loaderOverlay').style.display = 'flex';
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('submitBtn').innerHTML = '<span>⏳</span> Redirection en cours...';
+    });
+</script>
 
 {% endblock %}
