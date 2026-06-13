@@ -23,6 +23,7 @@ urlpatterns = [
     ),
     path('a-propos/', views.about, name='about'),
     path('paiement/senepay/<int:commande_id>/', views.paiement_senepay, name='paiement_senepay'),
+    path('paiement/senepay/direct/<int:commande_id>/', views.paiement_senepay_direct, name='paiement_senepay_direct'),
     path('paiement/succes/', views.paiement_succes, name='paiement_succes'),
     path('paiement/annule/', views.paiement_annule, name='paiement_annule'),
     path('webhook/senepay/', views.senepay_webhook, name='senepay_webhook'),

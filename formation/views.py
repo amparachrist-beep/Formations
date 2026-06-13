@@ -73,8 +73,10 @@ def vider_panier_view(request):
 
 # ==================== CHECKOUT ====================
 
+# views.py - Remplacez votre fonction checkout_view par celle-ci
+
 def checkout_view(request):
-    """Affiche le formulaire client avant paiement"""
+    """Affiche le formulaire client ET redirige directement vers SenePay"""
     panier = request.session.get('panier', {})
     if not panier:
         messages.warning(request, 'Votre panier est vide.')
@@ -86,6 +88,7 @@ def checkout_view(request):
     if request.method == 'POST':
         form = ClientForm(request.POST)
         if form.is_valid():
+            # Création du client
             client, _ = Client.objects.get_or_create(
                 email=form.cleaned_data['email'],
                 defaults={
@@ -93,11 +96,15 @@ def checkout_view(request):
                     'whatsapp': form.cleaned_data['whatsapp'],
                 }
             )
+
+            # Création de la commande
             commande = Commande.objects.create(client=client, montant_total=total)
             commande.formations.set(formations)
             request.session['commande_en_cours'] = commande.id
             print(f"✅ [CHECKOUT] Commande #{commande.id} créée pour {client.email}")
-            return redirect('choix_paiement', commande_id=commande.id)
+
+            # 🔥 REDIRECTION DIRECTE VERS SENEPAY (sans choix_paiement)
+            return redirect('paiement_senepay_direct', commande_id=commande.id)
     else:
         form = ClientForm()
 
@@ -108,65 +115,77 @@ def checkout_view(request):
     })
 
 
+# views.py - Ajoutez cette nouvelle fonction
+
+def paiement_senepay_direct(request, commande_id):
+    """
+    Version simplifiée - Redirige directement vers SenePay
+    SANS demander l'opérateur (l'utilisateur choisira sur la page SenePay)
+    """
+    commande = get_object_or_404(Commande, id=commande_id)
+
+    # Vérifier que c'est la bonne commande
+    if request.session.get('commande_en_cours') != commande_id:
+        messages.error(request, 'Session invalide')
+        return redirect('catalogue')
+
+    # Éviter double paiement
+    if commande.statut in ['paye', 'acces_envoye']:
+        messages.warning(request, 'Cette commande est déjà payée')
+        return redirect('confirmation')
+
+    try:
+        # Construction des URLs absolues
+        site_url = settings.SITE_URL if hasattr(settings, 'SITE_URL') else request.build_absolute_uri('/').rstrip('/')
+
+        # Création de la session de paiement SenePay
+        # 🔥 On ne passe PAS de country, l'utilisateur choisira sur la page SenePay
+        session = senepay.create_checkout(
+            amount=commande.montant_total,
+            order_ref=f"CMD-{commande.id}",
+            success_url=f"{site_url}{reverse('paiement_succes')}",
+            cancel_url=f"{site_url}{reverse('paiement_annule')}",
+            webhook_url=f"{site_url}{reverse('senepay_webhook')}"
+        )
+
+        # Sauvegarde des informations SenePay
+        commande.session_token = session['sessionToken']
+        commande.senepay_status = session['status']
+        commande.save()
+
+        logger.info(f"Session SenePay créée pour commande #{commande.id}: {session['sessionToken']}")
+
+        # Redirection vers la page de paiement SenePay
+        return redirect(session['checkoutUrl'])
+
+    except requests.exceptions.HTTPError as e:
+        error_msg = ""
+        if e.response.status_code == 401:
+            error_msg = "Erreur d'authentification SenePay. Vérifiez vos clés API."
+        elif e.response.status_code == 403:
+            error_msg = "Compte SenePay non validé. Vérifiez votre KYC."
+        elif e.response.status_code == 400:
+            try:
+                error_data = e.response.json()
+                error_msg = error_data.get('message', 'Paramètres invalides')
+            except:
+                error_msg = "Paramètres de paiement invalides"
+        else:
+            error_msg = f"Erreur SenePay: {str(e)}"
+
+        logger.error(f"Erreur HTTP SenePay: {e.response.status_code} - {error_msg}")
+        messages.error(request, error_msg)
+        return redirect('panier')
+
+    except Exception as e:
+        logger.error(f"Erreur SenePay inattendue: {str(e)}")
+        messages.error(request, f"Erreur technique: {str(e)}")
+        return redirect('panier')
+
 # ==================== CHOIX PAIEMENT MOBILE MONEY ====================
 
 # views.py - Version modifiée (sans redemander le téléphone)
 
-def choix_paiement_view(request, commande_id):
-    """Page de choix du paiement Mobile Money via SenePay"""
-    commande = get_object_or_404(Commande, id=commande_id)
-
-    # Sécurité : vérifier que c'est bien la commande en cours dans la session
-    if request.session.get('commande_en_cours') != commande_id:
-        messages.error(request, 'Session invalide. Veuillez recommencer.')
-        return redirect('catalogue')
-
-    # Vérifier que la commande n'est pas déjà payée
-    if commande.statut in ['paye', 'acces_envoye']:
-        messages.warning(request, 'Cette commande a déjà été payée.')
-        return redirect('confirmation')
-
-    formations = commande.formations.all()
-
-    # Opérateurs supportés par SenePay
-    OPERATEURS = [
-        {
-            'id': 'wave',
-            'nom': 'Wave',
-            'icon': '🌊',
-            'couleur': '#00B4D8',
-            'description': 'Paiement instantané'
-        },
-        {
-            'id': 'orange',
-            'nom': 'Orange Money',
-            'icon': '🟠',
-            'couleur': '#FF6600',
-            'description': 'Nécessite code OTP'
-        },
-        {
-            'id': 'mtn',
-            'nom': 'MTN Mobile Money',
-            'icon': '🟡',
-            'couleur': '#FFCC00',
-            'description': 'Confirmation par USSD'
-        },
-        {
-            'id': 'free',
-            'nom': 'Free Money',
-            'icon': '🔴',
-            'couleur': '#E8192C',
-            'description': 'Paiement mobile Free'
-        },
-    ]
-
-    return render(request, 'formation/choix_paiement.html', {
-        'commande': commande,
-        'formations': formations,
-        'operateurs': OPERATEURS,
-        'total': commande.montant_total,
-        'client_phone': commande.client.whatsapp,  # ← Numéro déjà existant !
-    })
 
 
 # ==================== CONFIRMATION ====================
