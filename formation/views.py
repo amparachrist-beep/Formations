@@ -376,7 +376,6 @@ def senepay_webhook(request):
 
     logger.info(f"Webhook reçu: {payload}")
 
-    # Paiement réussi
     if payload.get('event') == 'checkout.session.completed':
         session_token = payload.get('sessionToken')
         transaction_id = payload.get('transactionId')
@@ -384,34 +383,37 @@ def senepay_webhook(request):
         try:
             commande = Commande.objects.get(session_token=session_token)
 
-            # Marquer comme payée
+            # Éviter un double traitement si le webhook est reçu deux fois
+            if commande.statut == 'paye':
+                logger.info(f"Commande #{commande.id} déjà traitée, webhook ignoré")
+                return HttpResponse("OK", status=200)
+
             commande.statut = 'paye'
             commande.date_paiement = timezone.now()
             commande.senepay_transaction_id = transaction_id
             commande.senepay_status = 'completed'
             commande.save()
 
-            # 🔥 ENVOI DES ACCÈS PAR EMAIL
-            from .utils import envoyer_acces_formation_email
+            # 🔥 1. Donner l'accès Drive automatiquement (nominatif)
+            from .services.google_drive import donner_acces_drive
 
-            # Préparez les liens
-            liens_acces = []
             for formation in commande.formations.all():
-                if formation.lien_drive:
-                    liens_acces.append({'titre': formation.titre, 'lien': formation.lien_drive})
-                elif formation.lien_youtube:
-                    liens_acces.append({'titre': formation.titre, 'lien': formation.lien_youtube})
+                if formation.drive_folder_id:
+                    donner_acces_drive(
+                        email_client=commande.client.email,
+                        folder_id=formation.drive_folder_id
+                    )
+                else:
+                    logger.warning(
+                        f"Formation '{formation.titre}' sans drive_folder_id, "
+                        f"accès Drive automatique impossible pour commande #{commande.id}"
+                    )
 
-            # Envoi
-            envoyer_acces_formation_email(
-                email=commande.client.email,
-                nom_client=commande.client.nom_complet,
-                formations=liens_acces,
-                commande_id=commande.id
-            )
+            # 🔥 2. Envoi de l'email récapitulatif (signature correcte : commande seul)
+            from .utils import envoyer_acces_formation_email
+            envoyer_acces_formation_email(commande)
 
-            # Optionnel: envoyer un message WhatsApp de confirmation
-            logger.info(f"✅ Commande #{commande.id} payée avec succès")
+            logger.info(f"✅ Commande #{commande.id} payée, accès Drive + email envoyés")
 
         except Commande.DoesNotExist:
             logger.error(f"Commande non trouvée pour token: {session_token}")

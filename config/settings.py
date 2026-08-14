@@ -207,19 +207,15 @@ LOGGING = {
 # ==================== ADMINS (pour notifications d'erreur) ====================
 ADMINS = [('Franck NKOU AMPA', 'nkouampafranck49@gmail.com')]
 
-# settings.py - AJOUTEZ CES LIGNES
+# ==================== SENEPAY ====================
+SENEPAY_API_KEY = config('SENEPAY_API_KEY')
+SENEPAY_API_SECRET = config('SENEPAY_API_SECRET')
 
-import environ
+# Note : SITE_URL est déjà défini plus haut dans le fichier (ligne ~90),
+# pas besoin de le redéfinir ici — ça écrasait silencieusement la version
+# avec le fallback Railway.
 
-env = environ.Env()
-
-# SenePay Production
-SENEPAY_API_KEY = env("SENEPAY_API_KEY")      # pk_live_xxxxxxxxxx
-SENEPAY_API_SECRET = env("SENEPAY_API_SECRET") # sk_live_xxxxxxxxxx
-
-# Votre URL de site (IMPORTANT pour les webhooks)
-SITE_URL = env("SITE_URL", default="https://votre-domaine.com")
-
-# Si vous utilisez Railway/Render, ils ont souvent une variable d'environnement
-if not SITE_URL and 'RAILWAY_PUBLIC_DOMAIN' in os.environ:
-    SITE_URL = f"https://{os.environ['RAILWAY_PUBLIC_DOMAIN']}"
+# ==================== GOOGLE DRIVE (OAuth) ====================
+GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
+GOOGLE_REFRESH_TOKEN = config('GOOGLE_REFRESH_TOKEN')

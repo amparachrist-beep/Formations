@@ -1,28 +1,20 @@
-# Django
-*.pyc
-__pycache__/
-*.sqlite3
+# Secrets & environnement
+.env
+client_secret.json
+get_refresh_token.py
+
+# Base de données locale
 db.sqlite3
 
-# Environnement
-.env
-.env.prod
+# Logs
+debug.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
 venv/
-env/
-.env.local
 
-# Fichiers statiques collectés
+# Django
 staticfiles/
-
-# Media uploads
 media/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db

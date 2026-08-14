@@ -19,7 +19,7 @@ class FormationAdmin(admin.ModelAdmin):
             'fields': ('titre', 'description', 'prix', 'prix_promo', 'image', 'active')
         }),
         ('Accès à la formation', {
-            'fields': ('lien_youtube', 'lien_drive')
+            'fields': ('lien_youtube', 'lien_drive', 'drive_folder_id')
         }),
         ('Dates', {
             'fields': ('date_creation', 'date_modification'),

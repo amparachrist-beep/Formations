@@ -36,6 +36,12 @@ class Formation(models.Model):
         blank=True,
         verbose_name="Lien Google Drive"
     )
+    drive_folder_id = models.CharField(
+        max_length=100,
+        blank=True,
+        verbose_name="ID du dossier Google Drive",
+        help_text="L'ID dans l'URL du dossier : drive.google.com/drive/folders/[CET_ID]"
+    )
     active = models.BooleanField(default=True, verbose_name="Active")
     date_creation = models.DateTimeField(auto_now_add=True)
     date_modification = models.DateTimeField(auto_now=True)
