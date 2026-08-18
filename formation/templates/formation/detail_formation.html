@@ -237,10 +237,11 @@
 
     /* Description */
     .description-content {
-        line-height: 1.8;
-        font-size: 0.925rem;
-        color: var(--dark-muted);
-    }
+    line-height: 1.8;
+    font-size: 1rem;
+    color: var(--dark-text);
+    font-weight: 400;
+}
 
     .description-content p { margin-bottom: 0.875rem; }
     .description-content p:last-child { margin-bottom: 0; }
@@ -412,16 +413,17 @@
         overflow: hidden;
     }
 
-    .sidebar-image {
+        .sidebar-image {
         width: 100%;
-        aspect-ratio: 16/9;
+        height: 480px;
         object-fit: cover;
+        object-position: top center;
         display: block;
     }
 
     .sidebar-image-placeholder {
         width: 100%;
-        aspect-ratio: 16/9;
+        height: 480px;
         background: linear-gradient(135deg, #1e1060 0%, #2d1b8a 100%);
         display: flex;
         align-items: center;
