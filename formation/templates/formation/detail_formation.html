@@ -590,13 +590,21 @@
         }
     }
 
-    @media (max-width: 768px) {
-        .formation-hero { padding: 2.5rem 0 2rem; }
-        .formation-hero h1 { font-size: 1.6rem; }
-        .hero-buttons { flex-direction: column; }
-        .btn-hero-buy, .btn-hero-whatsapp { justify-content: center; }
-        .skills-grid { grid-template-columns: 1fr; }
+   @media (max-width: 768px) {
+    .formation-hero { padding: 2.5rem 0 2rem; }
+    .formation-hero h1 { font-size: 1.6rem; }
+    .hero-buttons { flex-direction: column; }
+    .btn-hero-buy, .btn-hero-whatsapp { justify-content: center; }
+    .skills-grid { grid-template-columns: 1fr; }
+
+    .sidebar-image,
+    .sidebar-image-placeholder {
+        height: auto;
+        max-height: none;
+        object-fit: contain;
+        background: linear-gradient(135deg, #1e1060 0%, #2d1b8a 100%);
     }
+}
 </style>
 {% endblock %}
 
