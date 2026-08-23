@@ -1,4 +1,5 @@
 {% extends 'formation/base.html' %}
+{% load static %}
 
 {% block title %}À propos — MesFormations{% endblock %}
 
@@ -52,6 +53,11 @@
         background: #6366f1;
         border-radius: 50%;
         display: inline-block;
+        animation: pulseDot 2s ease-in-out infinite;
+    }
+    @keyframes pulseDot {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.6); opacity: 0.5; }
     }
     .about-hero h1 {
         font-size: 2.75rem;
@@ -80,8 +86,14 @@
         font-size: 0.95rem;
         font-weight: 600;
         text-decoration: none;
+        transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
     }
-    .btn-about-hero:hover { background: #4f46e5; color: #fff; }
+    .btn-about-hero:hover {
+        background: #4f46e5;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -8px rgba(99,102,241,0.6);
+    }
 
     /* Sections */
     .about-section { padding: 4rem 0; }
@@ -110,6 +122,20 @@
         line-height: 1.7;
     }
 
+    /* Reveal on scroll (respects reduced motion) */
+    .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.7s cubic-bezier(.16,.8,.24,1), transform 0.7s cubic-bezier(.16,.8,.24,1);
+    }
+    .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
     /* Deux colonnes */
     .about-two-col {
         display: grid;
@@ -124,6 +150,12 @@
         border: 1px solid rgba(99,102,241,0.2);
         border-radius: 16px;
         padding: 2rem;
+        transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .difference-card:hover {
+        border-color: rgba(99,102,241,0.45);
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px -20px rgba(99,102,241,0.45);
     }
     .diff-icon {
         width: 52px; height: 52px;
@@ -134,7 +166,9 @@
         font-size: 1.5rem;
         color: #f59e0b;
         margin-bottom: 1rem;
+        transition: transform 0.4s ease;
     }
+    .difference-card:hover .diff-icon { transform: rotate(-8deg) scale(1.08); }
     .difference-card h3 {
         font-size: 1.1rem;
         font-weight: 700;
@@ -154,6 +188,17 @@
         gap: 10px;
         font-size: 0.875rem;
         color: #e2e8f0;
+        opacity: 0;
+        transform: translateX(-10px);
+        animation: slideInCheck 0.5s ease forwards;
+    }
+    .check-list li:nth-child(1) { animation-delay: 0.05s; }
+    .check-list li:nth-child(2) { animation-delay: 0.15s; }
+    .check-list li:nth-child(3) { animation-delay: 0.25s; }
+    .check-list li:nth-child(4) { animation-delay: 0.35s; }
+    .check-list li:nth-child(5) { animation-delay: 0.45s; }
+    @keyframes slideInCheck {
+        to { opacity: 1; transform: translateX(0); }
     }
     .check-icon {
         width: 20px; height: 20px;
@@ -163,6 +208,114 @@
         flex-shrink: 0;
         color: #6ee7b7;
         font-size: 0.75rem;
+    }
+
+    /* ============ Nos formateurs ============ */
+    .formateurs-section { position: relative; overflow: hidden; }
+    .formateurs-section::before {
+        content: '';
+        position: absolute;
+        width: 420px; height: 420px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, rgba(99,102,241,0) 70%);
+        top: -120px; left: -120px;
+        pointer-events: none;
+    }
+    .formateurs-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(260px, 1fr));
+        gap: 1.75rem;
+        margin-top: 2.5rem;
+    }
+    .formateur-card {
+        position: relative;
+        background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 20px;
+        padding: 2rem 1.75rem;
+        text-align: center;
+        overflow: hidden;
+        transform-style: preserve-3d;
+        transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+        will-change: transform;
+    }
+    .formateur-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 20px;
+        padding: 1px;
+        background: linear-gradient(135deg, rgba(99,102,241,0.5), rgba(245,158,11,0.4), transparent 70%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        pointer-events: none;
+    }
+    .formateur-card:hover {
+        border-color: rgba(255,255,255,0.16);
+        box-shadow: 0 25px 50px -20px rgba(99,102,241,0.5);
+    }
+    .formateur-card:hover::before { opacity: 1; }
+    .formateur-photo-wrap {
+        width: 128px; height: 128px;
+        margin: 0 auto 1.25rem;
+        border-radius: 50%;
+        padding: 3px;
+        background: conic-gradient(from 180deg, #6366f1, #f59e0b, #6366f1);
+        transform: translateZ(30px);
+    }
+    .formateur-photo-wrap img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #0a0720;
+        display: block;
+    }
+    .formateur-name {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 4px;
+        transform: translateZ(20px);
+    }
+    .formateur-role {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin-bottom: 0.9rem;
+        transform: translateZ(20px);
+    }
+    .role-dev { background: rgba(99,102,241,0.18); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.35); }
+    .role-eng { background: rgba(245,158,11,0.18); color: #fcd34d; border: 1px solid rgba(245,158,11,0.35); }
+    .formateur-bio {
+        font-size: 0.85rem;
+        color: #94a3b8;
+        line-height: 1.65;
+        transform: translateZ(15px);
+    }
+    .formateur-tags {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 1rem;
+        transform: translateZ(15px);
+    }
+    .formateur-tag {
+        font-size: 0.7rem;
+        color: #cbd5e1;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 3px 10px;
+        border-radius: 8px;
     }
 
     /* Grille formations */
@@ -178,9 +331,13 @@
         border-radius: 12px;
         padding: 1.5rem 1.25rem;
         text-align: center;
-        transition: border-color 0.2s;
+        transition: border-color 0.2s ease, transform 0.3s ease, background 0.3s ease;
     }
-    .about-fc:hover { border-color: rgba(245,158,11,0.4); }
+    .about-fc:hover {
+        border-color: rgba(245,158,11,0.4);
+        transform: translateY(-5px);
+        background: rgba(255,255,255,0.06);
+    }
     .about-fc-icon {
         width: 48px; height: 48px;
         background: rgba(245,158,11,0.15);
@@ -189,7 +346,9 @@
         font-size: 1.375rem;
         color: #f59e0b;
         margin: 0 auto 0.875rem;
+        transition: transform 0.35s ease;
     }
+    .about-fc:hover .about-fc-icon { transform: scale(1.12) rotate(6deg); }
     .about-fc-title { font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 4px; line-height: 1.3; }
     .about-fc-sub { font-size: 0.75rem; color: #64748b; line-height: 1.4; }
 
@@ -207,6 +366,11 @@
         border-radius: 12px;
         padding: 1.5rem;
         text-align: center;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .access-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(255,255,255,0.18);
     }
     .access-icon {
         width: 44px; height: 44px;
@@ -214,7 +378,9 @@
         display: flex; align-items: center; justify-content: center;
         font-size: 1.25rem;
         margin: 0 auto 0.75rem;
+        transition: transform 0.35s ease;
     }
+    .access-card:hover .access-icon { transform: scale(1.1); }
     .ai-drive { background: rgba(66,133,244,0.15); color: #7ab3f8; }
     .ai-telegram { background: rgba(0,136,204,0.15); color: #5bb8e8; }
     .ai-instant { background: rgba(245,158,11,0.15); color: #fcd34d; }
@@ -237,15 +403,25 @@
         background: #6366f1; color: #fff;
         padding: 0.75rem 1.75rem;
         border-radius: 8px; font-size: 0.9rem; font-weight: 600; text-decoration: none;
+        transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
     }
-    .btn-cta-primary:hover { background: #4f46e5; color: #fff; }
+    .btn-cta-primary:hover {
+        background: #4f46e5; color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -8px rgba(99,102,241,0.6);
+    }
     .btn-cta-wa {
         display: inline-flex; align-items: center; gap: 8px;
         background: #10b981; color: #fff;
         padding: 0.75rem 1.75rem;
         border-radius: 8px; font-size: 0.9rem; font-weight: 600; text-decoration: none;
+        transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
     }
-    .btn-cta-wa:hover { background: #059669; color: #fff; }
+    .btn-cta-wa:hover {
+        background: #059669; color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -8px rgba(16,185,129,0.5);
+    }
 
     /* Footer trust */
     .about-footer-trust {
@@ -268,6 +444,8 @@
         .about-two-col { grid-template-columns: 1fr; gap: 1.5rem; }
         .access-grid { grid-template-columns: 1fr; max-width: 100%; }
         .about-section { padding: 2.5rem 0; }
+        .formateurs-grid { grid-template-columns: 1fr; }
+        .formateur-card { transform: none !important; }
     }
 </style>
 {% endblock %}
@@ -295,12 +473,12 @@
     <div class="about-section about-section-darker">
         <div class="container-udemy">
             <div class="about-two-col">
-                <div>
+                <div class="reveal">
                     <div class="section-label">Notre différence</div>
                     <h2 class="section-title">L'accompagnement,<br><span>c'est notre force</span></h2>
                     <p class="section-sub">Nous ne te donnons pas juste un fichier et on disparaît. Nous sommes là pour répondre à tes questions, te motiver et t'orienter tout au long de ton apprentissage.</p>
                 </div>
-                <div class="difference-card">
+                <div class="difference-card reveal">
                     <div class="diff-icon">
                         <i class="bi bi-people-fill"></i>
                     </div>
@@ -318,29 +496,68 @@
         </div>
     </div>
 
-    <!-- Nos formations -->
-    <div class="about-section about-section-dark">
+    <!-- Nos formateurs -->
+    <div class="about-section about-section-dark formateurs-section">
         <div class="container-udemy text-center">
-            <div class="section-label">Nos formations</div>
-            <h2 class="section-title">Des compétences qui <span>génèrent des revenus</span></h2>
-            <p class="section-sub">Chaque formation est conçue pour être pratique, applicable immédiatement et rentable.</p>
+            <div class="section-label reveal">L'équipe</div>
+            <h2 class="section-title reveal">Les experts <span>derrière tes formations</span></h2>
+            <p class="section-sub reveal" style="max-width:560px; margin:0 auto;">Des professionnels en activité, pas juste des présentateurs. Ils conçoivent le contenu et restent disponibles pour t'accompagner.</p>
+
+            <div class="formateurs-grid">
+                <div class="formateur-card reveal" data-tilt>
+                    <div class="formateur-photo-wrap">
+                        <img src="{% static 'images/franck-nkou-ampa.jpg' %}" alt="NKOU-AMPA Franck, Ingénieur Logiciel">
+                    </div>
+                    <div class="formateur-name">NKOU-AMPA Franck</div>
+                    <span class="formateur-role role-dev"><i class="bi bi-code-slash"></i> Ingénieur Logiciel</span>
+                    <p class="formateur-bio">Développeur backend, il conçoit les bases techniques et t'aide à comprendre la logique derrière chaque concept, pas juste à copier du code.</p>
+                    <div class="formateur-tags">
+                        <span class="formateur-tag">Python</span>
+                        <span class="formateur-tag">Django</span>
+                        <span class="formateur-tag">Bases de données</span>
+                    </div>
+                </div>
+
+                <div class="formateur-card reveal" data-tilt>
+                    <div class="formateur-photo-wrap">
+                        <img src="{% static 'images/prince-okili.jpg' %}" alt="Okili Prince, Expert en Anglais">
+                    </div>
+                    <div class="formateur-name">Okili Prince</div>
+                    <span class="formateur-role role-eng"><i class="bi bi-translate"></i> Expert en Anglais</span>
+                    <p class="formateur-bio">Passionné de pédagogie, il rend l'anglais accessible et pratique, pensé pour être utilisé au travail dès les premières semaines.</p>
+                    <div class="formateur-tags">
+                        <span class="formateur-tag">Conversation</span>
+                        <span class="formateur-tag">Grammaire</span>
+                        <span class="formateur-tag">Pratique orale</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nos formations -->
+    <div class="about-section about-section-darker">
+        <div class="container-udemy text-center">
+            <div class="section-label reveal">Nos formations</div>
+            <h2 class="section-title reveal">Des compétences qui <span>génèrent des revenus</span></h2>
+            <p class="section-sub reveal">Chaque formation est conçue pour être pratique, applicable immédiatement et rentable.</p>
             <div class="about-formations-grid">
-                <div class="about-fc">
+                <div class="about-fc reveal">
                     <div class="about-fc-icon"><i class="bi bi-book-fill"></i></div>
                     <div class="about-fc-title">Apprends l'Anglais</div>
                     <div class="about-fc-sub">Sans t'ennuyer</div>
                 </div>
-                <div class="about-fc">
+                <div class="about-fc reveal">
                     <div class="about-fc-icon"><i class="bi bi-megaphone-fill"></i></div>
                     <div class="about-fc-title">Marketing Digital</div>
                     <div class="about-fc-sub">Attire, convaincs, encaisse</div>
                 </div>
-                <div class="about-fc">
+                <div class="about-fc reveal">
                     <div class="about-fc-icon"><i class="bi bi-laptop-fill"></i></div>
                     <div class="about-fc-title">Canva Business</div>
                     <div class="about-fc-sub">Transforme tes idées en argent</div>
                 </div>
-                <div class="about-fc">
+                <div class="about-fc reveal">
                     <div class="about-fc-icon"><i class="bi bi-journals"></i></div>
                     <div class="about-fc-title">Business Starter Pack</div>
                     <div class="about-fc-sub">30 livres pour réussir</div>
@@ -352,21 +569,21 @@
     <!-- Accès -->
     <div class="about-section about-section-darker">
         <div class="container-udemy text-center">
-            <div class="section-label">Accès simple et rapide</div>
-            <h2 class="section-title">Tu accèdes à ta formation <span>en quelques minutes</span></h2>
-            <p class="section-sub">Après ton paiement, tu reçois ton accès immédiatement. Pas d'attente, pas de complication.</p>
+            <div class="section-label reveal">Accès simple et rapide</div>
+            <h2 class="section-title reveal">Tu accèdes à ta formation <span>en quelques minutes</span></h2>
+            <p class="section-sub reveal">Après ton paiement, tu reçois ton accès immédiatement. Pas d'attente, pas de complication.</p>
             <div class="access-grid">
-                <div class="access-card">
+                <div class="access-card reveal">
                     <div class="access-icon ai-drive"><i class="bi bi-google"></i></div>
                     <h4>Google Drive</h4>
                     <p>Livraison directe sur ton compte</p>
                 </div>
-                <div class="access-card">
+                <div class="access-card reveal">
                     <div class="access-icon ai-telegram"><i class="bi bi-telegram"></i></div>
                     <h4>Telegram</h4>
                     <p>Accès via notre canal privé</p>
                 </div>
-                <div class="access-card">
+                <div class="access-card reveal">
                     <div class="access-icon ai-instant"><i class="bi bi-lightning-charge-fill"></i></div>
                     <h4>Accès immédiat</h4>
                     <p>+ accompagnement pendant toute la durée</p>
@@ -378,9 +595,9 @@
     <!-- CTA -->
     <div class="about-cta">
         <div class="container-udemy">
-            <h2>Commence ta transformation <span>aujourd'hui</span></h2>
-            <p>Rejoins les apprenants qui ont déjà transformé leurs compétences en revenus.</p>
-            <div class="cta-buttons">
+            <h2 class="reveal">Commence ta transformation <span>aujourd'hui</span></h2>
+            <p class="reveal">Rejoins les apprenants qui ont déjà transformé leurs compétences en revenus.</p>
+            <div class="cta-buttons reveal">
                 <a href="{% url 'catalogue' %}" class="btn-cta-primary">
                     <i class="bi bi-grid-fill"></i>
                     Voir toutes les formations
@@ -408,4 +625,47 @@
     </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // --- Scroll reveal ---
+    var revealEls = document.querySelectorAll('.reveal');
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+        revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+    } else {
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+        revealEls.forEach(function (el) { observer.observe(el); });
+    }
+
+    // --- 3D tilt on formateur cards ---
+    if (!reduceMotion && window.matchMedia('(hover: hover)').matches) {
+        document.querySelectorAll('[data-tilt]').forEach(function (card) {
+            var bounds;
+            card.addEventListener('mouseenter', function () {
+                bounds = card.getBoundingClientRect();
+            });
+            card.addEventListener('mousemove', function (e) {
+                if (!bounds) bounds = card.getBoundingClientRect();
+                var x = (e.clientX - bounds.left) / bounds.width - 0.5;
+                var y = (e.clientY - bounds.top) / bounds.height - 0.5;
+                var rotateX = (-y * 10).toFixed(2);
+                var rotateY = (x * 10).toFixed(2);
+                card.style.transform = 'perspective(800px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', function () {
+                card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0)';
+            });
+        });
+    }
+});
+</script>
 {% endblock %}
