@@ -969,7 +969,7 @@
 
         <div class="pagination-wrap">
             {% for num in formations.paginator.page_range %}
-                <a href="?page={{ num }}"
+                <a href="?page={{ num }}#formations"
                    class="{% if formations.number == num %}active{% endif %}">
                     {{ num }}
                 </a>
