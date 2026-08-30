@@ -7,11 +7,11 @@
 
 {% block extra_css %}
 <style>
-    /* ===== VARIABLES GLOBALES (même thème que catalogue) ===== */
+    /* ===== VARIABLES GLOBALES (thème catalogue) ===== */
     :root {
-        --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        --primary-color: #6366f1;
-        --primary-hover: #4f46e5;
+        --primary-gradient: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+        --primary-color: #8b5cf6;
+        --primary-hover: #7c3aed;
         --success-color: #10b981;
         --success-hover: #059669;
         --warning-color: #f59e0b;
@@ -24,17 +24,20 @@
         --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
         --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.25);
 
-        /* Palette sombre du site (identique au catalogue) */
-        --dark-bg:       #0a0720;
-        --dark-surface:  #0f0a2e;
-        --dark-card:     #1a1040;
-        --dark-border:   rgba(99,102,241,0.2);
-        --dark-border-hover: rgba(245,158,11,0.35);
-        --dark-text:     #e2e8f0;
-        --dark-muted:    #94a3b8;
-        --dark-subtle:   #64748b;
-        --accent-gold:   #f59e0b;
-        --accent-purple: #a5b4fc;
+        /* Palette sombre premium (identique au catalogue) */
+        --dark-bg:       #07050f;
+        --dark-surface:  #0d0a1f;
+        --dark-card:     #141029;
+        --dark-card-hover: #1a1438;
+        --dark-border:   rgba(139,92,246,0.18);
+        --dark-border-hover: rgba(245,158,11,0.45);
+        --dark-text:     #e8eaf6;
+        --dark-muted:    #9aa0c7;
+        --dark-subtle:   #6b7099;
+        --accent-gold:   #f5c542;
+        --accent-gold-bright: #fcd34d;
+        --accent-purple: #a78bfa;
+        --accent-purple-deep: #7c3aed;
     }
 
     * {
@@ -56,50 +59,75 @@
 
     /* ===== BANNIÈRE PROMO ===== */
     .promo-banner-v2 {
-        background: #1a1040;
+        background: linear-gradient(90deg, #0d0a1f 0%, #1a1438 50%, #0d0a1f 100%);
         color: #fff;
         overflow: hidden;
-        border-bottom: 1px solid #3d2a7a;
+        border-bottom: 1px solid rgba(245,197,66,0.15);
+        position: relative;
+    }
+
+    .promo-banner-v2::after {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(245,197,66,0.08), transparent);
+        animation: shimmer 5s infinite;
+    }
+    @keyframes shimmer {
+        0% { left: -100%; }
+        100% { left: 100%; }
     }
 
     .promo-topbar {
-        background: #f59e0b;
-        color: #1a1040;
+        background: linear-gradient(90deg, #b8860b 0%, #f5c542 50%, #b8860b 100%);
+        background-size: 200% 100%;
+        animation: goldShift 6s ease-in-out infinite;
+        color: #0d0a1f;
         text-align: center;
-        padding: 5px 1rem;
+        padding: 7px 1rem;
         font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.06em;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 10px;
+        position: relative;
+        z-index: 1;
+    }
+
+    @keyframes goldShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
     }
 
     .topbar-dot {
         width: 5px; height: 5px;
-        background: #1a1040;
+        background: #0d0a1f;
         border-radius: 50%;
-        opacity: 0.35;
+        opacity: 0.4;
         display: inline-block;
     }
 
     /* ===== PAGE HEADER ===== */
     .checkout-header {
         text-align: center;
-        padding: 3rem 0 2rem;
+        padding: 3.5rem 0 2.5rem;
         position: relative;
     }
 
     .checkout-header h1 {
         font-size: 2.5rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+        background: linear-gradient(135deg, #fff 0%, #f5c542 50%, #d4af37 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
         margin-bottom: 1rem;
         letter-spacing: -0.02em;
+        text-shadow: 0 4px 30px rgba(0,0,0,0.4);
     }
 
     .checkout-header p {
@@ -114,14 +142,17 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: rgba(245,158,11,0.15);
-        border: 1px solid rgba(245,158,11,0.3);
-        color: #fcd34d;
+        background: rgba(139,92,246,0.12);
+        border: 1px solid rgba(139,92,246,0.35);
+        color: #c4b5fd;
         font-size: 0.75rem;
         font-weight: 600;
-        padding: 5px 14px;
+        padding: 6px 18px;
         border-radius: 40px;
         margin-bottom: 1.5rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        backdrop-filter: blur(8px);
     }
 
     /* ===== LAYOUT PRINCIPAL ===== */
@@ -136,14 +167,28 @@
     .checkout-form {
         background: var(--dark-card);
         border: 1px solid var(--dark-border);
-        border-radius: 20px;
+        border-radius: 22px;
         padding: 2rem;
-        transition: all 0.3s ease;
+        transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+        position: relative;
+        overflow: hidden;
     }
+
+    .checkout-form::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+        transition: left 0.6s ease;
+        pointer-events: none;
+    }
+
+    .checkout-form:hover::before { left: 100%; }
 
     .checkout-form:hover {
         border-color: var(--dark-border-hover);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.45), 0 0 30px rgba(139,92,246,0.1);
     }
 
     .checkout-form h2 {
@@ -154,6 +199,7 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        letter-spacing: -0.01em;
     }
 
     .checkout-form h2 i {
@@ -166,10 +212,10 @@
 
     .form-section h3 {
         font-size: 0.85rem;
-        font-weight: 600;
+        font-weight: 700;
         color: var(--accent-gold);
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.08em;
         margin-bottom: 1.25rem;
     }
 
@@ -192,19 +238,19 @@
     .form-control-custom {
         width: 100%;
         padding: 0.875rem 1rem;
-        background: rgba(255,255,255,0.05);
+        background: rgba(255,255,255,0.04);
         border: 1px solid var(--dark-border);
         border-radius: 12px;
         font-size: 0.95rem;
         color: var(--dark-text);
-        transition: all 0.2s ease;
+        transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
     }
 
     .form-control-custom:focus {
         outline: none;
         border-color: var(--accent-gold);
-        background: rgba(255,255,255,0.08);
-        box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
+        background: rgba(255,255,255,0.07);
+        box-shadow: 0 0 0 3px rgba(245,197,66,0.12);
     }
 
     .form-control-custom::placeholder {
@@ -268,11 +314,11 @@
 
     .payment-methods-section h4 {
         font-size: 0.8rem;
-        font-weight: 600;
+        font-weight: 700;
         margin-bottom: 0.75rem;
         color: var(--dark-muted);
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.08em;
     }
 
     .payment-methods-list {
@@ -283,7 +329,7 @@
 
     .payment-badge {
         padding: 0.5rem 1rem;
-        background: rgba(255,255,255,0.05);
+        background: rgba(139,92,246,0.08);
         border: 1px solid var(--dark-border);
         border-radius: 40px;
         font-size: 0.8rem;
@@ -292,31 +338,51 @@
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
+        transition: all 0.25s ease;
+    }
+
+    .payment-badge:hover {
+        border-color: rgba(139,92,246,0.5);
+        color: #c4b5fd;
+        background: rgba(139,92,246,0.14);
     }
 
     /* ===== BOUTON DE PAIEMENT ===== */
     .btn-payment {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: #fff;
+        background: linear-gradient(135deg, #f5c542 0%, #d4af37 100%);
+        color: #07050f;
         width: 100%;
         padding: 1.25rem;
         font-weight: 700;
         font-size: 1.1rem;
         border: none;
-        border-radius: 14px;
+        border-radius: 50px;
         margin-top: 1.5rem;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.75rem;
+        position: relative;
+        overflow: hidden;
     }
 
+    .btn-payment::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .btn-payment:hover::before { left: 100%; }
+
     .btn-payment:hover {
+        background: linear-gradient(135deg, #fcd34d 0%, #f5c542 100%);
         transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(16,185,129,0.3);
-        filter: brightness(1.05);
+        box-shadow: 0 12px 30px rgba(245,197,66,0.4);
     }
 
     .btn-payment:active {
@@ -328,15 +394,15 @@
         text-align: center;
         margin: 1rem 0;
         padding: 0.75rem;
-        background: rgba(245,158,11,0.1);
-        border: 1px solid rgba(245,158,11,0.2);
+        background: linear-gradient(135deg, rgba(239,68,68,0.1) 0%, rgba(245,197,66,0.1) 100%);
+        border: 1px solid rgba(245,197,66,0.2);
         border-radius: 12px;
         font-size: 0.8rem;
         color: #fcd34d;
     }
 
     .urgency-text i {
-        color: #f59e0b;
+        color: var(--accent-gold);
         margin-right: 6px;
     }
 
@@ -356,7 +422,7 @@
     }
 
     .secure-badge i {
-        color: #a5b4fc;
+        color: var(--accent-purple);
         font-size: 1.1rem;
     }
 
@@ -364,16 +430,17 @@
     .order-recap {
         background: var(--dark-card);
         border: 1px solid var(--dark-border);
-        border-radius: 20px;
+        border-radius: 22px;
         padding: 1.5rem;
         position: sticky;
         top: 24px;
         height: fit-content;
-        transition: all 0.3s ease;
+        transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
     }
 
     .order-recap:hover {
         border-color: var(--dark-border-hover);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.45), 0 0 30px rgba(139,92,246,0.1);
     }
 
     .order-recap h2 {
@@ -388,6 +455,10 @@
         border-bottom: 1px solid var(--dark-border);
     }
 
+    .order-recap h2 i {
+        color: var(--accent-gold);
+    }
+
     .recap-item {
         display: flex;
         gap: 1rem;
@@ -400,8 +471,8 @@
         height: 45px;
         object-fit: cover;
         flex-shrink: 0;
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        border-radius: 8px;
+        background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+        border-radius: 10px;
     }
 
     .recap-details {
@@ -463,7 +534,7 @@
         bottom: 2rem;
         right: 2rem;
         z-index: 1000;
-        animation: fadeInUp 0.5s ease-out;
+        animation: fadeInUp 0.6s ease-out;
     }
 
     .whatsapp-button {
@@ -472,20 +543,35 @@
         gap: 0.75rem;
         background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
         color: #fff;
-        padding: 0.875rem 1.5rem;
+        padding: 0.9rem 1.6rem;
         border-radius: 50px;
         text-decoration: none;
         font-weight: 600;
         font-size: 0.875rem;
-        box-shadow: var(--shadow-lg);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 28px rgba(37,211,102,0.4);
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         border: none;
         cursor: pointer;
+        position: relative;
+    }
+
+    .whatsapp-button::after {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: 50px;
+        border: 2px solid rgba(37,211,102,0.4);
+        animation: ringPulse 2s infinite;
+        pointer-events: none;
+    }
+    @keyframes ringPulse {
+        0% { transform: scale(1); opacity: 0.7; }
+        100% { transform: scale(1.15); opacity: 0; }
     }
 
     .whatsapp-button:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-xl);
+        transform: translateY(-4px) scale(1.03);
+        box-shadow: 0 14px 38px rgba(37,211,102,0.5);
         color: #fff;
     }
 
@@ -542,7 +628,11 @@
         }
 
         .whatsapp-button {
-            padding: 0.875rem;
+            padding: 0.9rem;
+            border-radius: 50%;
+        }
+
+        .whatsapp-button::after {
             border-radius: 50%;
         }
     }
@@ -686,12 +776,7 @@
     </div>
 
     <!-- Lien retour -->
-    <div class="back-link">
-        <a href="{% url 'panier' %}">
-            <i class="bi bi-arrow-left"></i>
-            Retour au panier
-        </a>
-    </div>
+
 </div>
 
 <!-- Bouton flottant WhatsApp -->
